@@ -1,0 +1,37 @@
+ct 23 18:11:02 my-vps voip-backend[407225]: 📡 Socket.IO enabled for real-time updates
+{"success":true,"data":{"status":"healthy","timestamp":"2025-10-23T18:11:04.065Z","version":"1.0.0"}}  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    84  100    84    0     0  13997      0 --:--:-- --:--:-- --:--:-- 16800
+root@my-vps:/var/www/voip-system# ^C
+root@my-vps:/var/www/voip-system# # SUL SERVER:
+
+# 1. Test completo extensions (per vedere se il fix JSON.parse funziona)
+curl -s http://localhost:5000/api/voip/sip/extensions | jq '.data[] | select(.extension=="100")'
+
+# Oppure se jq non c'è:
+curl -s http://localhost:5000/api/voip/sip/extensions
+
+# 2. Se vedi errori nei log
+journalctl -u voip-backend -n 20 --no-pager
+-bash: jq: command not found
+{"success":false,"error":{"code":"MISSING_TOKEN","message":"Access token required"}}Oct 23 18:11:41 my-vps voip-backend[407225]:   url: '/sip/extensions',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   ip: '127.0.0.1',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   userAgent: 'curl/7.88.1',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   statusCode: 401,
+Oct 23 18:11:41 my-vps voip-backend[407225]:   tenantId: undefined,
+Oct 23 18:11:41 my-vps voip-backend[407225]:   userId: undefined
+Oct 23 18:11:41 my-vps voip-backend[407225]: }
+Oct 23 18:11:41 my-vps voip-backend[407225]: 127.0.0.1 - - [23/Oct/2025:18:11:41 +0000] "GET /api/voip/sip/extensions HTTP/1.1" 401 84 "-" "curl/7.88.1"
+Oct 23 18:11:41 my-vps voip-backend[407225]: Security Event: {
+Oct 23 18:11:41 my-vps voip-backend[407225]:   timestamp: '2025-10-23T18:11:41.514Z',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   requestId: '363e7829-7081-4cdd-8dd7-406e165662a4',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   method: 'GET',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   url: '/sip/extensions',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   ip: '127.0.0.1',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   userAgent: 'curl/7.88.1',
+Oct 23 18:11:41 my-vps voip-backend[407225]:   statusCode: 401,
+Oct 23 18:11:41 my-vps voip-backend[407225]:   tenantId: undefined,
+Oct 23 18:11:41 my-vps voip-backend[407225]:   userId: undefined
+Oct 23 18:11:41 my-vps voip-backend[407225]: }
+Oct 23 18:11:41 my-vps voip-backend[407225]: 127.0.0.1 - - [23/Oct/2025:18:11:41 +0000] "GET /api/voip/sip/extensions HTTP/1.1" 401 84 "-" "curl/7.88.1"
+root@my-vps:/var/www/voip-system#
