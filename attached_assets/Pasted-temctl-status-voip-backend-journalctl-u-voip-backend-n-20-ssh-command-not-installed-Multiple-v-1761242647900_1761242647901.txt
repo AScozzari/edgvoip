@@ -1,0 +1,113 @@
+temctl status voip-backend
+journalctl -u voip-backend -n 20
+ssh: command not installed. Multiple versions of this command were found in Nix.
+Select one to run (or press Ctrl-C to cancel):
+bash: cd: /root/w3voip-app: Permission denied
+bash: /root/backups/db_20251023_1802.sql: Permission denied
+From https://github.com/AScozzari/edgvoip
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+up to date, audited 490 packages in 2s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+3 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+> w3-voip@1.0.0 build
+> npm run build:shared && npm run build:backend && npm run build:frontend
+
+
+> w3-voip@1.0.0 build:shared
+> cd packages/shared && npm run build
+
+
+> @voip/shared@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:backend
+> cd packages/backend && npm run build
+
+
+> @voip/backend@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:frontend
+> cd packages/frontend && npm run build
+
+
+> @voip/frontend@1.0.0 build
+> vite build
+
+▲ [WARNING] Duplicate key "skipLibCheck" in object literal [duplicate-object-key]
+
+    tsconfig.json:19:4:
+      19 │     "skipLibCheck": true,
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "skipLibCheck" is here:
+
+    tsconfig.json:7:4:
+      7 │     "skipLibCheck": true,
+        ╵     ~~~~~~~~~~~~~~
+
+vite v7.1.10 building for production...
+✓ 1492 modules transformed.
+dist/index.html                   7.51 kB │ gzip:   2.04 kB
+dist/assets/index-DCoLQ8N4.css   59.57 kB │ gzip:   9.59 kB
+dist/assets/index-8vcyjTX3.js   622.23 kB │ gzip: 155.03 kB │ map: 2,321.04 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.86s
+systemctl: command not installed. Multiple versions of this command were found in Nix.
+Select one to run (or press Ctrl-C to cancel):
+# API funzionante?
+jq: error: syntax error, unexpected end of file, expecting FORMAT or QQSTRING_START or '[' (Unix shell quoting issues?) at <top-level>, line 1:
+.[0].store_paths.                
+jq: 1 compile error
+error: attribute '#' in selection path '#' not found
+       Did you mean one of R, h, j, o or q?
+Failed to install nixpkgs.#.
+systemctl: command not found
+systemctl: command not installed. Multiple versions of this command were found in Nix.
+Select one to run (or press Ctrl-C to cancel):
+curl http://localhost:3001/api/health
+jq: error: syntax error, unexpected end of file, expecting FORMAT or QQSTRING_START or '[' (Unix shell quoting issues?) at <top-level>, line 1:
+.[0].store_paths.                
+jq: 1 compile error
+Error: printing results
+
+Caused by:
+    Broken pipe (os error 32)
+
+Location:
+    src/bin/search/main.rs:116:71
+/nix/store/s94mw7hpdrb3d3zwvxjwdjsgjyqzipds-curl-8.14.1-bin
+Adding curl to .replit
+/tmp/nix-shell-26541-3833679162/rc: line 3: systemctl: command not found
+journalctl: command not installed. Multiple versions of this command were found in Nix.
+Select one to run (or press Ctrl-C to cancel):
+systemdUkify    257.6  System and service manager for Linux
+Adding systemdUkify to .replit
+No journal files were found.
+-- No entries --
+~/workspace$  Extension 100 presente?
+bash: Extension: command not founde....
+~/workspace$ psql -U voip_user -d voip_production -c "SELECT extension, display_name FROM extensions WHERE extension='100';"
+psql: error: connection to server at "ep-flat-forest-aff2c1xg.c-2.us-west-2.aws.neon.tech" (52.43.156.152), port 5432 failed: ERROR:  password authentication failed for user 'voip_user'
+connection to server at "ep-flat-forest-aff2c1xg.c-2.us-west-2.aws.neon.tech" (52.43.156.152), port 5432 failed: ERROR:  connection is insecure (try using `sslmode=require`)
+~/workspace$ 

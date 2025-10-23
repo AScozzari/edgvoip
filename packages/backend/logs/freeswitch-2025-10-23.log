@@ -98,3 +98,4 @@
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 16:05:37:537"}
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 16:33:44:3344"}
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 16:33:58:3358"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 18:02:49:249"}
