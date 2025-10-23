@@ -62,41 +62,13 @@ app.use((req, res, next) => {
     }
     next();
 });
-// Body parsing middleware with error handling
-app.use(express_1.default.json({
-    limit: '10mb',
-    verify: (req, res, buf, encoding) => {
-        try {
-            JSON.parse(buf.toString());
-        }
-        catch (e) {
-            console.error('❌ JSON Parse Error:', e);
-            console.error('❌ Raw body:', buf.toString());
-            throw new Error('Invalid JSON');
-        }
-    }
-}));
+// Body parsing middleware
+app.use(express_1.default.json({ limit: '10mb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
-// Body parser error handler
-app.use((err, req, res, next) => {
-    if (err instanceof SyntaxError && 'body' in err) {
-        console.error('❌ Body parser error:', err.message);
-        return res.status(400).json({
-            success: false,
-            error: {
-                code: 'INVALID_JSON',
-                message: 'Invalid JSON in request body'
-            }
-        });
-    }
-    next(err);
-});
-// Input sanitization (temporarily disabled for testing)
-// app.use(sanitizeInput);
-// Content type validation (temporarily disabled for testing)
-// app.use(validateContentType(['application/json']));
-// Request size limiting (temporarily disabled for testing)
-// app.use(requestSizeLimit('10mb'));
+// Input sanitization
+app.use(security_1.sanitizeInput);
+// Request size limiting
+app.use((0, security_1.requestSizeLimit)('10mb'));
 // Rate limiting
 app.use('/api', security_1.apiRateLimit);
 // API routes
@@ -127,6 +99,22 @@ app.use('*', (req, res) => {
             message: 'Endpoint not found'
         }
     });
+});
+// Body parser error handler
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+        console.error('❌ Body parser error:', err.message);
+        console.error('❌ Request path:', req.path);
+        console.error('❌ Content-Type:', req.headers['content-type']);
+        return res.status(400).json({
+            success: false,
+            error: {
+                code: 'INVALID_JSON',
+                message: 'Invalid JSON in request body'
+            }
+        });
+    }
+    next(err);
 });
 // Error handling middleware
 app.use(response_1.errorHandler);
