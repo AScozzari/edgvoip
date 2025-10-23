@@ -94,3 +94,5 @@
 {"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 10:43:17:4317"}
 {"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 10:43:17:4317"}
 {"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 10:43:17:4317"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 16:04:49:449"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 16:05:37:537"}
