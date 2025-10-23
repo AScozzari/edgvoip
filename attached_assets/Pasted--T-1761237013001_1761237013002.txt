@@ -1,0 +1,38 @@
+
+
+
+                                                                                             Table "public.extensions"
+    Column    |           Type           | Collation | Nullable |                                                                      Default                  
+--------------+--------------------------+-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------
+ id           | uuid                     |           | not null | gen_random_uuid()
+ tenant_id    | uuid                     |           | not null |
+ store_id     | uuid                     |           |          |
+ extension    | character varying(10)    |           | not null |
+ password     | character varying(32)    |           | not null |
+ display_name | character varying(100)   |           | not null |
+ status       | character varying(20)    |           | not null | 'active'::character varying
+ type         | character varying(20)    |           | not null | 'user'::character varying
+ settings     | jsonb                    |           | not null | '{"dnd_enabled": false, "call_forwarding": {"enabled": false, "destination": null}, "recording_enabled": true, "voicemail_enabled": true}'::jsonb
+ created_at   | timestamp with time zone |           |          | now()
+ updated_at   | timestamp with time zone |           |          | now()
+Indexes:
+    "extensions_pkey" PRIMARY KEY, btree (id)
+    "extensions_tenant_id_extension_key" UNIQUE CONSTRAINT, btree (tenant_id, extension)
+    "idx_extensions_extension" btree (tenant_id, extension)
+    "idx_extensions_rls" btree (tenant_id, id)
+    "idx_extensions_tenant_id" btree (tenant_id)
+Check constraints:
+    "extensions_status_check" CHECK (status::text = ANY (ARRAY['active'::character varying, 'inactive'::character varying, 'locked'::character varying]::text[]))
+    "extensions_type_check" CHECK (type::text = ANY (ARRAY['user'::character varying, 'queue'::character varying, 'conference'::character varying, 'voicemail'::character varying]::text[]))
+Foreign-key constraints:
+    "extensions_store_id_fkey" FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE SET NULL
+    "extensions_tenant_id_fkey" FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE
+Referenced by:
+    TABLE "cdr" CONSTRAINT "cdr_extension_id_fkey" FOREIGN KEY (extension_id) REFERENCES extensions(id) ON DELETE SET NULL
+Policies:
+    POLICY "extension_tenant_isolation_policy"
+      USING (((tenant_id = (current_setting('app.current_tenant_id'::text, true))::uuid) OR (current_setting('app.user_role'::text, true) = 'super_admin'::text)))
+Triggers:
+    update_extensions_updated_at BEFORE UPDATE ON extensions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()
+
+(END)
