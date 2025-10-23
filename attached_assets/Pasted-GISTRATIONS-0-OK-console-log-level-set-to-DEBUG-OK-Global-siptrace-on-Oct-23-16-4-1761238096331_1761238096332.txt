@@ -1,0 +1,82 @@
+GISTRATIONS           0
+
++OK console log level set to DEBUG
+
++OK Global siptrace on
+Oct 23 16:44:30 my-vps voip-backend[399453]: FreeSWITCH XML POST Request: {
+Oct 23 16:44:30 my-vps voip-backend[399453]: 📞 FreeSWITCH XML Request: { section: 'directory', domain: 'demo.edgvoip.it', user: '100' }
+Oct 23 16:44:30 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:44:30 +0000] "POST /api/freeswitch/xml HTTP/1.1" 200 1340 "-" "curl/7.88.1"
+Oct 23 16:44:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:44:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:45:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:45:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+^C
+root@my-vps:~# # SUL SERVER 93.93.113.13:
+
+# 1. Controlla i domini configurati nel profilo external
+cat /usr/local/freeswitch/conf/sip_profiles/external.xml | grep -A10 "domain\|alias"
+
+# 2. Aggiungi demo.edgvoip.it come alias (se non c'è già)
+/usr/local/freeswitch/bin/fs_cli -x "sofia profile external alias demo.edgvoip.it"
+
+# 3. Verifica che sia stato aggiunto
+/usr/local/freeswitch/bin/fs_cli -x "sofia status"
+
+# 4. Ora prova a registrare il tuo SIP phone con:
+# - Username: 100
+# - Password: test123456
+# - Domain: demo.edgvoip.it
+# - Server: 93.93.113.13
+# - Port: 5080
+# - Transport: UDP
+
+# 5. Monitora i log in tempo reale mentre provi
+tail -f /usr/local/freeswitch/log/freeswitch.log | grep -i "REGISTER\|401\|407\|100@demo"
+  <aliases>
+    <!--
+        <alias name="outbound"/>
+        <alias name="nat"/>
+    -->
+  </aliases>
+
+  <domains>
+    <domain name="all" alias="false" parse="true"/>
+  </domains>
+
+  <settings>
+    <param name="debug" value="0"/>
+    <!-- If you want FreeSWITCH to shutdown if this profile fails to load, uncomment the next line. -->
+    <!-- <param name="shutdown-on-fail" value="true"/> -->
+    <param name="sip-trace" value="no"/>
+    <param name="sip-capture" value="no"/>
+    <param name="rfc2833-pt" value="101"/>
+    <!-- RFC 5626 : Send reg-id and sip.instance -->
+    <!--<param name="enable-rfc-5626" value="true"/> -->
+--
+    <!--<param name="presence-hosts" value="$${domain}"/>-->
+    <!--<param name="force-register-domain" value="$${domain}"/>-->
+    <!--all inbound reg will stored in the db using this domain -->
+    <!--<param name="force-register-db-domain" value="$${domain}"/>-->
+    <!-- ************************************************* -->
+
+    <!--<param name="aggressive-nat-detection" value="true"/>-->
+    <param name="inbound-codec-negotiation" value="generous"/>
+    <param name="nonce-ttl" value="60"/>
+    <param name="auth-calls" value="false"/>
+    <param name="inbound-late-negotiation" value="true"/>
+    <!--
+        DO NOT USE HOSTNAMES, ONLY IP ADDRESSES IN THESE SETTINGS!
+    -->
+-ERR Unknown command!
+
+                     Name          Type                                       Data      State
+=================================================================================================
+            external-ipv6       profile                   sip:mod_sofia@[::1]:5080      RUNNING (0)
+                     demo         alias                                   internal      ALIASED
+               edgvoip.it         alias                                   internal      ALIASED
+                 external       profile            sip:mod_sofia@93.93.113.13:5080      RUNNING (0)
+     external::messagenet       gateway           sip:5406594427@sip.messagenet.it      REGED
+            internal-ipv6       profile                   sip:mod_sofia@[::1]:5060      RUNNING (0)
+                 internal       profile            sip:mod_sofia@93.93.113.13:5060      RUNNING (0)
+=================================================================================================
+4 profiles 2 aliases
+
+
