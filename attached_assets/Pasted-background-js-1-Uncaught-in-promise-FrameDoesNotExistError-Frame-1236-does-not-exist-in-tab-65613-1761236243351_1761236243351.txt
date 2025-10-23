@@ -1,0 +1,230 @@
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1236 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1237 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1238 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1245 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+5The Content Security Policy directive 'frame-ancestors' is ignored when delivered via a <meta> element.Understand this error
+login:55 🛡️ Extension blocker loaded immediately
+login:55 🛡️ Advanced extension blocker loading...
+login:55 🛡️ Advanced extension blocker loaded successfully
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+login:67  GET http://edgvoip.it/api/voip/sip-extensions?limit=1 500 (Internal Server Error)
+window.fetch @ login:67
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:89
+getExtensions @ api.ts:208
+d @ Dashboard.tsx:44
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 API request failed: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async d (Dashboard.tsx:44:26)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+request @ api.ts:122
+await in request
+getExtensions @ api.ts:208
+d @ Dashboard.tsx:44
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 Failed to load dashboard data: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async d (Dashboard.tsx:44:26)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+d @ Dashboard.tsx:61
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:67  GET http://edgvoip.it/api/voip/sip-extensions?limit=100 500 (Internal Server Error)
+window.fetch @ login:67
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:89
+getExtensions @ api.ts:208
+_ @ Extensions.tsx:46
+(anonymous) @ Extensions.tsx:38
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 API request failed: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async _ (Extensions.tsx:46:20)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+request @ api.ts:122
+await in request
+getExtensions @ api.ts:208
+_ @ Extensions.tsx:46
+(anonymous) @ Extensions.tsx:38
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 ❌ Error loading extensions: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async _ (Extensions.tsx:46:20)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+_ @ Extensions.tsx:74
+await in _
+(anonymous) @ Extensions.tsx:38
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+Error handling response: Error: Attempting to use a disconnected port object
+    at chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/background.js:1:74890Understand this error
+login:67  GET http://edgvoip.it/api/voip/sip-extensions?limit=1 500 (Internal Server Error)
+window.fetch @ login:67
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:89
+getExtensions @ api.ts:208
+d @ Dashboard.tsx:44
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 API request failed: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async d (Dashboard.tsx:44:26)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+request @ api.ts:122
+await in request
+getExtensions @ api.ts:208
+d @ Dashboard.tsx:44
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 Failed to load dashboard data: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async d (Dashboard.tsx:44:26)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+d @ Dashboard.tsx:61
+await in d
+(anonymous) @ Dashboard.tsx:31
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:67  GET http://edgvoip.it/api/voip/sip-extensions?limit=100 500 (Internal Server Error)
+window.fetch @ login:67
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:89
+getExtensions @ api.ts:208
+_ @ Extensions.tsx:46
+(anonymous) @ Extensions.tsx:38
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 API request failed: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async _ (Extensions.tsx:46:20)
+console.error @ login:43
+console.<computed> @ login:126
+overrideMethod @ hook.js:608
+console.<computed> @ login:142
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+request @ api.ts:122
+await in request
+getExtensions @ api.ts:208
+_ @ Extensions.tsx:46
+(anonymous) @ Extensions.tsx:38
+Di @ react-dom.production.min.js:243
+wr @ react-dom.production.min.js:285
+(anonymous) @ react-dom.production.min.js:281
+B @ scheduler.production.min.js:13
+W @ scheduler.production.min.js:14Understand this error
+login:43 ❌ Error loading extensions: Error: Internal server error
+    at Vj.request (api.ts:117:15)
+    at async _ (Extensions.tsx:46:20)
