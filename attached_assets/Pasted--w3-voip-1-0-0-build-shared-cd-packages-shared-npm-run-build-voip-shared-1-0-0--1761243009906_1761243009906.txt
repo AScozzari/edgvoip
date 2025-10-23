@@ -1,0 +1,260 @@
+
+
+
+> w3-voip@1.0.0 build:shared
+> cd packages/shared && npm run build
+
+
+> @voip/shared@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:backend
+> cd packages/backend && npm run build
+
+
+> @voip/backend@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:frontend
+> cd packages/frontend && npm run build
+
+
+> @voip/frontend@1.0.0 build
+> vite build
+
+▲ [WARNING] Duplicate key "skipLibCheck" in object literal [duplicate-object-key]
+
+    tsconfig.json:19:4:
+      19 │     "skipLibCheck": true,
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "skipLibCheck" is here:
+
+    tsconfig.json:7:4:
+      7 │     "skipLibCheck": true,
+        ╵     ~~~~~~~~~~~~~~
+
+vite v7.1.10 building for production...
+✓ 1492 modules transformed.
+dist/index.html                   7.51 kB │ gzip:   2.02 kB
+dist/assets/index-DCoLQ8N4.css   59.57 kB │ gzip:   9.59 kB
+dist/assets/index-8vcyjTX3.js   622.23 kB │ gzip: 155.34 kB │ map: 2,321.04 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.10s
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2025-10-23 18:09:14 UTC; 8ms ago
+   Main PID: 406853 (node)
+      Tasks: 6 (limit: 9441)
+     Memory: 1.5M
+        CPU: 7ms
+     CGroup: /system.slice/voip-backend.service
+             └─406853 /usr/bin/node dist/index.js
+
+Oct 23 18:09:14 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps voip-backend[406480]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:07:23 my-vps voip-backend[406480]: ✅ Server closed
+Oct 23 18:07:23 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:07:23 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.742Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.747Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.749Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.750Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: ✅ Database health check passed
+Oct 23 18:07:23 my-vps voip-backend[406648]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 18:07:23 my-vps voip-backend[406648]: 📊 Environment: production
+Oct 23 18:07:23 my-vps voip-backend[406648]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 18:07:23 my-vps voip-backend[406648]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:09:14 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:09:14 my-vps voip-backend[406648]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:09:14 my-vps voip-backend[406648]: ✅ Server closed
+Oct 23 18:09:14 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:09:14 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:09:14 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+root@my-vps:/var/www/voip-system# ^C
+root@my-vps:/var/www/voip-system# # SUL SERVER:
+
+# 1. Fai stash delle modifiche locali
+git stash
+
+# 2. Ora puoi fare il pull
+git pull origin main
+
+# 3. Rebuild
+npm run build
+
+# 4. Riavvia
+systemctl restart voip-backend
+
+# 5. ASPETTA 2 secondi e poi controlla se è vivo
+sleep 2
+systemctl status voip-backend
+
+# 6. Guarda gli ultimi log per vedere se crasha
+journalctl -u voip-backend -n 50 --no-pager | tail -30
+
+# 7. Test API
+curl http://localhost:5000/api/health
+Saved working directory and index state WIP on main: 69952d7 Initial import
+From github.com:AScozzari/edgvoip
+ * branch            main       -> FETCH_HEAD
+Updating 69952d7..d9e2458
+Fast-forward
+ .replit                                                                                                                               |   60 ++++
+ DEPLOYMENT.md                                                                                                                         |  191 ++++++++++++
+ QUICK_DEPLOY.md                                                                                                                       |   69 +++++
+ .../Pasted--H-Content-Type-application-x-www-form-urlencoded-d-section-directory-domain-demo-edgvoip-1761237985281_1761237985282.txt  |  178 +++++++++++
+ .../Pasted--SUL-SERVER-93-93-113-13-1-Verifica-la-configurazione-xml-curl-percorso-corretto-cat--1761237943049_1761237943050.txt      |   59 ++++
+ attached_assets/Pasted--T-1761237013001_1761237013002.txt                                                                             |   38 +++
+ .../Pasted--Terminale-2-Log-Backend-richieste-XML-journalctl-u-voip-backend-f-grep-i-freeswitch--1761238854361_1761238854362.txt      |   20 ++
+ .../Pasted--vps-C-root-my-vps-SUL-SERVER-93-93-113-13-1-Testa-il-route-XML-corretto-curl-X-P-1761237877767_1761237877768.txt          |   56 ++++
+ .../Pasted-GISTRATIONS-0-OK-console-log-level-set-to-DEBUG-OK-Global-siptrace-on-Oct-23-16-4-1761238096331_1761238096332.txt          |   82 ++++++
+ .../Pasted-Last-login-Thu-Oct-23-16-22-19-2025-from-194-79-203-34-root-my-vps-1-Trova-dove-il-progett-1761236855376_1761236855378.txt |  581 ++++++++++++++++++++++++++++++++++++
+ ...ed-Oct-23-17-14-38-my-vps-systemd-1-freeswitch-service-Start-request-repeated-too-quickly-Oct-23-1-1761239733028_1761239733029.txt |   37 +++
+ ...d-ar-www-voip-system-node-modules-types-triple-beam-package-json-var-www-voip-system-node-modules--1761237085502_1761237085503.txt |  354 ++++++++++++++++++++++
+ ...-background-js-1-Uncaught-in-promise-FrameDoesNotExistError-Frame-1236-does-not-exist-in-tab-65613-1761236243351_1761236243351.txt |  230 +++++++++++++++
+ ...d-e-json-var-www-voip-system-node-modules-resolve-test-resolver-dot-main-package-json-var-www-voip-1761236731587_1761236731587.txt |  134 +++++++++
+ ...Pasted-psql-error-connection-to-server-on-socket-var-run-postgresql-s-PGSQL-5432-failed-FATAL-Peer-1761237192358_1761237192359.txt |  401 +++++++++++++++++++++++++
+ .../Pasted-t-23-16-27-57-my-vps-voip-backend-397704-url-api-voip-sip-extensions-limit-100-Oct-23-16-2-1761237121749_1761237121750.txt |   51 ++++
+ ...ted-temctl-status-voip-backend-journalctl-u-voip-backend-n-20-ssh-command-not-installed-Multiple-v-1761242647900_1761242647901.txt |  113 +++++++
+ attached_assets/Screenshot 2025-10-23 182807_1761236960591.png                                                                        |  Bin 0 -> 972205 bytes
+ attached_assets/Screenshot 2025-10-23 190730_1761239273965.png                                                                        |  Bin 0 -> 94450 bytes
+ node_modules/.package-lock.json                                                                                                       |  252 ++++++++++++++++
+ packages/backend/.env                                                                                                                 |   70 +++--
+ packages/backend/dist/index.d.ts.map                                                                                                  |    2 +-
+ packages/backend/dist/index.js                                                                                                        |    9 +-
+ packages/backend/dist/index.js.map                                                                                                    |    2 +-
+ packages/backend/dist/services/extension.service.js                                                                                   |   12 +-
+ packages/backend/dist/services/extension.service.js.map                                                                               |    2 +-
+ packages/backend/logs/.160ff73c1fe30ccbe1f5159855cc9e570dddf1a9-audit.json                                                            |   15 +
+ packages/backend/logs/.1883d451874a8805310a60ea5e130781c5f9c5f2-audit.json                                                            |   15 +
+ packages/backend/logs/.241cde51d5a949574fefe75afd7de280a02b1969-audit.json                                                            |   15 +
+ packages/backend/logs/.44840b23b00a9f683cb9f7187afbbc9c386114b8-audit.json                                                            |   15 +
+ packages/backend/logs/.6c84b98d19f24489b6f3abd534fa5a4004c9cece-audit.json                                                            |   15 +
+ packages/backend/logs/.aab06d72d38bd4d14d19ea48a6546f1747026c7e-audit.json                                                            |   15 +
+ packages/backend/logs/.c0e37b239ffe5c43d417a747ac78f3ba29707ed1-audit.json                                                            |   15 +
+ packages/backend/logs/.e77cbbcbd656b1402d683cdb69a72648a08eee55-audit.json                                                            |   15 +
+ packages/backend/logs/api-2025-10-23.log                                                                                              |   11 +
+ packages/backend/logs/freeswitch-2025-10-23.log                                                                                       |    5 +
+ packages/backend/src/index.ts                                                                                                         |  417 +++++++++++++-------------
+ packages/backend/src/services/extension.service.ts                                                                                    |   12 +-
+ packages/database/dist/index.js                                                                                                       |    2 +-
+ packages/database/dist/index.js.map                                                                                                   |    2 +-
+ packages/database/dist/migrate.d.ts.map                                                                                               |    2 +-
+ packages/database/dist/migrate.js                                                                                                     |   18 +-
+ packages/database/dist/migrate.js.map                                                                                                 |    2 +-
+ packages/database/dist/seed.d.ts.map                                                                                                  |    2 +-
+ packages/database/dist/seed.js                                                                                                        |   10 +-
+ packages/database/dist/seed.js.map                                                                                                    |    2 +-
+ packages/database/src/index.ts                                                                                                        |    4 +-
+ packages/database/src/migrations/003_create_call_events_table.sql                                                                     |    1 -
+ packages/database/src/migrations/005_dialplan_routes.sql                                                                              |    8 +-
+ packages/database/src/migrations/006_ring_groups.sql                                                                                  |    6 +-
+ packages/database/src/migrations/007_call_queues.sql                                                                                  |    8 +-
+ packages/database/src/migrations/008_time_conditions.sql                                                                              |    1 +
+ packages/database/src/migrations/015_enhance_auth_system.sql                                                                          |    4 +-
+ packages/frontend/.env                                                                                                                |    2 +-
+ packages/frontend/dist/assets/index-DjW2Ue6_.js                                                                                       |  711 --------------------------------------------
+ packages/frontend/dist/assets/index-DjW2Ue6_.js.map                                                                                   |    1 -
+ packages/frontend/dist/assets/index-DyMigYaB.js                                                                                       |  711 --------------------------------------------
+ packages/frontend/dist/assets/index-DyMigYaB.js.map                                                                                   |    1 -
+ packages/frontend/dist/index.html                                                                                                     |    4 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-checkbox.js                                                                 |   14 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-dialog.js                                                                   |   18 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-label.js                                                                    |    4 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-select.js                                                                   |   28 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-switch.js                                                                   |    8 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-tabs.js                                                                     |   16 +-
+ packages/frontend/node_modules/.vite/deps/@radix-ui_react-toast.js                                                                    |   22 +-
+ packages/frontend/node_modules/.vite/deps/_metadata.json                                                                              |   92 +++---
+ packages/frontend/node_modules/.vite/deps/chunk-3V2OSE2Q.js                                                                           |  273 -----------------
+ packages/frontend/node_modules/.vite/deps/chunk-3V2OSE2Q.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-4S25PAZZ.js                                                                           |   26 --
+ packages/frontend/node_modules/.vite/deps/chunk-4S25PAZZ.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-4XMKDKIL.js                                                                           |   61 ----
+ packages/frontend/node_modules/.vite/deps/chunk-4XMKDKIL.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-D63VUYIZ.js                                                                           |   65 -----
+ packages/frontend/node_modules/.vite/deps/chunk-D63VUYIZ.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-EWLXTHKM.js                                                                           |   89 ------
+ packages/frontend/node_modules/.vite/deps/chunk-EWLXTHKM.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-ISWXSV5K.js                                                                           |  143 ---------
+ packages/frontend/node_modules/.vite/deps/chunk-ISWXSV5K.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-SZX5CDQK.js                                                                           | 1103 ---------------------------------------------------------------------
+ packages/frontend/node_modules/.vite/deps/chunk-SZX5CDQK.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-T2NTB2XK.js                                                                           |  187 ------------
+ packages/frontend/node_modules/.vite/deps/chunk-T2NTB2XK.js.map                                                                       |    7 -
+ packages/frontend/node_modules/.vite/deps/chunk-YPMJJN7I.js                                                                           |   49 ----
+ packages/frontend/node_modules/.vite/deps/chunk-YPMJJN7I.js.map                                                                       |    7 -
+ packages/frontend/vite.config.ts                                                                                                      |   15 +-
+ replit.md                                                                                                                             |  118 ++++++++
+ 87 files changed, 3583 insertions(+), 3881 deletions(-)
+ create mode 100644 .replit
+ create mode 100644 DEPLOYMENT.md
+ create mode 100644 QUICK_DEPLOY.md
+ create mode 100644 attached_assets/Pasted--H-Content-Type-application-x-www-form-urlencoded-d-section-directory-domain-demo-edgvoip-1761237985281_1761237985282.txt
+ create mode 100644 attached_assets/Pasted--SUL-SERVER-93-93-113-13-1-Verifica-la-configurazione-xml-curl-percorso-corretto-cat--1761237943049_1761237943050.txt
+ create mode 100644 attached_assets/Pasted--T-1761237013001_1761237013002.txt
+ create mode 100644 attached_assets/Pasted--Terminale-2-Log-Backend-richieste-XML-journalctl-u-voip-backend-f-grep-i-freeswitch--1761238854361_1761238854362.txt
+ create mode 100644 attached_assets/Pasted--vps-C-root-my-vps-SUL-SERVER-93-93-113-13-1-Testa-il-route-XML-corretto-curl-X-P-1761237877767_1761237877768.txt
+ create mode 100644 attached_assets/Pasted-GISTRATIONS-0-OK-console-log-level-set-to-DEBUG-OK-Global-siptrace-on-Oct-23-16-4-1761238096331_1761238096332.txt
+ create mode 100644 attached_assets/Pasted-Last-login-Thu-Oct-23-16-22-19-2025-from-194-79-203-34-root-my-vps-1-Trova-dove-il-progett-1761236855376_1761236855378.txt
+ create mode 100644 attached_assets/Pasted-Oct-23-17-14-38-my-vps-systemd-1-freeswitch-service-Start-request-repeated-too-quickly-Oct-23-1-1761239733028_1761239733029.txt
+ create mode 100644 attached_assets/Pasted-ar-www-voip-system-node-modules-types-triple-beam-package-json-var-www-voip-system-node-modules--1761237085502_1761237085503.txt
+ create mode 100644 attached_assets/Pasted-background-js-1-Uncaught-in-promise-FrameDoesNotExistError-Frame-1236-does-not-exist-in-tab-65613-1761236243351_1761236243351.txt
+ create mode 100644 attached_assets/Pasted-e-json-var-www-voip-system-node-modules-resolve-test-resolver-dot-main-package-json-var-www-voip-1761236731587_1761236731587.txt
+ create mode 100644 attached_assets/Pasted-psql-error-connection-to-server-on-socket-var-run-postgresql-s-PGSQL-5432-failed-FATAL-Peer-1761237192358_1761237192359.txt
+ create mode 100644 attached_assets/Pasted-t-23-16-27-57-my-vps-voip-backend-397704-url-api-voip-sip-extensions-limit-100-Oct-23-16-2-1761237121749_1761237121750.txt
+ create mode 100644 attached_assets/Pasted-temctl-status-voip-backend-journalctl-u-voip-backend-n-20-ssh-command-not-installed-Multiple-v-1761242647900_1761242647901.txt
+ create mode 100644 attached_assets/Screenshot 2025-10-23 182807_1761236960591.png
+ create mode 100644 attached_assets/Screenshot 2025-10-23 190730_1761239273965.png
+ create mode 100644 packages/backend/logs/.160ff73c1fe30ccbe1f5159855cc9e570dddf1a9-audit.json
+ create mode 100644 packages/backend/logs/.1883d451874a8805310a60ea5e130781c5f9c5f2-audit.json
+ create mode 100644 packages/backend/logs/.241cde51d5a949574fefe75afd7de280a02b1969-audit.json
+ create mode 100644 packages/backend/logs/.44840b23b00a9f683cb9f7187afbbc9c386114b8-audit.json
+ create mode 100644 packages/backend/logs/.6c84b98d19f24489b6f3abd534fa5a4004c9cece-audit.json
+ create mode 100644 packages/backend/logs/.aab06d72d38bd4d14d19ea48a6546f1747026c7e-audit.json
+ create mode 100644 packages/backend/logs/.c0e37b239ffe5c43d417a747ac78f3ba29707ed1-audit.json
+ create mode 100644 packages/backend/logs/.e77cbbcbd656b1402d683cdb69a72648a08eee55-audit.json
+ delete mode 100644 packages/frontend/dist/assets/index-DjW2Ue6_.js
+ delete mode 100644 packages/frontend/dist/assets/index-DjW2Ue6_.js.map
+ delete mode 100644 packages/frontend/dist/assets/index-DyMigYaB.js
+ delete mode 100644 packages/frontend/dist/assets/index-DyMigYaB.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-3V2OSE2Q.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-3V2OSE2Q.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-4S25PAZZ.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-4S25PAZZ.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-4XMKDKIL.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-4XMKDKIL.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-D63VUYIZ.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-D63VUYIZ.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-EWLXTHKM.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-EWLXTHKM.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-ISWXSV5K.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-ISWXSV5K.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-SZX5CDQK.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-SZX5CDQK.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-T2NTB2XK.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-T2NTB2XK.js.map
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-YPMJJN7I.js
+ delete mode 100644 packages/frontend/node_modules/.vite/deps/chunk-YPMJJN7I.js.map
+ create mode 100644 replit.md
+
+> w3-voip@1.0.0 build
+> npm run build:shared && npm run build:backend && npm run build:frontend
+
+
+> w3-voip@1.0.0 build:shared
+> cd packages/shared && npm run build
+
+
+> @voip/shared@1.0.0 build
+> tsc
+
