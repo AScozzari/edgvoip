@@ -66,7 +66,15 @@ Demo credentials are shown on the login page.
      - Added `keepAliveInitialDelayMillis: 10000`
    - **Reason**: Prevent timeout errors on network connections to production database
 
-3. **Deployment Workflow Established**
+3. **Login Error Handling Improvements**
+   - **File**: `packages/backend/src/index.ts`
+   - **Changes**:
+     - Added proper SyntaxError handler for malformed JSON (400 response)
+     - Added debug logging for login requests (path, headers, content-type)
+     - Re-enabled security middleware (sanitizeInput, requestSizeLimit)
+   - **Reason**: Better error messages for login failures and enhanced security
+
+4. **Deployment Workflow Established**
    - **Strategy**: Git-based deployment (Replit → Git → Production Server)
    - **Server**: 93.93.113.13
    - **Document**: See `DEPLOYMENT.md` for full procedure
