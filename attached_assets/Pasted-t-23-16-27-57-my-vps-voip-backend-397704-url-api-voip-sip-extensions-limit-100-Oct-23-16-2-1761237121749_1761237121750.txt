@@ -1,0 +1,51 @@
+t 23 16:27:57 my-vps voip-backend[397704]:   url: '/api/voip/sip-extensions?limit=100',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   ip: '127.0.0.1',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   statusCode: 500,
+Oct 23 16:27:57 my-vps voip-backend[397704]:   tenantId: '32af8555-5511-40d6-be35-443dcebafefb',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:57 my-vps voip-backend[397704]: }
+Oct 23 16:27:57 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:57 +0000] "GET /api/voip/sip-extensions?limit=100 HTTP/1.1" 500 243 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:28:23 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:23 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:28:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:29:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:24 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:29:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:30:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:24 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:30:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+root@my-vps:~# # 1. Conta quante extensions esistono
+sudo -u postgres psql -d voip_production -c "SELECT COUNT(*) FROM extensions;"
+
+# 2. Controlla lo stato del servizio backend
+systemctl status voip-backend
+
+# 3. Vedi gli ultimi errori del backend
+journalctl -u voip-backend -n 200 --no-pager | grep -i "error"
+
+# 4. Controlla quale processo Node.js è attivo
+ps aux | grep node
+could not change directory to "/root": Permission denied
+ count
+-------
+     1
+(1 row)
+
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset:>
+     Active: active (running) since Thu 2025-10-23 16:03:40 UTC; 28min ago
+   Main PID: 397704 (node)
+      Tasks: 11 (limit: 9441)
+     Memory: 36.9M
+        CPU: 1.163s
+     CGroup: /system.slice/voip-backend.service
+             └─397704 /usr/bin/node dist/index.js
+
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:57 my-vps voip-backend[397704]: }
+Oct 23 16:27:57 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:5>
+Oct 23 16:28:23 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:2>
+Oct 23 16:28:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:5>
+Oct 23 16:29:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:2>
+Oct 23 16:29:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:5>
+Oct 23 16:30:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:2>
+Oct 23 16:30:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:5>
+Oct 23 16:31:39 my-vps v
