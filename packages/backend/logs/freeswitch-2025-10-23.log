@@ -105,3 +105,6 @@
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:21:18:2118"}
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:21:34:2134"}
 {"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:21:45:2145"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:35:24:3524"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:36:59:3659"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-23 20:42:17:4217"}

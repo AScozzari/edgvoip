@@ -106,14 +106,26 @@ export class FreeSwitchXmlService {
       console.log('📞 FreeSWITCH XML Request:', params);
 
       // Gestisci diversi formati di richiesta FreeSWITCH
-      let sipDomain = params.domain || params.key_name;
+      let sipDomain = params.domain;
       let user = params.user;
       
-      // xml_locate invia: key_name='domain.com' key_value='user 123'
+      // xml_locate può inviare:
+      // 1) key_name='name' key_value='domain.com' user='123'
+      // 2) key_name='domain.com' key_value='user 123'
       if (params.key_value) {
         const keyVal = params.key_value.toString();
-        user = keyVal.startsWith('user ') ? keyVal.replace('user ', '').trim() : keyVal.trim();
+        if (keyVal.startsWith('user ')) {
+          // Caso 2: key_value contiene user, dominio in key_name
+          user = keyVal.replace('user ', '').trim();
+          sipDomain = sipDomain || params.key_name;
+        } else {
+          // Caso 1: key_value è il dominio
+          sipDomain = sipDomain || keyVal;
+        }
       }
+      
+      // Fallback a key_name se non abbiamo ancora il dominio
+      sipDomain = sipDomain || params.key_name;
       
       // section può essere un array, prendi il primo elemento
       const section = Array.isArray(params.section) ? params.section[0] : params.section;

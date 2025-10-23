@@ -50,7 +50,38 @@ Demo credentials are shown on the login page.
 
 ## Recent Changes (October 23, 2025)
 
-### Production Fixes (LATEST - Ready for Deploy)
+### Tenant Architecture & SIP Domain Fix (LATEST - October 23, 2025 Evening)
+1. **SIP Domain Change: .edgvoip.local → .edgvoip.it**
+   - **Files**: `packages/backend/src/middleware/tenant-context.ts`, `packages/backend/src/routes/tenants.ts`
+   - **Change**: All SIP domains now use `.edgvoip.it` suffix instead of `.edgvoip.local`
+   - **Impact**: Tenant `demo` now has SIP domain `demo.edgvoip.it`
+
+2. **Super Admin Tenant Architecture**
+   - **Tenant `edg-voip`**: Now has `sip_domain = NULL` 
+   - **Purpose**: Super admin tenant ONLY manages other tenants (no SIP functionality)
+   - **Regular Tenants**: Auto-generate `sip_domain = {slug}.edgvoip.it`
+   - **Migration 018**: `packages/database/src/migrations/018_allow_null_sip_domain.sql`
+     - Allows NULL values for `sip_domain`
+     - Partial unique index (only non-NULL values must be unique)
+
+3. **FreeSWITCH XML Provisioning Fix**
+   - **File**: `packages/backend/src/services/freeswitch-xml.service.ts`
+   - **Bug**: Used `params.key_name` instead of `params.key_value` for SIP domain
+   - **Fix**: Changed to `params.domain || params.key_value`
+   - **Tested**: Extension 100 provisions correctly via `/api/freeswitch/xml`
+
+4. **Database Schema Updates**
+   - **Migration 016**: Added `companies` and `tenant_contacts` tables
+   - **Migration 018**: Made `sip_domain` nullable with partial unique constraint
+   - **Tenant Demo**: Created with SIP domain `demo.edgvoip.it`
+     - Admin user: `admin@demo.edgvoip.it` / `Demo1234!`
+     - Extension 100: `DemoExt100Pass!`
+
+5. **Documentation**
+   - **FREESWITCH_TROUBLESHOOTING.md**: Guide for fixing mod_sofia crashes on production server
+   - **Deployment**: Migration 018 safe for production (partial unique index)
+
+### Production Fixes (October 23, 2025 Morning)
 1. **CRITICAL FIX**: JSON.parse error for PostgreSQL JSONB fields
    - **Issue**: PostgreSQL JSONB returns objects in production but strings in development
    - **File**: `packages/backend/src/services/extension.service.ts`
