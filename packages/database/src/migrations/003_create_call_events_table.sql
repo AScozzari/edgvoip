@@ -24,5 +24,4 @@ CREATE POLICY tenant_isolation_call_events ON call_events
 USING (tenant_id = current_setting('app.tenant_id', TRUE)::uuid);
 
 -- Set owner
-ALTER TABLE call_events OWNER TO postgres;
 

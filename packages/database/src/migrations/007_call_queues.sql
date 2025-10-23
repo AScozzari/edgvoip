@@ -166,14 +166,14 @@ ALTER TABLE queue_statistics ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
 CREATE POLICY call_queues_tenant_isolation_policy ON call_queues
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid
     ));
 
 CREATE POLICY queue_agents_tenant_isolation_policy ON queue_agents
-    FOR ALL TO authenticated
+    FOR ALL
     USING (queue_id IN (
         SELECT cq.id FROM call_queues cq 
         JOIN tenants t ON cq.tenant_id = t.id
@@ -181,7 +181,7 @@ CREATE POLICY queue_agents_tenant_isolation_policy ON queue_agents
     ));
 
 CREATE POLICY queue_call_logs_tenant_isolation_policy ON queue_call_logs
-    FOR ALL TO authenticated
+    FOR ALL
     USING (queue_id IN (
         SELECT cq.id FROM call_queues cq 
         JOIN tenants t ON cq.tenant_id = t.id
@@ -189,7 +189,7 @@ CREATE POLICY queue_call_logs_tenant_isolation_policy ON queue_call_logs
     ));
 
 CREATE POLICY queue_statistics_tenant_isolation_policy ON queue_statistics
-    FOR ALL TO authenticated
+    FOR ALL
     USING (queue_id IN (
         SELECT cq.id FROM call_queues cq 
         JOIN tenants t ON cq.tenant_id = t.id

@@ -103,14 +103,14 @@ ALTER TABLE ring_group_call_logs ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
 CREATE POLICY ring_groups_tenant_isolation_policy ON ring_groups
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid
     ));
 
 CREATE POLICY ring_group_members_tenant_isolation_policy ON ring_group_members
-    FOR ALL TO authenticated
+    FOR ALL
     USING (ring_group_id IN (
         SELECT rg.id FROM ring_groups rg 
         JOIN tenants t ON rg.tenant_id = t.id
@@ -118,7 +118,7 @@ CREATE POLICY ring_group_members_tenant_isolation_policy ON ring_group_members
     ));
 
 CREATE POLICY ring_group_call_logs_tenant_isolation_policy ON ring_group_call_logs
-    FOR ALL TO authenticated
+    FOR ALL
     USING (ring_group_id IN (
         SELECT rg.id FROM ring_groups rg 
         JOIN tenants t ON rg.tenant_id = t.id

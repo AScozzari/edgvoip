@@ -5,7 +5,7 @@
 DO $$ 
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
-        CREATE TYPE user_role AS ENUM ('super_admin', 'admin', 'tenant_user', 'user');
+        CREATE TYPE user_role AS ENUM ('super_admin', 'tenant_admin', 'tenant_user', 'user');
     ELSE
         BEGIN
             ALTER TYPE user_role ADD VALUE IF NOT EXISTS 'user';
@@ -48,7 +48,7 @@ BEGIN
             '$2b$10$rN3qY8Zx5vZ9XqJ0vZ9XqO3qY8Zx5vZ9XqJ0vZ9XqO3qY8Zx5vZ9X', -- password: admin123
             'Demo',
             'Administrator',
-            'admin',
+            'tenant_admin',
             'active'
         )
         ON CONFLICT (email) DO NOTHING;

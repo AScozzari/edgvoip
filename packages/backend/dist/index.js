@@ -27,8 +27,9 @@ const server = (0, http_1.createServer)(app);
 exports.server = server;
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: process.env.CORS_ORIGIN || 'http://192.168.172.234:3000',
-        methods: ['GET', 'POST']
+        origin: true,
+        methods: ['GET', 'POST'],
+        credentials: true
     }
 });
 exports.io = io;
@@ -38,9 +39,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024';
 app.use(security_1.securityHeaders);
 app.use(security_1.requestId);
 app.use(security_1.securityEventLogger);
-// CORS configuration
+// CORS configuration - Allow all origins in development
 app.use((0, cors_1.default)({
-    origin: process.env.CORS_ORIGIN || 'http://192.168.172.234:3000',
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']

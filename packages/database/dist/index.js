@@ -9,7 +9,7 @@ exports.closePool = closePool;
 const pg_1 = require("pg");
 // Database connection pool
 const pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/w3_voip',
+    connectionString: process.env.DATABASE_URL || 'postgresql://edgvoip_user:edgvoip_password@192.168.172.234:5432/edgvoip',
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     max: 20,
     idleTimeoutMillis: 30000,

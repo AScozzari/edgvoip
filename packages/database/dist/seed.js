@@ -11,7 +11,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables
 dotenv_1.default.config();
 const pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/w3_voip',
+    connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/edgvoip',
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 async function seedDatabase() {
@@ -22,6 +22,14 @@ async function seedDatabase() {
         const tenantCount = await client.query('SELECT COUNT(*) FROM tenants');
         if (parseInt(tenantCount.rows[0].count) > 0) {
             console.log('⏭️  Database already seeded, skipping...');
+            // Print existing tenant IDs
+            const existingTenants = await client.query('SELECT id, name FROM tenants');
+            console.log('📋 Existing tenants:');
+            existingTenants.rows.forEach(t => console.log(`  - ${t.name}: ${t.id}`));
+            // Print existing extensions
+            const existingExtensions = await client.query('SELECT extension, display_name, tenant_id FROM extensions');
+            console.log('📋 Existing extensions:', existingExtensions.rows.length);
+            existingExtensions.rows.forEach(e => console.log(`  - ${e.extension} (${e.display_name}) - tenant: ${e.tenant_id}`));
             return;
         }
         // Create demo tenant

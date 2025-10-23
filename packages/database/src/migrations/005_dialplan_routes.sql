@@ -124,28 +124,28 @@ ALTER TABLE dialplan_contexts ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
 CREATE POLICY inbound_routes_tenant_isolation_policy ON inbound_routes
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid
     ));
 
 CREATE POLICY outbound_routes_tenant_isolation_policy ON outbound_routes
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid
     ));
 
 CREATE POLICY time_conditions_tenant_isolation_policy ON time_conditions
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid
     ));
 
 CREATE POLICY dialplan_contexts_tenant_isolation_policy ON dialplan_contexts
-    FOR ALL TO authenticated
+    FOR ALL
     USING (tenant_id IN (
         SELECT t.id FROM tenants t 
         WHERE t.id = current_setting('app.current_tenant_id')::uuid

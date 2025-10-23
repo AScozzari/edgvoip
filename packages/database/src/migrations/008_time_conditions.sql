@@ -26,4 +26,5 @@ FOR ALL
 USING (tenant_id = current_setting('app.tenant_id')::uuid);
 
 -- Trigger to update updated_at column
+DROP TRIGGER IF EXISTS update_time_conditions_updated_at ON time_conditions;
 CREATE TRIGGER update_time_conditions_updated_at BEFORE UPDATE ON time_conditions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
