@@ -1,0 +1,77 @@
+
+        CPU: 681ms
+Oct 23 18:07:23 my-vps voip-backend[406648]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:09:14 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:09:14 my-vps voip-backend[406648]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:09:14 my-vps voip-backend[406648]: ✅ Server closed
+Oct 23 18:09:14 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:09:14 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:09:14 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:09:14 my-vps voip-backend[406853]: 2025-10-23T18:09:14.986Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:09:14 my-vps voip-backend[406853]: 2025-10-23T18:09:14.991Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:09:14 my-vps voip-backend[406853]: 2025-10-23T18:09:14.992Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:09:14 my-vps voip-backend[406853]: 2025-10-23T18:09:14.993Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:09:15 my-vps voip-backend[406853]: ✅ Database health check passed
+Oct 23 18:09:15 my-vps voip-backend[406853]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 18:09:15 my-vps voip-backend[406853]: 📊 Environment: production
+Oct 23 18:09:15 my-vps voip-backend[406853]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 18:09:15 my-vps voip-backend[406853]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:10:08 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:10:08 my-vps voip-backend[406853]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:10:08 my-vps voip-backend[406853]: ✅ Server closed
+Oct 23 18:10:08 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:10:08 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:10:08 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:10:08 my-vps voip-backend[407127]: ❌ Uncaught Exception: [Error: EACCES: permission denied, open '/var/www/voip-system/packages/backend/logs/api-2025-10-23.log'] {
+Oct 23 18:10:08 my-vps voip-backend[407127]:   errno: -13,
+Oct 23 18:10:08 my-vps voip-backend[407127]:   code: 'EACCES',
+Oct 23 18:10:08 my-vps voip-backend[407127]:   syscall: 'open',
+Oct 23 18:10:08 my-vps voip-backend[407127]:   path: '/var/www/voip-system/packages/backend/logs/api-2025-10-23.log'
+Oct 23 18:10:08 my-vps voip-backend[407127]: }
+Oct 23 18:10:08 my-vps systemd[1]: voip-backend.service: Main process exited, code=exited, status=1/FAILURE
+Oct 23 18:10:08 my-vps systemd[1]: voip-backend.service: Failed with result 'exit-code'.
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+root@my-vps:/var/www/voip-system# ^C
+root@my-vps:/var/www/voip-system# # SUL SERVER:
+
+# 1. Correggi permessi cartella logs
+chown -R voip:voip /var/www/voip-system/packages/backend/logs/
+
+# 2. Riavvia backend
+systemctl restart voip-backend
+
+# 3. Aspetta 2 secondi
+sleep 2
+
+# 4. Verifica status
+systemctl status voip-backend
+
+# 5. Test API
+curl http://localhost:5000/api/health
+
+# 6. Test extension 100
+curl http://localhost:5000/api/voip/sip/extensions | grep -A5 '"extension":"100"'
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2025-10-23 18:11:02 UTC; 2s ago
+   Main PID: 407225 (node)
+      Tasks: 11 (limit: 9441)
+     Memory: 48.2M
+        CPU: 775ms
+     CGroup: /system.slice/voip-backend.service
+             └─407225 /usr/bin/node dist/index.js
+
+Oct 23 18:11:02 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:11:02 my-vps voip-backend[407225]: 2025-10-23T18:11:02.596Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:11:02 my-vps voip-backend[407225]: 2025-10-23T18:11:02.601Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:11:02 my-vps voip-backend[407225]: 2025-10-23T18:11:02.603Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:11:02 my-vps voip-backend[407225]: 2025-10-23T18:11:02.604Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:11:02 my-vps voip-backend[407225]: ✅ Database health check passed
+Oct 23 18:11:02 my-vps voip-backend[407225]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 18:11:02 my-vps voip-backend[407225]: 📊 Environment: production
+Oct 23 18:11:02 my-vps voip-backend[407225]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 18:11:02 my-vps voip-backend[407225]: 📡 Socket.IO enabled for real-time updates
+{"success":true,"data":{"status":"healthy","timestamp":"2025-10-23T18:11:04.065Z","version":"1.0.0"}}  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    84  100    84    0     0  13997      0 --:--:-- --:--:-- --:--:-- 16800
+root@my-vps:/var/www/voip-system#
