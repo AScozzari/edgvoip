@@ -1,0 +1,133 @@
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:35:30:3530"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:36:47:3647"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:37:13:3713"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:38:11:3811"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:38:26:3826"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:38:36:3836"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:39:18:3918"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 09:39:43:3943"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 12:16:25:1625"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 12:36:28:3628"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 12:36:43:3643"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 12:50:42:5042"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:16:46:1646"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:16:56:1656"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:17:13:1713"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:17:23:1723"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:17:34:1734"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:17:45:1745"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:17:52:1752"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:44:41:4441"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:49:28:4928"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:52:52:5252"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:53:30:5330"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:54:36:5436"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 17:56:30:5630"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 18:09:32:932"}
+{"data":{"host":"127.0.0.1","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 18:11:10:1110"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:02:502"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:02:502"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:02:502"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:02:502"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:26:5026"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:26:5026"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:26:5026"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:50:26:5026"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:52:13:5213"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:52:13:5213"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:52:13:5213"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 20:52:13:5213"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:03:41:341"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:03:41:341"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:03:41:341"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:03:41:341"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:22:25:2225"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:22:25:2225"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:22:25:2225"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:22:25:2225"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:24:49:2449"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:24:49:2449"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:24:49:2449"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:24:49:2449"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:45:59:4559"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:45:59:4559"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:45:59:4559"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:45:59:4559"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:54:34:5434"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:54:34:5434"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:54:34:5434"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 21:54:34:5434"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:09:50:950"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:09:50:950"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:09:50:950"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:09:50:950"}
+{"data":{"status":"disconnected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:21:58:2158"}
+{"data":{"attempt":1,"maxAttempts":5},"event":"reconnect_attempt","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:21:58:2158"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:03:223"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:14:2214"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:24:2224"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:35:2235"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:35:2235"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:35:2235"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:22:35:2235"}
+{"data":{"status":"disconnected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:24:45:2445"}
+{"data":{"attempt":1,"maxAttempts":5},"event":"reconnect_attempt","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:24:45:2445"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:24:50:2450"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:01:251"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:11:2511"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:22:2522"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:32:2532"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:43:2543"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:54:2554"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:54:2554"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:54:2554"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:25:54:2554"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:18:2818"}
+{"data":{"status":"disconnected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:18:2818"}
+{"data":{"attempt":1,"maxAttempts":5},"event":"reconnect_attempt","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:18:2818"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:23:2823"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:34:2834"}
+{"data":{"error":"connect ECONNREFUSED 127.0.0.1:8021"},"event":"connection_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:45:2845"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:55:2855"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:55:2855"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:55:2855"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:28:55:2855"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:45:18:4518"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:45:18:4518"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:45:18:4518"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:45:18:4518"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:51:16:5116"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:51:16:5116"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:51:16:5116"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:51:16:5116"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:54:01:541"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:54:01:541"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:54:01:541"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:54:01:541"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:58:44:5844"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:58:44:5844"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:58:44:5844"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 22:58:44:5844"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:01:39:139"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:01:39:139"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:01:39:139"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:01:39:139"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:10:40:1040"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:10:40:1040"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:10:40:1040"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:10:40:1040"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:15:45:1545"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:15:45:1545"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:15:45:1545"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:15:45:1545"}
+{"data":{"host":"127.0.0.1","port":8021,"status":"connected"},"event":"connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:27:21:2721"}
+{"data":{"args":"ClueCon","command":"auth"},"event":"command_sent","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:27:21:2721"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:27:21:2721"}
+{"data":{"eventName":""},"event":"event_received","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:27:21:2721"}
+{"data":{"error":"ENOENT: no such file or directory, open '/var/www/voip-system/config/freeswitch/tenant-template.xml'","tenant_id":"32af8555-5511-40d6-be35-443dcebafefb"},"event":"tenant_config_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:46:08:468"}
+{"data":{"error":"ENOENT: no such file or directory, open '/var/www/voip-system/config/freeswitch/tenant-template.xml'"},"event":"config_sync_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:46:08:468"}
+{"data":{"error":"ENOENT: no such file or directory, open '/usr/local/freeswitch/conf/domain/demo-tenant.xml'","tenant_id":"32af8555-5511-40d6-be35-443dcebafefb"},"event":"tenant_config_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:47:08:478"}
+{"data":{"error":"ENOENT: no such file or directory, open '/usr/local/freeswitch/conf/domain/demo-tenant.xml'"},"event":"config_sync_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:47:08:478"}
+{"data":{"config_path":"/usr/local/freeswitch/conf/domain/demo-tenant.xml","tenant_domain":"demo-tenant","tenant_id":"32af8555-5511-40d6-be35-443dcebafefb"},"event":"tenant_config_generated","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:47:30:4730"}
+{"data":{"config_path":"/usr/local/freeswitch/conf/directory/demo-tenant/undefined.xml","extension_id":"7cd4b73f-3f0c-4f1f-9e8b-757379e8f41f","tenant_id":"32af8555-5511-40d6-be35-443dcebafefb"},"event":"extension_config_generated","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:47:30:4730"}
+{"data":{"error":"relation \"trunks\" does not exist"},"event":"config_sync_error","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-21 23:47:30:4730"}

@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 90
+    },
+    "auditLog": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\.477ed79b45b1ed2703898e0b48e61953c5b811e4-audit.json",
+    "files": [
+        {
+            "date": 1760820119225,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\cdr-2025-10-18.log",
+            "hash": "aa65ac51ae4baee9e6e8e6cb4145b97db48eae05de4e58c0aee94e52474838e8"
+        },
+        {
+            "date": 1760832485143,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\cdr-2025-10-19.log",
+            "hash": "80a2b23d5cce056d438f295784dc5057b07b4035523a2ae51f823d4a98993c0d"
+        },
+        {
+            "date": 1760959020751,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\cdr-2025-10-20.log",
+            "hash": "2f622e186cb2d032ba78e2cee10c46c87577e572ea519d70d4eb9586ac3519bd"
+        },
+        {
+            "date": 1761032128438,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\cdr-2025-10-21.log",
+            "hash": "0191d45fa3491cf57595558d6dfa6f27cf4ec10d223e5f67a28b4c5ee46e0e8c"
+        }
+    ],
+    "hashType": "sha256"
+}

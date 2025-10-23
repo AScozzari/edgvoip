@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/var/www/voip-system/packages/backend/logs/.d32bb48a777752cb7284dcbc70ff73bc10370bc9-audit.json",
+    "files": [
+        {
+            "date": 1761066695372,
+            "name": "/var/www/voip-system/packages/backend/logs/security-2025-10-21.log",
+            "hash": "12ab68bea218bf0233ca3e2a6250fc093fb3b2ca4a56693b30d9745716ca1b12"
+        },
+        {
+            "date": 1761092099697,
+            "name": "/var/www/voip-system/packages/backend/logs/security-2025-10-22.log",
+            "hash": "5a782c98f6658658e7002ae719980af4353554daf01d90ede63a34c40494b4da"
+        },
+        {
+            "date": 1761215269282,
+            "name": "/var/www/voip-system/packages/backend/logs/security-2025-10-23.log",
+            "hash": "938288477d868696b4ec416ebae3cc59cacce184a27dfc9e5c77009718f94e3b"
+        }
+    ],
+    "hashType": "sha256"
+}

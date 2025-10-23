@@ -1,0 +1,24 @@
+{
+  "name": "@w3-voip/database",
+  "version": "1.0.0",
+  "description": "Database package for W3 VoIP System",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "migrate": "ts-node src/migrate.ts",
+    "seed": "ts-node src/seed.ts",
+    "reset": "ts-node src/reset.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.10.7",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1"
+  }
+}

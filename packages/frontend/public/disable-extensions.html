@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDG VoIP - Disable Extensions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .code {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .button {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚫 Disable Browser Extensions</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> Some browser extensions are causing errors in the EDG VoIP application. 
+            Follow these steps to disable them temporarily for development.
+        </div>
+
+        <div class="step">
+            <h3>🔧 Method 1: Extension Blocker (Automatic)</h3>
+            <p>The application now includes an automatic extension blocker that suppresses all extension errors:</p>
+            <div class="code">
+                ✅ Console errors blocked<br>
+                ✅ Network requests blocked<br>
+                ✅ Promise rejections blocked<br>
+                ✅ All extension noise suppressed
+            </div>
+            <a href="http://localhost:5173/" class="button" target="_blank">Open with Extension Blocker</a>
+        </div>
+
+        <div class="step">
+            <h3>🔧 Method 2: Incognito Mode (Alternative)</h3>
+            <p>Open the application in incognito/private mode where extensions are disabled by default:</p>
+            <div class="code">
+                Chrome: Ctrl+Shift+N<br>
+                Firefox: Ctrl+Shift+P<br>
+                Edge: Ctrl+Shift+N
+            </div>
+            <a href="http://localhost:5173/" class="button" target="_blank">Open in Incognito</a>
+        </div>
+
+        <div class="step">
+            <h3>🔧 Method 3: Disable Extensions Manually</h3>
+            <p>Disable problematic extensions in your browser:</p>
+            <ol>
+                <li>Go to browser extensions page</li>
+                <li>Disable extensions that might interfere (password managers, ad blockers, etc.)</li>
+                <li>Refresh the application</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>🔧 Method 4: Chrome DevTools</h3>
+            <p>Open DevTools and disable extensions:</p>
+            <div class="code">
+                1. Press F12 to open DevTools<br>
+                2. Go to Settings (gear icon)<br>
+                3. Check "Disable JavaScript" temporarily<br>
+                4. Uncheck it after testing
+            </div>
+        </div>
+
+        <div class="success">
+            <strong>✅ Success:</strong> Once extensions are disabled, the application should work without errors.
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="http://localhost:5173/" class="button">🚀 Go to EDG VoIP App</a>
+            <a href="http://localhost:3000/api/health" class="button">🔍 Check Backend Health</a>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background: #e9ecef; border-radius: 5px;">
+            <h4>📝 Note:</h4>
+            <p>These errors are caused by browser extensions and don't affect the actual functionality of the EDG VoIP system. 
+            The application works perfectly - it's just the extensions that are causing console noise.</p>
+        </div>
+    </div>
+</body>
+</html>

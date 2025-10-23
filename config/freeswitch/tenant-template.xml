@@ -1,0 +1,106 @@
+<!-- W3 VoIP System - Tenant Domain Template -->
+<!-- Template for creating tenant-specific FreeSWITCH configurations -->
+
+<!-- Tenant Domain Configuration -->
+<domain name="TENANT_DOMAIN" alias="false" parse="true">
+  <params>
+    <param name="dial-string" value="{presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(${dialed_user}@${dialed_domain})}"/>
+    <param name="xml-lookup" value="internal"/>
+    <param name="json-lookup" value="internal"/>
+    <param name="json-lookup-timeout" value="1000"/>
+    <param name="json-lookup-cache" value="true"/>
+    <param name="json-lookup-cache-duration" value="300"/>
+  </params>
+  
+  <!-- Tenant-specific variables -->
+  <variables>
+    <variable name="tenant_id" value="TENANT_ID"/>
+    <variable name="tenant_name" value="TENANT_NAME"/>
+    <variable name="tenant_domain" value="TENANT_DOMAIN"/>
+    <variable name="recording_enabled" value="RECORDING_ENABLED"/>
+    <variable name="recording_consent" value="RECORDING_CONSENT"/>
+    <variable name="max_concurrent_calls" value="MAX_CONCURRENT_CALLS"/>
+    <variable name="allowed_codecs" value="ALLOWED_CODECS"/>
+    <variable name="timezone" value="TIMEZONE"/>
+  </variables>
+  
+  <!-- Tenant-specific settings -->
+  <settings>
+    <param name="sip-ip" value="$${local_ip_v4}"/>
+    <param name="sip-port" value="5060"/>
+    <param name="rtp-ip" value="$${local_ip_v4}"/>
+    <param name="rtp-port-min" value="16384"/>
+    <param name="rtp-port-max" value="32768"/>
+    <param name="hold-music" value="$${hold_music}"/>
+    <param name="apply-inbound-acl" value="TENANT_ACL"/>
+    <param name="apply-register-acl" value="TENANT_ACL"/>
+    <param name="apply-proxy-acl" value="TENANT_ACL"/>
+  </settings>
+</domain>
+
+<!-- Tenant User Directory -->
+<user id="TENANT_DOMAIN">
+  <params>
+    <param name="password" value="TENANT_PASSWORD"/>
+    <param name="vm-password" value="TENANT_VM_PASSWORD"/>
+  </params>
+  
+  <variables>
+    <variable name="toll_allow" value="TENANT_TOLL_ALLOW"/>
+    <variable name="accountcode" value="TENANT_ID"/>
+    <variable name="user_context" value="TENANT_DOMAIN"/>
+    <variable name="effective_caller_id_name" value="TENANT_NAME"/>
+    <variable name="effective_caller_id_number" value="TENANT_MAIN_NUMBER"/>
+    <variable name="outbound_caller_id_name" value="TENANT_NAME"/>
+    <variable name="outbound_caller_id_number" value="TENANT_MAIN_NUMBER"/>
+    <variable name="callgroup" value="TENANT_ID"/>
+    <variable name="user_record" value="RECORDING_ENABLED"/>
+    <variable name="record_stereo" value="true"/>
+    <variable name="record_sample_rate" value="8000"/>
+    <variable name="record_channels" value="2"/>
+    <variable name="record_template" value="TENANT_RECORDING_TEMPLATE"/>
+  </variables>
+</user>
+
+<!-- Tenant Dialplan -->
+<extension name="TENANT_DOMAIN_internal">
+  <condition field="destination_number" expression="^(1[0-9]{3})$">
+    <action application="set" data="call_direction=internal"/>
+    <action application="set" data="tenant_id=TENANT_ID"/>
+    <action application="set" data="tenant_domain=TENANT_DOMAIN"/>
+    <action application="set" data="caller_extension=${caller_id_number}"/>
+    <action application="set" data="callee_extension=${destination_number}"/>
+    <action application="set" data="recording_enabled=RECORDING_ENABLED"/>
+    <action application="set" data="recording_consent=RECORDING_CONSENT"/>
+    <action application="bridge" data="user/${destination_number}@${domain_name}"/>
+    <action application="hangup" data="NORMAL_CLEARING"/>
+  </condition>
+</extension>
+
+<!-- Tenant Outbound Dialplan -->
+<extension name="TENANT_DOMAIN_outbound">
+  <condition field="destination_number" expression="^(\+?[1-9]\d{1,14})$">
+    <action application="set" data="call_direction=outbound"/>
+    <action application="set" data="tenant_id=TENANT_ID"/>
+    <action application="set" data="tenant_domain=TENANT_DOMAIN"/>
+    <action application="set" data="caller_extension=${caller_id_number}"/>
+    <action application="set" data="callee_number=${destination_number}"/>
+    <action application="set" data="recording_enabled=RECORDING_ENABLED"/>
+    <action application="set" data="recording_consent=RECORDING_CONSENT"/>
+    <action application="set" data="effective_caller_id_name=TENANT_NAME"/>
+    <action application="set" data="effective_caller_id_number=TENANT_MAIN_NUMBER"/>
+    <action application="bridge" data="sofia/gateway/TENANT_TRUNK/${destination_number}"/>
+    <action application="hangup" data="NORMAL_CLEARING"/>
+  </condition>
+</extension>
+
+<!-- Tenant ACL Configuration -->
+<list name="TENANT_ACL" default="deny">
+  <node type="allow" cidr="127.0.0.1/32"/>
+  <node type="allow" cidr="10.0.0.0/8"/>
+  <node type="allow" cidr="172.16.0.0/12"/>
+  <node type="allow" cidr="192.168.0.0/16"/>
+  <!-- Add tenant-specific IP ranges here -->
+  <node type="allow" cidr="TENANT_IP_RANGE"/>
+</list>
+

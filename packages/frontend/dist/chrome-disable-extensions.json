@@ -1,0 +1,23 @@
+{
+  "name": "EDG VoIP Development - Disable Extensions",
+  "version": "1.0",
+  "description": "Chrome configuration to disable extensions for EDG VoIP development",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*"],
+      "js": ["chrome-extension-blocker.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["chrome-extension-blocker.js"],
+      "matches": ["http://localhost:5173/*", "http://127.0.0.1:5173/*"]
+    }
+  ]
+}
