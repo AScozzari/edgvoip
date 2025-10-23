@@ -34,8 +34,9 @@ const app = express();
 const server = createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://192.168.172.234:3000',
-    methods: ['GET', 'POST']
+    origin: true,
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
@@ -47,9 +48,9 @@ app.use(securityHeaders);
 app.use(requestId);
 app.use(securityEventLogger);
 
-// CORS configuration
+// CORS configuration - Allow all origins in development
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://192.168.172.234:3000',
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
