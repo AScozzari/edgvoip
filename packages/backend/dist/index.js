@@ -51,10 +51,46 @@ app.use((0, compression_1.default)());
 // Request logging
 app.use((0, morgan_1.default)('combined'));
 app.use(logger_1.requestLogger);
-// Debug middleware removed
-// Body parsing middleware
-app.use(express_1.default.json({ limit: '10mb' }));
+// Debug middleware for login requests
+app.use((req, res, next) => {
+    if (req.path.includes('/login')) {
+        console.log('🔍 Login Request Debug:');
+        console.log('  Path:', req.path);
+        console.log('  Method:', req.method);
+        console.log('  Content-Type:', req.headers['content-type']);
+        console.log('  Headers:', JSON.stringify(req.headers, null, 2));
+    }
+    next();
+});
+// Body parsing middleware with error handling
+app.use(express_1.default.json({
+    limit: '10mb',
+    verify: (req, res, buf, encoding) => {
+        try {
+            JSON.parse(buf.toString());
+        }
+        catch (e) {
+            console.error('❌ JSON Parse Error:', e);
+            console.error('❌ Raw body:', buf.toString());
+            throw new Error('Invalid JSON');
+        }
+    }
+}));
 app.use(express_1.default.urlencoded({ extended: true, limit: '10mb' }));
+// Body parser error handler
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+        console.error('❌ Body parser error:', err.message);
+        return res.status(400).json({
+            success: false,
+            error: {
+                code: 'INVALID_JSON',
+                message: 'Invalid JSON in request body'
+            }
+        });
+    }
+    next(err);
+});
 // Input sanitization (temporarily disabled for testing)
 // app.use(sanitizeInput);
 // Content type validation (temporarily disabled for testing)

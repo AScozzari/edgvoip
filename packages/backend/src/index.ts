@@ -63,11 +63,47 @@ app.use(compression());
 app.use(morgan('combined'));
 app.use(requestLogger);
 
-// Debug middleware removed
+// Debug middleware for login requests
+app.use((req, res, next) => {
+  if (req.path.includes('/login')) {
+    console.log('🔍 Login Request Debug:');
+    console.log('  Path:', req.path);
+    console.log('  Method:', req.method);
+    console.log('  Content-Type:', req.headers['content-type']);
+    console.log('  Headers:', JSON.stringify(req.headers, null, 2));
+  }
+  next();
+});
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
+// Body parsing middleware with error handling
+app.use(express.json({ 
+  limit: '10mb',
+  verify: (req: any, res, buf, encoding) => {
+    try {
+      JSON.parse(buf.toString());
+    } catch(e) {
+      console.error('❌ JSON Parse Error:', e);
+      console.error('❌ Raw body:', buf.toString());
+      throw new Error('Invalid JSON');
+    }
+  }
+}));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Body parser error handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err instanceof SyntaxError && 'body' in err) {
+    console.error('❌ Body parser error:', err.message);
+    return res.status(400).json({
+      success: false,
+      error: {
+        code: 'INVALID_JSON',
+        message: 'Invalid JSON in request body'
+      }
+    });
+  }
+  next(err);
+});
 
 // Input sanitization (temporarily disabled for testing)
 // app.use(sanitizeInput);
