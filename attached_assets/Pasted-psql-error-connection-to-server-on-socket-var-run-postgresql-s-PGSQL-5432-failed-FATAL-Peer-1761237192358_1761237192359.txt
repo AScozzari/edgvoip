@@ -1,0 +1,401 @@
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+root@my-vps:~# ^C
+root@my-vps:~# ^C
+root@my-vps:~# # Sul server 93.93.113.13, esegui questi comandi:
+
+# 1. Trova i log del backend (PM2 o systemd)
+cd /var/www/voip-system
+pm2 logs backend --lines 100 --nostream | grep -A20 "sip-extensions"
+# OPPURE se usi systemd:
+journalctl -u voip-backend -n 100 | grep -A20 "sip-extensions"
+
+# 2. Controlla il file .env del backend per vedere le credenziali DB
+cat /var/www/voip-system/packages/backend/.env | grep -E "DATABASE|PG"
+
+# 3. Accedi al database con le credenziali giuste (leggi dal .env sopra)
+# Usa il comando corretto:
+sudo -u postgres psql voip_production
+# POI dentro psql:
+\d extensions
+SELECT COUNT(*) FROM extensions;
+SELECT * FROM tenants LIMIT 5;
+
+# 4. Controlla quale versione del codice c'è
+cat /var/www/voip-system/packages/backend/src/routes/voip.ts | head -50
+
+# 5. Controlla se ci sono errori JavaScript/TypeScript
+cd /var/www/voip-system/packages/backend
+npm run build 2>&1 | tail -50
+-bash: pm2: command not found
+DATABASE_URL=postgresql://voip_user:VoipSecure2025!@localhost:5432/voip_production
+psql (15.14 (Debian 15.14-0+deb12u1))
+Type "help" for help.
+
+voip_production=# ^C
+voip_production=# # Sul server 93.93.113.13:
+
+# 1. Accedi al database PostgreSQL correttamente (come utente postgres)
+sudo -u postgres psql -d voip_production -c "\d extensions"
+sudo -u postgres psql -d voip_production -c "SELECT id, slug, name FROM tenants LIMIT 5;"
+
+# 2. Controlla i log del backend (usa PM2 se lo stai usando)
+cd /var/www/voip-system
+pm2 logs --lines 50 | grep -A10 "sip-extensions"
+# OPPURE se usi systemd:
+# journalctl -u voip-backend -n 100 | grep -A10 "sip-extensions"
+
+# 3. Verifica il codice esistente sul server
+cat /var/www/voip-system/packages/backend/src/routes/voip.ts | head -50
+
+# 4. Controlla le variabili d'ambiente del backend
+cat /var/www/voip-system/packages/backend/.env | grep -v "SECRET\|PASSWORD"
+
+# 5. Controlla se il backend è in esecuzione
+pm2 list
+# OPPURE
+# ps aux | grep node
+voip_production'# ^C
+voip_production=# \q
+-bash: d: command not found
+-bash: syntax error near unexpected token `('
+-bash: SELECT: command not found
+import { Router } from 'express';
+import { ExtensionService } from '../services/extension.service';
+import {
+  authenticateToken,
+  requireTenant,
+  setTenantContext,
+  validatePagination,
+  handleValidationErrors,
+} from '../middleware';
+import {
+  paginatedResponse,
+  successResponse,
+  notFoundResponse,
+  asyncHandler
+} from '../utils/response';
+
+const router = Router();
+const extensionService = new ExtensionService();
+
+// Apply authentication and tenant context to all routes
+router.use(authenticateToken);
+router.use(requireTenant);
+router.use(setTenantContext);
+
+// List SIP Extensions for tenant
+router.get('/sip-extensions',
+  validatePagination,
+  handleValidationErrors,
+  asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const search = req.query.q as string;
+    const storeId = req.query.store_id as string;
+
+    const result = await extensionService.listExtensions(req.tenantId!, storeId, page, limit, search);
+
+    paginatedResponse(res, result.extensions, {
+      page,
+      limit,
+      total: result.total,
+      totalPages: result.totalPages
+    }, 'SIP Extensions retrieved successfully');
+  })
+);
+
+// Get SIP Extension by ID
+router.get('/sip-extensions/:id',
+  asyncHandler(async (req, res) => {
+    const extensionId = req.params.id;
+    const extension = await extensionService.getExtensionById(extensionId, req.tenantId);
+^C
+root@my-vps:/var/www/voip-system/packages/backend# ^C
+root@my-vps:/var/www/voip-system/packages/backend# cd \
+>
+root@my-vps:~# # Sul server 93.93.113.13:
+
+# 1. Accedi al database PostgreSQL correttamente (come utente postgres)
+sudo -u postgres psql -d voip_production -c "\d extensions"
+sudo -u postgres psql -d voip_production -c "SELECT id, slug, name FROM tenants LIMIT 5;"
+
+# 2. Controlla i log del backend (usa PM2 se lo stai usando)
+cd /var/www/voip-system
+pm2 logs --lines 50 | grep -A10 "sip-extensions"
+# OPPURE se usi systemd:
+# journalctl -u voip-backend -n 100 | grep -A10 "sip-extensions"
+
+# 3. Verifica il codice esistente sul server
+cat /var/www/voip-system/packages/backend/src/routes/voip.ts | head -50
+
+# 4. Controlla le variabili d'ambiente del backend
+cat /var/www/voip-system/packages/backend/.env | grep -v "SECRET\|PASSWORD"
+
+# 5. Controlla se il backend è in esecuzione
+pm2 list
+# OPPURE
+# ps aux | grep node
+could not change directory to "/root": Permission denied
+could not change directory to "/root": Permission denied
+                  id                  |   slug   |         name
+--------------------------------------+----------+----------------------
+ 00000000-0000-0000-0000-000000000001 | edg-voip | EdgeVoIP Super Admin
+ 32af8555-5511-40d6-be35-443dcebafefb | demo     | Demo Tenant
+(2 rows)
+
+-bash: pm2: command not found
+import { Router } from 'express';
+import { ExtensionService } from '../services/extension.service';
+import {
+  authenticateToken,
+  requireTenant,
+  setTenantContext,
+  validatePagination,
+  handleValidationErrors,
+} from '../middleware';
+import {
+  paginatedResponse,
+  successResponse,
+  notFoundResponse,
+  asyncHandler
+} from '../utils/response';
+
+const router = Router();
+const extensionService = new ExtensionService();
+
+// Apply authentication and tenant context to all routes
+router.use(authenticateToken);
+router.use(requireTenant);
+router.use(setTenantContext);
+
+// List SIP Extensions for tenant
+router.get('/sip-extensions',
+  validatePagination,
+  handleValidationErrors,
+  asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const search = req.query.q as string;
+    const storeId = req.query.store_id as string;
+
+    const result = await extensionService.listExtensions(req.tenantId!, storeId, page, limit, search);
+
+    paginatedResponse(res, result.extensions, {
+      page,
+      limit,
+      total: result.total,
+      totalPages: result.totalPages
+    }, 'SIP Extensions retrieved successfully');
+  })
+);
+
+// Get SIP Extension by ID
+router.get('/sip-extensions/:id',
+  asyncHandler(async (req, res) => {
+    const extensionId = req.params.id;
+    const extension = await extensionService.getExtensionById(extensionId, req.tenantId);
+# Database Configuration
+DATABASE_URL=postgresql://voip_user:VoipSecure2025!@localhost:5432/voip_production
+
+# JWT Configuration
+
+# Application Configuration
+NODE_ENV=production
+PORT=5000
+CORS_ORIGIN=https://edgvoip.it
+WEBHOOK_URL=https://edgvoip.it
+
+# FreeSWITCH Configuration
+FREESWITCH_HOST=127.0.0.1
+FREESWITCH_ESL_HOST=127.0.0.1
+FREESWITCH_ESL_PORT=8021
+FREESWITCH_MOCK=false
+
+# Logging
+LOG_LEVEL=debug
+
+# Backup Configuration
+BACKUP_SCHEDULE="0 2 * * *"
+BACKUP_RETENTION_DAYS=30
+
+# Email Configuration (for tenant creation notifications)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_FROM=noreply@edgvoip.it
+
+# Security
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+-bash: pm2: command not found
+root@my-vps:/var/www/voip-system# cds \
+>
+-bash: cds: command not found
+root@my-vps:/var/www/voip-system# cd \
+>
+root@my-vps:~# # 2. Verifica se ci sono extensions nel DB
+sudo -u postgres psql -d voip_production -c "SELECT COUNT(*) FROM extensions;"
+
+# 3. Verifica tenants
+sudo -u postgres psql -d voip_production -c "SELECT id, slug, name FROM tenants;"
+
+# 4. Controlla i log del backend (trova il servizio)
+systemctl status voip-backend
+# OPPURE
+ps aux | grep "node.*backend" | grep -v grep
+
+# 5. Mostra gli ultimi log
+journalctl -u voip-backend -n 100 --no-pager | tail -50
+could not change directory to "/root": Permission denied
+ count
+-------
+     1
+(1 row)
+
+could not change directory to "/root": Permission denied
+                  id                  |   slug   |         name
+--------------------------------------+----------+----------------------
+ 00000000-0000-0000-0000-000000000001 | edg-voip | EdgeVoIP Super Admin
+ 32af8555-5511-40d6-be35-443dcebafefb | demo     | Demo Tenant
+(2 rows)
+
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset:>
+     Active: active (running) since Thu 2025-10-23 16:03:40 UTC; 27min ago
+   Main PID: 397704 (node)
+      Tasks: 11 (limit: 9441)
+     Memory: 36.7M
+        CPU: 1.161s
+     CGroup: /system.slice/voip-backend.service
+             └─397704 /usr/bin/node dist/index.js
+
+Oct 23 16:27:57 my-vps voip-backend[397704]:   tenantId: '32af8555-5511-40d6-be>
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:57 my-vps voip-backend[397704]: }
+Oct 23 16:27:57 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:5>
+Oct 23 16:28:23 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:2>
+Oct 23 16:28:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:5>
+Oct 23 16:29:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:2>
+Oct 23 16:29:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:5>
+Oct 23 16:30:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:2>
+Oct 23 16:30:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:5>
+
+Oct 23 16:27:53 my-vps voip-backend[397704]: User found: admin@demo.local, role: tenant_admin
+Oct 23 16:27:53 my-vps voip-backend[397704]: Password validation result: true
+Oct 23 16:27:53 my-vps voip-backend[397704]: Login successful, creating JWT token
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "POST /api/demo/login HTTP/1.1" 200 623 "http://edgvoip.it/demo/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/cdr-activity/cdr/stats?start_date=2025-10-22T16%3A27%3A53.822Z HTTP/1.1" 200 172 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at JSON.parse (<anonymous>)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at /var/www/voip-system/packages/backend/dist/services/extension.service.js:205:32
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at Array.map (<anonymous>)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at ExtensionService.listExtensions (/var/www/voip-system/packages/backend/dist/services/extension.service.js:202:44)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at async /var/www/voip-system/packages/backend/dist/routes/voip.js:19:20
+Oct 23 16:27:53 my-vps voip-backend[397704]: Security Event: {
+Oct 23 16:27:53 my-vps voip-backend[397704]:   timestamp: '2025-10-23T16:27:53.993Z',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   requestId: '3a324a5f-7523-49dc-b0ef-8a9ae447e33a',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   method: 'GET',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   url: '/api/voip/sip-extensions?limit=1',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   ip: '127.0.0.1',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   statusCode: 500,
+Oct 23 16:27:53 my-vps voip-backend[397704]:   tenantId: '32af8555-5511-40d6-be35-443dcebafefb',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:53 my-vps voip-backend[397704]: }
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/voip/sip-extensions?limit=1 HTTP/1.1" 500 243 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:57 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at JSON.parse (<anonymous>)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at /var/www/voip-system/packages/backend/dist/services/extension.service.js:205:32
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at Array.map (<anonymous>)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at ExtensionService.listExtensions (/var/www/voip-system/packages/backend/dist/services/extension.service.js:202:44)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at async /var/www/voip-system/packages/backend/dist/routes/voip.js:19:20
+Oct 23 16:27:57 my-vps voip-backend[397704]: Security Event: {
+Oct 23 16:27:57 my-vps voip-backend[397704]:   timestamp: '2025-10-23T16:27:57.296Z',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   requestId: '4b40e975-5984-48fe-b246-2b49370b4ca5',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   method: 'GET',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   url: '/api/voip/sip-extensions?limit=100',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   ip: '127.0.0.1',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   statusCode: 500,
+Oct 23 16:27:57 my-vps voip-backend[397704]:   tenantId: '32af8555-5511-40d6-be35-443dcebafefb',
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:57 my-vps voip-backend[397704]: }
+Oct 23 16:27:57 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:57 +0000] "GET /api/voip/sip-extensions?limit=100 HTTP/1.1" 500 243 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:28:23 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:23 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:28:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:29:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:24 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:29:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:30:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:24 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:30:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:54 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/extensions" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+root@my-vps:~# # 1. Conta quante extensions esistono
+sudo -u postgres psql -d voip_production -c "SELECT COUNT(*) FROM extensions;"
+
+# 2. Controlla lo stato del servizio backend
+systemctl status voip-backend
+
+# 3. Vedi gli ultimi errori del backend
+journalctl -u voip-backend -n 200 --no-pager | grep -i "error"
+
+# 4. Controlla quale processo Node.js è attivo
+ps aux | grep node
+could not change directory to "/root": Permission denied
+ count
+-------
+     1
+(1 row)
+
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset:>
+     Active: active (running) since Thu 2025-10-23 16:03:40 UTC; 28min ago
+   Main PID: 397704 (node)
+      Tasks: 11 (limit: 9441)
+     Memory: 36.9M
+        CPU: 1.163s
+     CGroup: /system.slice/voip-backend.service
+             └─397704 /usr/bin/node dist/index.js
+
+Oct 23 16:27:57 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:57 my-vps voip-backend[397704]: }
+Oct 23 16:27:57 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:5>
+Oct 23 16:28:23 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:2>
+Oct 23 16:28:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:28:5>
+Oct 23 16:29:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:2>
+Oct 23 16:29:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:29:5>
+Oct 23 16:30:24 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:2>
+Oct 23 16:30:54 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:30:5>
+Oct 23 16:31:39 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:31:3>
+
+Oct 23 16:27:53 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+Oct 23 16:27:57 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+voip      397704  0.0  1.0 11794588 82128 ?      Ssl  16:03   0:01 /usr/bin/node dist/index.js
+root      399251  0.0  0.0   3884  1904 pts/2    S+   16:31   0:00 grep node
+root@my-vps:~# # Mostra più log con l'errore completo
+journalctl -u voip-backend -n 500 --no-pager | grep -B5 -A5 "error\|Error\|ERROR"
+Oct 23 16:27:53 my-vps voip-backend[397704]: Password validation result: true
+Oct 23 16:27:53 my-vps voip-backend[397704]: Login successful, creating JWT token
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "POST /api/demo/login HTTP/1.1" 200 623 "http://edgvoip.it/demo/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/cdr-activity/cdr/stats?start_date=2025-10-22T16%3A27%3A53.822Z HTTP/1.1" 200 172 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:53 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at JSON.parse (<anonymous>)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at /var/www/voip-system/packages/backend/dist/services/extension.service.js:205:32
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at Array.map (<anonymous>)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at ExtensionService.listExtensions (/var/www/voip-system/packages/backend/dist/services/extension.service.js:202:44)
+Oct 23 16:27:53 my-vps voip-backend[397704]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+--
+Oct 23 16:27:53 my-vps voip-backend[397704]:   statusCode: 500,
+Oct 23 16:27:53 my-vps voip-backend[397704]:   tenantId: '32af8555-5511-40d6-be35-443dcebafefb',
+Oct 23 16:27:53 my-vps voip-backend[397704]:   userId: undefined
+Oct 23 16:27:53 my-vps voip-backend[397704]: }
+Oct 23 16:27:53 my-vps voip-backend[397704]: 127.0.0.1 - - [23/Oct/2025:16:27:53 +0000] "GET /api/voip/sip-extensions?limit=1 HTTP/1.1" 500 243 "http://edgvoip.it/demo/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:27:57 my-vps voip-backend[397704]: Error: SyntaxError: "[object Object]" is not valid JSON
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at JSON.parse (<anonymous>)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at /var/www/voip-system/packages/backend/dist/services/extension.service.js:205:32
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at Array.map (<anonymous>)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at ExtensionService.listExtensions (/var/www/voip-system/packages/backend/dist/services/extension.service.js:202:44)
+Oct 23 16:27:57 my-vps voip-backend[397704]:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+root@my-vps:~#

@@ -50,7 +50,7 @@ class ExtensionService {
             return {
                 ...extension,
                 password: extensionData.password, // Return original password for response
-                settings: JSON.parse(extension.settings)
+                settings: typeof extension.settings === 'string' ? JSON.parse(extension.settings) : extension.settings
             };
         });
     }
@@ -71,7 +71,7 @@ class ExtensionService {
             const extension = result.rows[0];
             return {
                 ...extension,
-                settings: JSON.parse(extension.settings)
+                settings: typeof extension.settings === 'string' ? JSON.parse(extension.settings) : extension.settings
             };
         }
         finally {
@@ -89,7 +89,7 @@ class ExtensionService {
             const ext = result.rows[0];
             return {
                 ...ext,
-                settings: JSON.parse(ext.settings)
+                settings: typeof ext.settings === 'string' ? JSON.parse(ext.settings) : ext.settings
             };
         }
         finally {
@@ -157,7 +157,7 @@ class ExtensionService {
             return {
                 ...extension,
                 password: updates.password || '[HIDDEN]', // Return updated password or hidden
-                settings: JSON.parse(extension.settings)
+                settings: typeof extension.settings === 'string' ? JSON.parse(extension.settings) : extension.settings
             };
         });
     }
@@ -202,7 +202,7 @@ class ExtensionService {
             const extensions = result.rows.map(row => ({
                 ...row,
                 password: '[HIDDEN]', // Hide passwords in list
-                settings: JSON.parse(row.settings)
+                settings: typeof row.settings === 'string' ? JSON.parse(row.settings) : row.settings
             }));
             return {
                 extensions,
@@ -230,7 +230,7 @@ class ExtensionService {
             return {
                 ...ext,
                 password: '[HIDDEN]',
-                settings: JSON.parse(ext.settings)
+                settings: typeof ext.settings === 'string' ? JSON.parse(ext.settings) : ext.settings
             };
         }
         finally {
