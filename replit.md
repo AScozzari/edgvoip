@@ -50,6 +50,28 @@ Demo credentials are shown on the login page.
 
 ## Recent Changes (October 23, 2025)
 
+### Production Fixes (LATEST - Ready for Deploy)
+1. **CRITICAL FIX**: JSON.parse error for PostgreSQL JSONB fields
+   - **Issue**: PostgreSQL JSONB returns objects in production but strings in development
+   - **File**: `packages/backend/src/services/extension.service.ts`
+   - **Solution**: Type check before parsing: `typeof row.settings === 'string' ? JSON.parse(row.settings) : row.settings`
+   - **Occurrences**: 6 locations fixed
+   - **Impact**: Extensions now visible in frontend after fix
+
+2. **Database Connection Timeout Fix**
+   - **File**: `packages/database/src/index.ts`
+   - **Changes**:
+     - `connectionTimeoutMillis`: 2000ms → 10000ms (10 seconds)
+     - Added `keepAlive: true` for persistent connections
+     - Added `keepAliveInitialDelayMillis: 10000`
+   - **Reason**: Prevent timeout errors on network connections to production database
+
+3. **Deployment Workflow Established**
+   - **Strategy**: Git-based deployment (Replit → Git → Production Server)
+   - **Server**: 93.93.113.13
+   - **Document**: See `DEPLOYMENT.md` for full procedure
+   - **Critical Rule**: Never modify files directly on production server
+
 ### Initial Replit Setup
 1. Installed all monorepo dependencies
 2. Created PostgreSQL database using Replit's Neon integration
