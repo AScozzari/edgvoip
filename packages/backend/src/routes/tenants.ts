@@ -55,10 +55,21 @@ router.post('/', asyncHandler(async (req: AuthRequest, res) => {
 
   const tenantData = validationResult.data;
   
+  // Determine if this is a super admin tenant
+  const isSuperAdmin = tenantData.slug === 'edg-voip' || 
+                       tenantData.admin_user?.role === 'super_admin';
+  
   // Auto-generate sip_domain if not provided
   if (!tenantData.sip_domain) {
-    tenantData.sip_domain = tenantData.slug + '.edgvoip.it';
-    console.log('Auto-generated SIP domain: ' + tenantData.sip_domain);
+    if (isSuperAdmin) {
+      // Super admin tenants don't need SIP domain (they only manage other tenants)
+      tenantData.sip_domain = null;
+      console.log('Super admin tenant - no SIP domain needed');
+    } else {
+      // Regular tenants get auto-generated SIP domain
+      tenantData.sip_domain = tenantData.slug + '.edgvoip.it';
+      console.log('Auto-generated SIP domain: ' + tenantData.sip_domain);
+    }
   }
   
   const tenant = await tenantService.createTenantWithCompanies(tenantData);

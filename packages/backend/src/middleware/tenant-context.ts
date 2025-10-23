@@ -79,11 +79,11 @@ export function generateSipDomain(tenantName: string): string {
     .toLowerCase()
     .trim()
     .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '')}.edgvoip.local`;
+    .replace(/[^a-z0-9-]/g, '')}.edgvoip.it`;
 }
 
 // Helper function to validate SIP domain format
 export function validateSipDomain(sipDomain: string): boolean {
-  const regex = /^[a-z0-9-]+\.edgvoip\.local$/;
+  const regex = /^[a-z0-9-]+\.edgvoip\.it$/;
   return regex.test(sipDomain) && sipDomain.length <= 253;
 }

@@ -10,7 +10,7 @@ export interface Tenant {
   id: string;
   name: string;
   domain: string;
-  sip_domain: string;
+  sip_domain: string | null;  // NULL for super admin tenants
   status: 'active' | 'suspended' | 'pending';
   settings: {
     max_extensions: number;
@@ -288,15 +288,25 @@ export class TenantService {
   }
 
   // Validate tenant domain uniqueness
-  async validateDomainUniqueness(domain: string, sipDomain: string, excludeTenantId?: string): Promise<boolean> {
+  async validateDomainUniqueness(domain: string, sipDomain: string | null, excludeTenantId?: string): Promise<boolean> {
     const client = await getClient();
     
     try {
-      let query = 'SELECT id FROM tenants WHERE domain = $1 OR sip_domain = $2';
-      let params: any[] = [domain, sipDomain];
+      let query: string;
+      let params: any[];
+      
+      if (sipDomain === null) {
+        // For super admin tenants (no SIP domain), only check domain uniqueness
+        query = 'SELECT id FROM tenants WHERE domain = $1';
+        params = [domain];
+      } else {
+        // For regular tenants, check both domain and sip_domain uniqueness
+        query = 'SELECT id FROM tenants WHERE domain = $1 OR sip_domain = $2';
+        params = [domain, sipDomain];
+      }
       
       if (excludeTenantId) {
-        query += ' AND id != $3';
+        query += ` AND id != $${params.length + 1}`;
         params.push(excludeTenantId);
       }
 
