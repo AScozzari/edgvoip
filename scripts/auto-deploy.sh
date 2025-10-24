@@ -8,7 +8,7 @@ set -e
 # Configurazione - IP del server
 SERVER_IP="93.93.113.13"
 SERVER_USER="root"
-SERVER_PASSWORD="80gjapA7"
+SERVER_PASSWORD="B66v6My6"
 
 # Colori per output
 GREEN='\033[0;32m'

@@ -8,7 +8,7 @@ set -e
 # Configurazione server
 SERVER_IP="YOUR_SERVER_IP"  # Sostituire con l'IP del server
 SERVER_USER="root"
-SERVER_PASSWORD="80gjapA7"
+SERVER_PASSWORD="B66v6My6"
 LOCAL_PROJECT_PATH="."
 
 # Colori per output
