@@ -54,6 +54,10 @@ externalPort = 3001
 localPort = 5000
 externalPort = 80
 
+[[ports]]
+localPort = 44341
+externalPort = 3000
+
 [deployment]
 deploymentTarget = "vm"
 run = ["bash", "-c", "cd packages/backend && npm run start & cd packages/frontend && npx vite preview --port 5000 --host 0.0.0.0"]
