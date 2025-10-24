@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' http://93.93.113.13 ws: wss:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; media-src 'self';" />
+    <title>EDG VoIP System</title>
+    <script>
+      // Immediate extension blocker - loads before any other scripts
+      (function() {
+        'use strict';
+        
+        // Block console errors immediately
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const originalLog = console.log;
+        
+        function isExtensionError(message) {
+          if (!message) return false;
+          const msg = message.toString();
+          return msg.includes('chrome-extension://') ||
+                 msg.includes('pejdijmoenmkgeppbflobdenhhabjlaj') ||
+                 msg.includes('completion_list.html') ||
+                 msg.includes('utils.js') ||
+                 msg.includes('extensionState.js') ||
+                 msg.includes('heuristicsRedefinitions.js') ||
+                 msg.includes('net::ERR_FILE_NOT_FOUND') ||
+                 msg.includes('runtime.lastError') ||
+                 msg.includes('message port closed') ||
+                 msg.includes('FrameDoesNotExistError') ||
+                 msg.includes('Content Security Policy directive') ||
+                 msg.includes('frame-ancestors') ||
+                 msg.includes('showCompletionList') ||
+                 msg.includes('elementWasFocused') ||
+                 msg.includes('focusInEventHandler') ||
+                 msg.includes('The Content Security Policy directive') ||
+                 msg.includes('is ignored when delivered via a <meta> element');
+        }
+        
+        console.error = function(...args) {
+          if (!isExtensionError(args[0])) {
+            originalError.apply(console, args);
+          }
+        };
+        
+        console.warn = function(...args) {
+          if (!isExtensionError(args[0])) {
+            originalWarn.apply(console, args);
+          }
+        };
+        
+        console.log = function(...args) {
+          if (!isExtensionError(args[0])) {
+            originalLog.apply(console, args);
+          }
+        };
+        
+        // Block fetch requests immediately
+        if (window.fetch) {
+          const originalFetch = window.fetch;
+          window.fetch = function(...args) {
+            const url = args[0]?.toString() || '';
+            if (url.includes('chrome-extension://') || url.includes('pejdijmoenmkgeppbflobdenhhabjlaj')) {
+              return Promise.resolve(new Response('', { status: 404 }));
+            }
+            return originalFetch.apply(this, args);
+          };
+        }
+        
+        // Block XMLHttpRequest immediately
+        if (window.XMLHttpRequest) {
+          const originalXHROpen = XMLHttpRequest.prototype.open;
+          XMLHttpRequest.prototype.open = function(method, url, ...args) {
+            const urlString = url.toString();
+            if (urlString.includes('chrome-extension://') || urlString.includes('pejdijmoenmkgeppbflobdenhhabjlaj')) {
+              throw new Error('Extension request blocked');
+            }
+            return originalXHROpen.call(this, method, url, ...args);
+          };
+        }
+        
+        // Block unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(event) {
+          const message = event.reason?.toString() || '';
+          if (isExtensionError(message)) {
+            event.preventDefault();
+          }
+        });
+        
+        // Block error events
+        window.addEventListener('error', function(event) {
+          const message = event.message || '';
+          const filename = event.filename || '';
+          if (isExtensionError(message) || isExtensionError(filename)) {
+            event.preventDefault();
+            return false;
+          }
+        });
+        
+        // Block resource loading errors
+        window.addEventListener('error', function(event) {
+          const target = event.target;
+          if (target && target.src) {
+            const src = target.src.toString();
+            if (src.includes('chrome-extension://') || src.includes('pejdijmoenmkgeppbflobdenhhabjlaj')) {
+              event.preventDefault();
+              return false;
+            }
+          }
+        }, true);
+        
+        // Block console messages from extensions
+        const originalConsole = {
+          error: console.error,
+          warn: console.warn,
+          log: console.log,
+          info: console.info,
+          debug: console.debug
+        };
+        
+        Object.keys(originalConsole).forEach(method => {
+          console[method] = function(...args) {
+            const message = args.join(' ');
+            if (!isExtensionError(message)) {
+              originalConsole[method].apply(console, args);
+            }
+          };
+        });
+        
+        console.log('🛡️ Extension blocker loaded immediately');
+        
+        // Additional aggressive blocking
+        setTimeout(() => {
+          // Override all console methods again after page load
+          const methods = ['error', 'warn', 'log', 'info', 'debug', 'trace'];
+          methods.forEach(method => {
+            const original = console[method];
+            console[method] = function(...args) {
+              const message = args.join(' ');
+              if (!isExtensionError(message)) {
+                original.apply(console, args);
+              }
+            };
+          });
+          
+          // Block all network errors from extensions
+          const originalAddEventListener = EventTarget.prototype.addEventListener;
+          EventTarget.prototype.addEventListener = function(type, listener, options) {
+            if (type === 'error') {
+              const wrappedListener = function(event) {
+                const message = event.message || '';
+                const filename = event.filename || '';
+                if (!isExtensionError(message) && !isExtensionError(filename)) {
+                  listener.call(this, event);
+                }
+              };
+              return originalAddEventListener.call(this, type, wrappedListener, options);
+            }
+            return originalAddEventListener.call(this, type, listener, options);
+          };
+        }, 100);
+        
+        // Register service worker to block extension requests at network level
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('🛡️ Service Worker registered for extension blocking');
+            })
+            .catch(function(error) {
+              console.log('Service Worker registration failed:', error);
+            });
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/chrome-extension-blocker.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

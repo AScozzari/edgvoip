@@ -1,30 +1,3 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Search, 
-  Trash2, 
-  Network,
-  Activity,
-  Save,
-  X,
-  RefreshCw,
-  Eye,
-  EyeOff,
-  CheckCircle,
-  XCircle,
-  AlertCircle,
-  Phone,
-  Clock
-} from 'lucide-react';
-import { apiClient } from '@/lib/api';
-
-export default function SipTrunks() {
   const [trunks, setTrunks] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'view'>('create');
@@ -43,7 +16,6 @@ export default function SipTrunks() {
     loadTrunks();
     loadExtensions();
   }, []);
-
   const loadTrunks = async () => {
     setLoading(true);
     try {

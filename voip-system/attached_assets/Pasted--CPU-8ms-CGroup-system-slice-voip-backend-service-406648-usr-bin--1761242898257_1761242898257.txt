@@ -1,0 +1,91 @@
+
+        CPU: 8ms
+     CGroup: /system.slice/voip-backend.service
+             └─406648 /usr/bin/node dist/index.js
+
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:57:56 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:57:56 my-vps voip-backend[406445]: 2025-10-23T17:57:56.401Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:57:56 my-vps voip-backend[406445]: ❌ Uncaught Exception: Error: connect ECONNREFUSED 127.0.0.1:8021
+Oct 23 17:57:56 my-vps voip-backend[406445]:     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+Oct 23 17:57:56 my-vps voip-backend[406445]:   errno: -111,
+Oct 23 17:57:56 my-vps voip-backend[406445]:   code: 'ECONNREFUSED',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   syscall: 'connect',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   address: '127.0.0.1',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   port: 8021
+Oct 23 17:57:56 my-vps voip-backend[406445]: }
+Oct 23 17:57:56 my-vps systemd[1]: voip-backend.service: Main process exited, code=exited, status=1/FAILURE
+Oct 23 17:57:56 my-vps systemd[1]: voip-backend.service: Failed with result 'exit-code'.
+Oct 23 17:58:06 my-vps systemd[1]: voip-backend.service: Scheduled restart job, restart counter is at 84.
+Oct 23 17:58:06 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:58:06 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.978Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.983Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.985Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.985Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:07 my-vps voip-backend[406480]: ✅ Database health check passed
+Oct 23 17:58:07 my-vps voip-backend[406480]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 17:58:07 my-vps voip-backend[406480]: 📊 Environment: production
+Oct 23 17:58:07 my-vps voip-backend[406480]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 17:58:07 my-vps voip-backend[406480]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:07:23 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:07:23 my-vps voip-backend[406480]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:07:23 my-vps voip-backend[406480]: ✅ Server closed
+Oct 23 18:07:23 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:07:23 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+curl: (7) Failed to connect to localhost port 3001 after 0 ms: Couldn't connect to server
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+root@my-vps:~# ^C
+root@my-vps:~# # 1. Trova dove è il servizio voip-backend
+systemctl cat voip-backend
+
+# 2. Trova il file di configurazione
+cat /etc/systemd/system/voip-backend.service
+
+# 3. Trova tutti i file package.json (directory del progetto)
+find /root -name "package.json" -type f 2>/dev/null | grep -v node_modules
+
+# 4. Oppure cerca directory con "voip" nel nome
+ls -la /root/ | grep -i voip
+# /etc/systemd/system/voip-backend.service
+[Unit]
+Description=EDG VoIP System Backend
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=simple
+User=voip
+Group=voip
+WorkingDirectory=/var/www/voip-system/packages/backend
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/voip-system/.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=voip-backend
+
+[Install]
+WantedBy=multi-user.target
+[Unit]
+Description=EDG VoIP System Backend
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=simple
+User=voip
+Group=voip
+WorkingDirectory=/var/www/voip-system/packages/backend
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/voip-system/.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=voip-backend
+
+[Install]
+WantedBy=multi-user.

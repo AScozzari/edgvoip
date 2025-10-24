@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\.404b36b2aad4440641d587fc28a1576b4714e34d-audit.json",
+    "files": [
+        {
+            "date": 1760820119202,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\error-2025-10-18.log",
+            "hash": "f1b7ac45b1da917cd30e5494a60d23774c65216b8fc5ba8f75a08b4de101fd3e"
+        },
+        {
+            "date": 1760832485098,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\error-2025-10-19.log",
+            "hash": "1a0e9757f4d8b1e44191a2d1881651e5ee83e992d62f3c8bd23b5007ad0337c6"
+        },
+        {
+            "date": 1760959020732,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\error-2025-10-20.log",
+            "hash": "03859891655c33f6ac5e65518ff338e6d49a0c3299cd83f08adb5920207ab23d"
+        },
+        {
+            "date": 1761032128415,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\error-2025-10-21.log",
+            "hash": "7f84283f71a5601c4a282da17a12d563a8fd17af9323848dcae1c5c61045324a"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,37 @@
+Oct 23 17:14:38 my-vps systemd[1]: freeswitch.service: Start request repeated too quickly.
+Oct 23 17:14:38 my-vps systemd[1]: freeswitch.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░
+░░ The unit freeswitch.service has entered the 'failed' state with result 'exit-code'.
+Oct 23 17:14:38 my-vps systemd[1]: Failed to start freeswitch.service - FreeSWITCH open source softswitch.
+░░ Subject: A start job for unit freeswitch.service has failed
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░
+░░ A start job for unit freeswitch.service has finished with a failure.
+░░
+░░ The job identifier is 159866 and the job result is failed.
+× freeswitch.service - FreeSWITCH open source softswitch
+     Loaded: loaded (/etc/systemd/system/freeswitch.service; enabled; preset: enabled)
+    Drop-In: /etc/systemd/system/freeswitch.service.d
+             └─override.conf
+     Active: failed (Result: exit-code) since Thu 2025-10-23 17:14:38 UTC; 47s ago
+    Process: 399877 ExecStart=/usr/local/freeswitch/bin/freeswitch -ncwait -nonat (code=exited, status=1/FAILURE)
+        CPU: 20ms
+
+Oct 23 17:14:38 my-vps systemd[1]: freeswitch.service: Scheduled restart job, restart counter is at 5.
+Oct 23 17:14:38 my-vps systemd[1]: Stopped freeswitch.service - FreeSWITCH open source softswitch.
+Oct 23 17:14:38 my-vps systemd[1]: freeswitch.service: Start request repeated too quickly.
+Oct 23 17:14:38 my-vps systemd[1]: freeswitch.service: Failed with result 'exit-code'.
+Oct 23 17:14:38 my-vps systemd[1]: Failed to start freeswitch.service - FreeSWITCH open source softswitch.
+Job for freeswitch.service failed because the control process exited with error code.
+See "systemctl status freeswitch.service" and "journalctl -xeu freeswitch.service" for details.
+Unknown option '-syntax', see '/usr/local/freeswitch/bin/freeswitch -help' for a list of valid options
+root      398757  0.0  0.0   4352  2980 pts/1    Ss+  16:20   0:00 bash -c echo '=== MONITORAGGIO REGISTRAZIONI SIP IN TEMPO REALE ===' ; echo 'Premi CTRL+C per interrompere' ; echo '' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@\|401\|200 OK\|sofia_reg'
+root      398758  0.0  0.0   2944   856 pts/1    S+   16:20   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399304  0.0  0.0   4352  3220 pts/3    Ss+  16:34   0:00 bash -c echo '=== Test registrazione SIP finale ===' ; echo 'Per completare il test, configura Linphone sul tuo PC con:' ; echo '' ; echo 'Username: 100' ; echo 'Password: test123456' ; echo 'Domain: demo.edgvoip.it' ; echo 'SIP Server: 93.93.113.13' ; echo 'Transport: UDP' ; echo 'Port: 5060' ; echo '' ; echo '=== Status attuale sistema ===' ; /usr/local/freeswitch/bin/fs_cli -x 'sofia status' 2>&1 | grep -E 'internal|external|RUNNING' ; echo '' ; echo 'FreeSWITCH è pronto per ricevere la tua registrazione!' ; echo 'Monitoro i log in attesa...' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@demo\|200 OK'
+root      399308  0.0  0.0   2944   892 pts/3    S+   16:34   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399947  0.0  0.0   3884  1864 pts/2    S+   17:15   0:00 grep freeswitch
+root@my-vps:~#

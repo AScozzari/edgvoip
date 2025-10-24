@@ -1,0 +1,56 @@
+-vps:~# ^C
+root@my-vps:~# # SUL SERVER 93.93.113.13:
+
+# 1. Testa il route XML corretto
+curl -X POST http://localhost:5000/api/freeswitch/xml \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "section=directory&domain=demo.edgvoip.it&user=100"
+
+# 2. Verifica se FreeSWITCH è installato
+which freeswitch
+dpkg -l | grep freeswitch
+
+# 3. Controlla se qualcosa è in ascolto sulle porte SIP
+netstat -tulpn | grep -E "5060|5080"
+
+# 4. Verifica i processi attivi
+ps aux | grep freeswitch
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="freeswitch/xml">
+  <section name="directory">
+    <domain name="demo.edgvoip.it">
+      <params>
+        <param name="dial-string" value="{presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(${dialed_user}@${dialed_domain})}"/>
+      </params>
+      <groups>
+        <group name="default">
+          <users>
+            <user id="100">
+              <params>
+                <param name="password" value="test123456"/>
+                <param name="vm-password" value="100"/>
+              </params>
+              <variables>
+                <variable name="tenant_id" value="32af8555-5511-40d6-be35-443dcebafefb"/>
+                <variable name="tenant_slug" value="demo"/>
+                <variable name="toll_allow" value="domestic,international,local"/>
+                <variable name="accountcode" value="100"/>
+                <variable name="user_context" value="demo"/>
+                <variable name="effective_caller_id_name" value="Extension 100"/>
+                <variable name="effective_caller_id_number" value="100"/>
+                <variable name="callgroup" value="32af8555-5511-40d6-be35-443dcebafefb"/>
+              </variables>
+            </user>
+          </users>
+        </group>
+      </groups>
+    </domain>
+  </section>
+</document>-bash: netstat: command not found
+root      390815  0.7  1.1 2314472 94804 ?       S<Ll 10:43   2:50 /usr/local/freeswitch/bin/freeswitch -nonat -c
+root      398757  0.0  0.0   4352  2980 pts/1    Ss+  16:20   0:00 bash -c echo '=== MONITORAGGIO REGISTRAZIONI SIP IN TEMPO REALE ===' ; echo 'Premi CTRL+C per interrompere' ; echo '' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@\|401\|200 OK\|sofia_reg'
+root      398758  0.0  0.0   2944   856 pts/1    S+   16:20   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399304  0.0  0.0   4352  3220 pts/3    Ss+  16:34   0:00 bash -c echo '=== Test registrazione SIP finale ===' ; echo 'Per completare il test, configura Linphone sul tuo PC con:' ; echo '' ; echo 'Username: 100' ; echo 'Password: test123456' ; echo 'Domain: demo.edgvoip.it' ; echo 'SIP Server: 93.93.113.13' ; echo 'Transport: UDP' ; echo 'Port: 5060' ; echo '' ; echo '=== Status attuale sistema ===' ; /usr/local/freeswitch/bin/fs_cli -x 'sofia status' 2>&1 | grep -E 'internal|external|RUNNING' ; echo '' ; echo 'FreeSWITCH è pronto per ricevere la tua registrazione!' ; echo 'Monitoro i log in attesa...' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@demo\|200 OK'
+root      399308  0.0  0.0   2944   892 pts/3    S+   16:34   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399537  0.0  0.0   3884  1892 pts/2    S+   16:44   0:00 grep freeswitch
+root@my-vps:~#

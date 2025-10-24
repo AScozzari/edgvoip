@@ -1,0 +1,59 @@
+~# # SUL SERVER 93.93.113.13:
+
+# 1. Verifica la configurazione xml_curl (percorso corretto)
+cat /usr/local/freeswitch/conf/autoload_configs/xml_curl.conf
+
+# 2. Se non esiste, crealo
+cat > /usr/local/freeswitch/conf/autoload_configs/xml_curl.conf << 'EOF'
+<configuration name="xml_curl.conf" description="cURL XML Gateway">
+  <bindings>
+    <binding name="directory">
+      <param name="gateway-url" value="http://127.0.0.1:5000/api/freeswitch/xml" bindings="directory"/>
+      <param name="gateway-credentials" value="user:pass"/>
+      <param name="disable-100-continue" value="true"/>
+      <param name="method" value="POST"/>
+    </binding>
+    <binding name="dialplan">
+      <param name="gateway-url" value="http://127.0.0.1:5000/api/freeswitch/xml" bindings="dialplan"/>
+      <param name="disable-100-continue" value="true"/>
+      <param name="method" value="POST"/>
+    </binding>
+  </bindings>
+</configuration>
+EOF
+
+# 3. Verifica che il modulo xml_curl sia caricato
+/usr/local/freeswitch/bin/fs_cli -x "module_exists mod_xml_curl"
+
+# 4. Se non è caricato, caricalo
+/usr/local/freeswitch/bin/fs_cli -x "load mod_xml_curl"
+
+# 5. Ricarica la configurazione
+/usr/local/freeswitch/bin/fs_cli -x "reloadxml"
+
+# 6. Monitora i log per vedere se arrivano richieste dal backend
+tail -f /usr/local/freeswitch/log/freeswitch.log | grep -i "xml_curl\|demo.edgvoip\|100"
+<configuration name= xml_curl.conf description=cURL XML Gateway>
+  <bindings>
+    <binding name=directory>
+      <param name=gateway-url value=http://127.0.0.1:5000/api/freeswitch/xml/>
+      <param name=method value=post/>
+      <param name=timeout value=10/>
+    </binding>
+    <binding name=dialplan>
+      <param name=gateway-url value=http://127.0.0.1:5000/api/freeswitch/xml/>
+      <param name=method value=post/>
+      <param name=timeout value=10/>
+    </binding>
+  </bindings>
+</configuration>
+true
++OK Reloading XML
+-ERR [Module already loaded]
+
++OK [Success]
+
+2025-10-23 16:45:15.234917 99.77% [WARNING] switch_loadable_module.c:1824 Module mod_xml_curl Already Loaded!
+nta.c:11001 outgoing_answer_a() nta: sip.messagenet.it. IN A 109.233.129.13
+nta.c:1369 set_timeout() nta: timer shortened to 1000 ms
+

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/runner/workspace/packages/backend/logs/.e77cbbcbd656b1402d683cdb69a72648a08eee55-audit.json",
+    "files": [
+        {
+            "date": 1761235487869,
+            "name": "/home/runner/workspace/packages/backend/logs/freeswitch-2025-10-23.log",
+            "hash": "771aa339810fefe0283d89d51d74a0e5dd283e3264428259e9fa84015313576a"
+        }
+    ],
+    "hashType": "sha256"
+}

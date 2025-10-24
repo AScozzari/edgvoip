@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/var/www/voip-system/packages/backend/logs/.f755aeaba0ef5fb14c2127a8567da80741252961-audit.json",
+    "files": [
+        {
+            "date": 1761066695378,
+            "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-21.log",
+            "hash": "7e105aa0ee4fc322e25f62593376498ea2d8fa8029576ae2877bb4d592ac5bf6"
+        },
+        {
+            "date": 1761092099703,
+            "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-22.log",
+            "hash": "4376c45fb060d23845fd45bde4757832c0977e020393165e25abef366c77c307"
+        },
+        {
+            "date": 1761215253972,
+            "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-23.log",
+            "hash": "92dad6bd5cfe407d2b392eec1c3f18cc409923eb8fcd196a358485a8972d8f5d"
+        },
+        {
+            "date": 1761283010930,
+            "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-24.log",
+            "hash": "48c3444518d77d5a51f19b7e63f14532da074c9efd1868ff8cbad9432241c6f3"
+        }
+    ],
+    "hashType": "sha256"
+}

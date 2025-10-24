@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/home/runner/workspace/packages/backend/logs/.1883d451874a8805310a60ea5e130781c5f9c5f2-audit.json",
+    "files": [
+        {
+            "date": 1761235487861,
+            "name": "/home/runner/workspace/packages/backend/logs/security-2025-10-23.log",
+            "hash": "6435f10e5b6915d78b252ae7b4f0da16ad06ea3e2428489b8f5de38bf71fe4d8"
+        }
+    ],
+    "hashType": "sha256"
+}

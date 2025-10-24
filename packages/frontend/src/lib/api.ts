@@ -483,6 +483,42 @@ class ApiClient {
     });
   }
 
+  // Users
+  async getUsers() {
+    return this.request('/users');
+  }
+
+  async createUser(data: {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    role: 'tenant_admin' | 'agent' | 'user';
+  }) {
+    return this.request('/users', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateUser(id: string, data: Partial<{
+    first_name: string;
+    last_name: string;
+    role: 'tenant_admin' | 'agent' | 'user';
+    status: 'active' | 'inactive' | 'suspended';
+  }>) {
+    return this.request(`/users/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteUser(id: string) {
+    return this.request(`/users/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // CDR
   async getCDR(params?: {
     page?: number;

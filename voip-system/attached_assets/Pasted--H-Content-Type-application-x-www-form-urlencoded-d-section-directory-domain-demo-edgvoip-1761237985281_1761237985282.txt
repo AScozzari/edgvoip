@@ -1,0 +1,178 @@
+ -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "section=directory&domain=demo.edgvoip.it&user=100"
+
+# 2. Verifica se FreeSWITCH è installato
+which freeswitch
+dpkg -l | grep freeswitch
+
+# 3. Controlla se qualcosa è in ascolto sulle porte SIP
+netstat -tulpn | grep -E "5060|5080"
+
+# 4. Verifica i processi attivi
+ps aux | grep freeswitch
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="freeswitch/xml">
+  <section name="directory">
+    <domain name="demo.edgvoip.it">
+      <params>
+        <param name="dial-string" value="{presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(${dialed_user}@${dialed_domain})}"/>
+      </params>
+      <groups>
+        <group name="default">
+          <users>
+            <user id="100">
+              <params>
+                <param name="password" value="test123456"/>
+                <param name="vm-password" value="100"/>
+              </params>
+              <variables>
+                <variable name="tenant_id" value="32af8555-5511-40d6-be35-443dcebafefb"/>
+                <variable name="tenant_slug" value="demo"/>
+                <variable name="toll_allow" value="domestic,international,local"/>
+                <variable name="accountcode" value="100"/>
+                <variable name="user_context" value="demo"/>
+                <variable name="effective_caller_id_name" value="Extension 100"/>
+                <variable name="effective_caller_id_number" value="100"/>
+                <variable name="callgroup" value="32af8555-5511-40d6-be35-443dcebafefb"/>
+              </variables>
+            </user>
+          </users>
+        </group>
+      </groups>
+    </domain>
+  </section>
+</document>-bash: netstat: command not found
+root      390815  0.7  1.1 2314472 94804 ?       S<Ll 10:43   2:50 /usr/local/freeswitch/bin/freeswitch -nonat -c
+root      398757  0.0  0.0   4352  2980 pts/1    Ss+  16:20   0:00 bash -c echo '=== MONITORAGGIO REGISTRAZIONI SIP IN TEMPO REALE ===' ; echo 'Premi CTRL+C per interrompere' ; echo '' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@\|401\|200 OK\|sofia_reg'
+root      398758  0.0  0.0   2944   856 pts/1    S+   16:20   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399304  0.0  0.0   4352  3220 pts/3    Ss+  16:34   0:00 bash -c echo '=== Test registrazione SIP finale ===' ; echo 'Per completare il test, configura Linphone sul tuo PC con:' ; echo '' ; echo 'Username: 100' ; echo 'Password: test123456' ; echo 'Domain: demo.edgvoip.it' ; echo 'SIP Server: 93.93.113.13' ; echo 'Transport: UDP' ; echo 'Port: 5060' ; echo '' ; echo '=== Status attuale sistema ===' ; /usr/local/freeswitch/bin/fs_cli -x 'sofia status' 2>&1 | grep -E 'internal|external|RUNNING' ; echo '' ; echo 'FreeSWITCH è pronto per ricevere la tua registrazione!' ; echo 'Monitoro i log in attesa...' ; tail -f /usr/local/freeswitch/log/freeswitch.log | grep --line-buffered -i 'REGISTER\|demo.edgvoip\|100@demo\|200 OK'
+root      399308  0.0  0.0   2944   892 pts/3    S+   16:34   0:00 tail -f /usr/local/freeswitch/log/freeswitch.log
+root      399537  0.0  0.0   3884  1892 pts/2    S+   16:44   0:00 grep freeswitch
+root@my-vps:~# ^C
+root@my-vps:~# # SUL SERVER 93.93.113.13:
+
+# 1. Verifica la configurazione xml_curl (percorso corretto)
+cat /usr/local/freeswitch/conf/autoload_configs/xml_curl.conf
+
+# 2. Se non esiste, crealo
+cat > /usr/local/freeswitch/conf/autoload_configs/xml_curl.conf << 'EOF'
+<configuration name="xml_curl.conf" description="cURL XML Gateway">
+  <bindings>
+    <binding name="directory">
+      <param name="gateway-url" value="http://127.0.0.1:5000/api/freeswitch/xml" bindings="directory"/>
+      <param name="gateway-credentials" value="user:pass"/>
+      <param name="disable-100-continue" value="true"/>
+      <param name="method" value="POST"/>
+    </binding>
+    <binding name="dialplan">
+      <param name="gateway-url" value="http://127.0.0.1:5000/api/freeswitch/xml" bindings="dialplan"/>
+      <param name="disable-100-continue" value="true"/>
+      <param name="method" value="POST"/>
+    </binding>
+  </bindings>
+</configuration>
+EOF
+
+# 3. Verifica che il modulo xml_curl sia caricato
+/usr/local/freeswitch/bin/fs_cli -x "module_exists mod_xml_curl"
+
+# 4. Se non è caricato, caricalo
+/usr/local/freeswitch/bin/fs_cli -x "load mod_xml_curl"
+
+# 5. Ricarica la configurazione
+/usr/local/freeswitch/bin/fs_cli -x "reloadxml"
+
+# 6. Monitora i log per vedere se arrivano richieste dal backend
+tail -f /usr/local/freeswitch/log/freeswitch.log | grep -i "xml_curl\|demo.edgvoip\|100"
+<configuration name= xml_curl.conf description=cURL XML Gateway>
+  <bindings>
+    <binding name=directory>
+      <param name=gateway-url value=http://127.0.0.1:5000/api/freeswitch/xml/>
+      <param name=method value=post/>
+      <param name=timeout value=10/>
+    </binding>
+    <binding name=dialplan>
+      <param name=gateway-url value=http://127.0.0.1:5000/api/freeswitch/xml/>
+      <param name=method value=post/>
+      <param name=timeout value=10/>
+    </binding>
+  </bindings>
+</configuration>
+true
++OK Reloading XML
+-ERR [Module already loaded]
+
++OK [Success]
+
+2025-10-23 16:45:15.234917 99.77% [WARNING] switch_loadable_module.c:1824 Module mod_xml_curl Already Loaded!
+nta.c:11001 outgoing_answer_a() nta: sip.messagenet.it. IN A 109.233.129.13
+nta.c:1369 set_timeout() nta: timer shortened to 1000 ms
+^C
+root@my-vps:~# # SUL SERVER 93.93.113.13:
+
+# 1. Verifica lo status dei profili SIP
+/usr/local/freeswitch/bin/fs_cli -x "sofia status"
+
+# 2. Verifica quale profilo è sulla porta 5080 (esterna)
+/usr/local/freeswitch/bin/fs_cli -x "sofia status profile external"
+
+# 3. Monitora SOLO le richieste REGISTER in arrivo
+/usr/local/freeswitch/bin/fs_cli -x "console loglevel 7"
+/usr/local/freeswitch/bin/fs_cli -x "sofia global siptrace on"
+
+# 4. In un altro terminale, monitora i log del backend
+journalctl -u voip-backend -f | grep -i "freeswitch\|xml"
+                     Name          Type                                       Data      State
+=================================================================================================
+            external-ipv6       profile                   sip:mod_sofia@[::1]:5080      RUNNING (0)
+                     demo         alias                                   internal      ALIASED
+               edgvoip.it         alias                                   internal      ALIASED
+                 external       profile            sip:mod_sofia@93.93.113.13:5080      RUNNING (0)
+     external::messagenet       gateway           sip:5406594427@sip.messagenet.it      REGED
+            internal-ipv6       profile                   sip:mod_sofia@[::1]:5060      RUNNING (0)
+                 internal       profile            sip:mod_sofia@93.93.113.13:5060      RUNNING (0)
+=================================================================================================
+4 profiles 2 aliases
+
+=================================================================================================
+Name                    external
+Domain Name             N/A
+Auto-NAT                false
+DBName                  sofia_reg_external
+Pres Hosts
+Dialplan                XML
+Context                 public
+Challenge Realm         auto_to
+RTP-IP                  93.93.113.13
+SIP-IP                  93.93.113.13
+Ext-SIP-IP              93.93.113.13
+URL                     sip:mod_sofia@93.93.113.13:5080
+BIND-URL                sip:mod_sofia@93.93.113.13:5080;maddr=93.93.113.13;transport=udp,tcp
+HOLD-MUSIC              N/A
+OUTBOUND-PROXY          N/A
+CODECS IN               PCMU,PCMA,G729,H264,VP8
+CODECS OUT              PCMU,PCMA,G729
+TEL-EVENT               101
+DTMF-MODE               rfc2833
+CNG                     13
+SESSION-TO              0
+MAX-DIALOG              0
+MAX-RECV-RPS            1000
+NOMEDIA                 false
+LATE-NEG                true
+PROXY-MEDIA             false
+AGGRESSIVENAT           false
+CALLS-IN                0
+FAILED-CALLS-IN         0
+CALLS-OUT               0
+FAILED-CALLS-OUT        0
+REGISTRATIONS           0
+
++OK console log level set to DEBUG
+
++OK Global siptrace on
+Oct 23 16:44:30 my-vps voip-backend[399453]: FreeSWITCH XML POST Request: {
+Oct 23 16:44:30 my-vps voip-backend[399453]: 📞 FreeSWITCH XML Request: { section: 'directory', domain: 'demo.edgvoip.it', user: '100' }
+Oct 23 16:44:30 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:44:30 +0000] "POST /api/freeswitch/xml HTTP/1.1" 200 1340 "-" "curl/7.88.1"
+Oct 23 16:44:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:44:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:45:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:45:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"

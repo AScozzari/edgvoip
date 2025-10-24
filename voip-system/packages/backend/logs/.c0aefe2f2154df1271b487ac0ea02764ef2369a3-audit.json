@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\.c0aefe2f2154df1271b487ac0ea02764ef2369a3-audit.json",
+    "files": [
+        {
+            "date": 1760820119229,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\freeswitch-2025-10-18.log",
+            "hash": "3e6cac53f1132340555e3b5cc85428bf07520a342531a3e76d09585a7cf7d0a6"
+        },
+        {
+            "date": 1760832485153,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\freeswitch-2025-10-19.log",
+            "hash": "6c0e64228d0c297a709a096ed31e9e37977ec18004873048b2e327ef9bdefea1"
+        },
+        {
+            "date": 1760959020755,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\freeswitch-2025-10-20.log",
+            "hash": "a19b83803e803966fb2da21ed50c1ce4eceadf76a27404c5ccf133571eb585b1"
+        },
+        {
+            "date": 1761032128442,
+            "name": "C:\\Users\\a.scozzari\\Desktop\\Voip\\packages\\backend\\logs\\freeswitch-2025-10-21.log",
+            "hash": "5d99b48cb77aab4aa495ebe5f8dacb50d3b7ef9252ef70c927f9ee03f61a6f68"
+        }
+    ],
+    "hashType": "sha256"
+}

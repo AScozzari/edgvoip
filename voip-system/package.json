@@ -1,0 +1,36 @@
+{
+  "name": "w3-voip",
+  "version": "1.0.0",
+  "description": "W3 VoIP System - Enterprise Multi-tenant VoIP Platform",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd packages/backend && npm run dev",
+    "dev:frontend": "cd packages/frontend && npm run dev",
+    "build": "npm run build:shared && npm run build:backend && npm run build:frontend",
+    "build:shared": "cd packages/shared && npm run build",
+    "build:backend": "cd packages/backend && npm run build",
+    "build:frontend": "cd packages/frontend && npm run build",
+    "test": "cd tests && npm test",
+    "test:security": "cd tests && npm run test:security",
+    "test:api": "cd tests && npm run test:api",
+    "test:integration": "cd tests && npm run test:integration",
+    "db:migrate": "cd packages/database && npm run migrate",
+    "db:seed": "cd packages/database && npm run seed",
+    "db:reset": "cd packages/database && npm run reset",
+    "install:all": "npm install && npm run install:packages",
+    "install:packages": "cd packages/shared && npm install && cd ../database && npm install && cd ../backend && npm install && cd ../frontend && npm install",
+    "clean": "rimraf packages/*/dist packages/*/node_modules node_modules",
+    "setup": "npm install && npm run build && npm run db:migrate",
+    "start:dev": "scripts/start-dev.bat"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.25.11",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}

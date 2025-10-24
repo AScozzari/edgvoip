@@ -2,6 +2,7 @@ import { Router } from 'express';
 import authRouter from './auth.routes';
 import tenantsRouter from './tenants';
 import storesRouter from './stores';
+import usersRouter from './users.routes';
 import extensionsRouter from './extensions';
 import callRoutes from './calls';
 import cdrRoutes from './cdr';
@@ -21,6 +22,7 @@ router.use('/freeswitch', freeswitchXmlRouter);
 router.use('/', authRouter); // Auth routes at root level (/:tenantSlug/login)
 router.use('/tenants', tenantsRouter);
 router.use('/stores', storesRouter);
+router.use('/users', usersRouter);
 router.use('/extensions', extensionsRouter);
 router.use('/calls', callRoutes);
 router.use('/cdr', cdrRoutes);

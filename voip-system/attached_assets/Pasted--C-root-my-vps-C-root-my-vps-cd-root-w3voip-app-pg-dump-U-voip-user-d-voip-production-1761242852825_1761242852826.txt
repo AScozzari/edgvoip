@@ -1,0 +1,76 @@
+
+^C
+root@my-vps:~# ^C
+root@my-vps:~# cd /root/w3voip-app
+pg_dump -U voip_user -d voip_production > /root/backups/db_$(date +%Y%m%d_%H%M).sql
+git pull origin main
+npm install
+npm run build
+systemctl restart voip-backend
+systemctl status voip-backend
+journalctl -u voip-backend -n 30 --no-pager
+curl http://localhost:3001/api/health
+psql -U voip_user -d voip_production -c "SELECT extension, display_name FROM extensions WHERE extension='100';"
+-bash: cd: /root/w3voip-app: No such file or directory
+-bash: /root/backups/db_20251023_1807.sql: No such file or directory
+fatal: not a git repository (or any of the parent directories): .git
+npm error code ENOENT
+npm error syscall open
+npm error path /root/package.json
+npm error errno -2
+npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/root/package.json'
+npm error enoent This is related to npm not being able to find a file.
+npm error enoent
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-10-23T18_07_22_663Z-debug-0.log
+npm error code ENOENT
+npm error syscall open
+npm error path /root/package.json
+npm error errno -2
+npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/root/package.json'
+npm error enoent This is related to npm not being able to find a file.
+npm error enoent
+npm error A complete log of this run can be found in: /root/.npm/_logs/2025-10-23T18_07_23_108Z-debug-0.log
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2025-10-23 18:07:23 UTC; 9ms ago
+   Main PID: 406648 (node)
+      Tasks: 6 (limit: 9441)
+     Memory: 1.5M
+        CPU: 8ms
+     CGroup: /system.slice/voip-backend.service
+             └─406648 /usr/bin/node dist/index.js
+
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:57:56 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:57:56 my-vps voip-backend[406445]: 2025-10-23T17:57:56.401Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:57:56 my-vps voip-backend[406445]: ❌ Uncaught Exception: Error: connect ECONNREFUSED 127.0.0.1:8021
+Oct 23 17:57:56 my-vps voip-backend[406445]:     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16) {
+Oct 23 17:57:56 my-vps voip-backend[406445]:   errno: -111,
+Oct 23 17:57:56 my-vps voip-backend[406445]:   code: 'ECONNREFUSED',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   syscall: 'connect',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   address: '127.0.0.1',
+Oct 23 17:57:56 my-vps voip-backend[406445]:   port: 8021
+Oct 23 17:57:56 my-vps voip-backend[406445]: }
+Oct 23 17:57:56 my-vps systemd[1]: voip-backend.service: Main process exited, code=exited, status=1/FAILURE
+Oct 23 17:57:56 my-vps systemd[1]: voip-backend.service: Failed with result 'exit-code'.
+Oct 23 17:58:06 my-vps systemd[1]: voip-backend.service: Scheduled restart job, restart counter is at 84.
+Oct 23 17:58:06 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:58:06 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.978Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.983Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.985Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:06 my-vps voip-backend[406480]: 2025-10-23T17:58:06.985Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 17:58:07 my-vps voip-backend[406480]: ✅ Database health check passed
+Oct 23 17:58:07 my-vps voip-backend[406480]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 17:58:07 my-vps voip-backend[406480]: 📊 Environment: production
+Oct 23 17:58:07 my-vps voip-backend[406480]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 17:58:07 my-vps voip-backend[406480]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:07:23 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:07:23 my-vps voip-backend[406480]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:07:23 my-vps voip-backend[406480]: ✅ Server closed
+Oct 23 18:07:23 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:07:23 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+curl: (7) Failed to connect to localhost port 3001 after 0 ms: Couldn't connect to server
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+root@my-vps:~#

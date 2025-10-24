@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 90
+    },
+    "auditLog": "/home/runner/workspace/packages/backend/logs/.44840b23b00a9f683cb9f7187afbbc9c386114b8-audit.json",
+    "files": [
+        {
+            "date": 1761235487867,
+            "name": "/home/runner/workspace/packages/backend/logs/cdr-2025-10-23.log",
+            "hash": "6756184c4d286527d2df130afc73d0f5e554822d78213ce427310274118f41ad"
+        }
+    ],
+    "hashType": "sha256"
+}

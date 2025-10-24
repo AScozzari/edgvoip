@@ -66,63 +66,6 @@ export default function Logs() {
     verboseDebugging: false
   });
 
-  // Sample logs data - in real implementation this would come from API
-  const sampleLogs: LogEntry[] = [
-    {
-      id: '1',
-      timestamp: new Date().toISOString(),
-      level: 'INFO',
-      component: 'sofia',
-      message: 'sofia.c:3473 Starting a new thread to handle the call',
-      source: 'freeswitch',
-      tenant_id: user?.tenant_id || undefined || undefined
-    },
-    {
-      id: '2',
-      timestamp: new Date(Date.now() - 1000).toISOString(),
-      level: 'DEBUG',
-      component: 'mod_dptools',
-      message: 'Processing dialplan for extension 100',
-      source: 'freeswitch',
-      tenant_id: user?.tenant_id || undefined || undefined
-    },
-    {
-      id: '3',
-      timestamp: new Date(Date.now() - 2000).toISOString(),
-      level: 'WARN',
-      component: 'sofia',
-      message: 'Registration failed for messagenet_user@messagenet.it - Authentication failed',
-      source: 'freeswitch',
-      tenant_id: user?.tenant_id || undefined || undefined
-    },
-    {
-      id: '4',
-      timestamp: new Date(Date.now() - 3000).toISOString(),
-      level: 'ERROR',
-      component: 'sofia',
-      message: 'Operation has no matching challenge [904] for messagenet gateway',
-      source: 'freeswitch',
-      tenant_id: user?.tenant_id || undefined || undefined
-    },
-    {
-      id: '5',
-      timestamp: new Date(Date.now() - 4000).toISOString(),
-      level: 'INFO',
-      component: 'api',
-      message: 'Extension 100 created successfully in database',
-      source: 'backend',
-      tenant_id: user?.tenant_id || undefined || undefined
-    },
-    {
-      id: '6',
-      timestamp: new Date(Date.now() - 5000).toISOString(),
-      level: 'DEBUG',
-      component: 'auth',
-      message: 'User authentication successful for tenant admin',
-      source: 'backend',
-      tenant_id: user?.tenant_id || undefined || undefined
-    }
-  ];
 
   useEffect(() => {
     loadInitialLogs();
@@ -173,19 +116,19 @@ export default function Logs() {
         setLogs((systemResponse.value.data as any).logs);
       } else {
         // Fallback to sample logs if API fails
-        setLogs(sampleLogs);
+        setLogs([]);
       }
 
       if (statsResponse.status === 'fulfilled' && (statsResponse.value.data as any)?.success) {
         setLogStats((statsResponse.value.data as any).stats);
       } else {
-        updateStats(sampleLogs);
+        updateStats([]);
       }
     } catch (error) {
       console.error('Error loading logs:', error);
       // Fallback to sample logs
-      setLogs(sampleLogs);
-      updateStats(sampleLogs);
+      setLogs([]);
+      updateStats([]);
     } finally {
       setIsLoading(false);
     }

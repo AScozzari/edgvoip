@@ -1,0 +1,134 @@
+e.json
+/var/www/voip-system/node_modules/resolve/test/resolver/dot_main/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/multirepo/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/multirepo/packages/package-b/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/multirepo/packages/package-a/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/nested_symlinks/mylib/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/false_main/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/invalid_main/package.json
+/var/www/voip-system/node_modules/resolve/test/resolver/browser_field/package.json
+/var/www/voip-system/node_modules/resolve/test/module_dir/zmodules/bbb/package.json
+/var/www/voip-system/node_modules/qs/package.json
+/var/www/voip-system/node_modules/eastasianwidth/package.json
+/var/www/voip-system/node_modules/shebang-regex/package.json
+/var/www/voip-system/node_modules/acorn-walk/package.json
+/var/www/voip-system/node_modules/file-stream-rotator/package.json
+/var/www/voip-system/node_modules/socket.io-adapter/node_modules/debug/package.json
+/var/www/voip-system/node_modules/socket.io-adapter/package.json
+/var/www/voip-system/node_modules/typescript/package.json
+/var/www/voip-system/node_modules/enabled/package.json
+/var/www/voip-system/node_modules/side-channel-weakmap/package.json
+/var/www/voip-system/node_modules/fraction.js/package.json
+/var/www/voip-system/node_modules/electron-to-chromium/package.json
+/var/www/voip-system/node_modules/color-convert/package.json
+/var/www/voip-system/node_modules/split2/package.json
+/var/www/voip-system/node_modules/is-fullwidth-code-point/package.json
+/var/www/voip-system/node_modules/is-number/package.json
+/var/www/voip-system/node_modules/color-name/package.json
+/var/www/voip-system/node_modules/node-domexception/package.json
+/var/www/voip-system/node_modules/string-width-cjs/package.json
+/var/www/voip-system/node_modules/object-hash/package.json
+/var/www/voip-system/node_modules/color-string/node_modules/color-name/package.json
+/var/www/voip-system/node_modules/color-string/package.json
+/var/www/voip-system/node_modules/cssesc/package.json
+/var/www/voip-system/node_modules/socket.io/node_modules/debug/package.json
+/var/www/voip-system/node_modules/socket.io/package.json
+/var/www/voip-system/node_modules/browserslist/package.json
+/var/www/voip-system/node_modules/mime/package.json
+/var/www/voip-system/node_modules/bcryptjs/package.json
+/var/www/voip-system/node_modules/bcryptjs/umd/package.json
+/var/www/voip-system/node_modules/tinyglobby/node_modules/fdir/package.json
+/var/www/voip-system/node_modules/tinyglobby/node_modules/picomatch/package.json
+/var/www/voip-system/node_modules/tinyglobby/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/ansi-styles/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/wrap-ansi/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/strip-ansi/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/emoji-regex/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/ansi-regex/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/node_modules/string-width/package.json
+/var/www/voip-system/node_modules/@isaacs/cliui/package.json
+/var/www/voip-system/node_modules/wrap-ansi-cjs/package.json
+/var/www/voip-system/node_modules/@types/react/package.json
+/var/www/voip-system/node_modules/@types/babel__core/package.json
+/var/www/voip-system/node_modules/@types/compression/package.json
+/var/www/voip-system/node_modules/@types/ms/package.json
+/var/www/voip-system/node_modules/@types/connect/package.json
+/var/www/voip-system/node_modules/@types/react-dom/package.json
+/var/www/voip-system/node_modules/@types/strip-json-comments/package.json
+/var/www/voip-system/node_modules/@types/babel__traverse/package.json
+/var/www/voip-system/node_modules/@types/express/package.json
+/var/www/voip-system/node_modules/@types/send/package.json
+/var/www/voip-system/node_modules/@types/cors/package.json
+/var/www/voip-system/node_modules/@types/triple-beam/package.json
+/var/www/voip-system/node_modules/@types/babel__generator/package.json
+/var/www/voip-system/node_modules/@types/express-serve-static-core/package.json
+/var/www/voip-system/node_modules/@types/jsonwebtoken/package.json
+/var/www/voip-system/node_modules/@types/prop-types/package.json
+/var/www/voip-system/node_modules/@types/babel__template/package.json
+/var/www/voip-system/node_modules/@types/bcrypt/package.json
+/var/www/voip-system/node_modules/@types/uuid/package.json
+/var/www/voip-system/node_modules/@types/morgan/package.json
+/var/www/voip-system/node_modules/@types/node/package.json
+/var/www/voip-system/node_modules/@types/serve-static/node_modules/@types/send/package.json
+/var/www/voip-system/node_modules/@types/serve-static/package.json
+/var/www/voip-system/node_modules/@types/range-parser/package.json
+/var/www/voip-system/node_modules/@types/body-parser/package.json
+/var/www/voip-system/node_modules/@types/http-errors/package.json
+/var/www/voip-system/node_modules/@types/qs/package.json
+/var/www/voip-system/node_modules/@types/estree/package.json
+/var/www/voip-system/node_modules/@types/mime/package.json
+/var/www/voip-system/node_modules/@types/bcryptjs/package.json
+/var/www/voip-system/node_modules/@types/pg/package.json
+/var/www/voip-system/node_modules/@types/strip-bom/package.json
+/var/www/voip-system/node_modules/proxy-addr/package.json
+/var/www/voip-system/node_modules/safer-buffer/package.json
+/var/www/voip-system/node_modules/forwarded/package.json
+/var/www/voip-system/node_modules/react-style-singleton/package.json
+/var/www/voip-system/node_modules/camelcase-css/package.json
+/var/www/voip-system/node_modules/diff/package.json
+/var/www/voip-system/node_modules/@dabh/diagnostics/package.json
+/var/www/voip-system/node_modules/xtend/package.json
+/var/www/voip-system/node_modules/fill-range/package.json
+/var/www/voip-system/node_modules/ipaddr.js/package.json
+/var/www/voip-system/node_modules/es-define-property/package.json
+/var/www/voip-system/node_modules/pg/package.json
+/var/www/voip-system/node_modules/@colors/colors/package.json
+/var/www/voip-system/node_modules/tslib/package.json
+/var/www/voip-system/node_modules/tslib/modules/package.json
+/var/www/voip-system/node_modules/color/node_modules/color-convert/package.json
+/var/www/voip-system/node_modules/color/node_modules/color-name/package.json
+/var/www/voip-system/node_modules/color/package.json
+/var/www/voip-system/node_modules/lru-cache/package.json
+/var/www/voip-system/node_modules/postgres-interval/package.json
+/var/www/voip-system/node_modules/@esbuild/linux-x64/package.json
+/var/www/voip-system/node_modules/unpipe/package.json
+/var/www/voip-system/node_modules/readdirp/package.json
+/var/www/voip-system/node_modules/run-parallel/package.json
+/var/www/voip-system/node_modules/math-intrinsics/package.json
+/var/www/voip-system/node_modules/formdata-polyfill/package.json
+/var/www/voip-system/node_modules/strip-bom/package.json
+/var/www/voip-system/node_modules/lodash/package.json
+/var/www/voip-system/node_modules/raw-body/package.json
+/var/www/voip-system/package.json
+/var/www/voip-system/packages/shared/package.json
+/var/www/voip-system/packages/database/package.json
+/var/www/voip-system/packages/backend/package.json
+/var/www/voip-system/packages/frontend/node_modules/.vite/deps/package.json
+/var/www/voip-system/packages/frontend/package.json
+tail: cannot open '/percorso/backend/logs/*error*.log' for reading: No such file or directory
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+root@my-vps:~# # 1. Controlla il codice del backend
+cat /percorso/backend/src/routes/voip.ts | head -30
+
+# 2. Controlla log backend (ultimissimi errori)
+tail -50 /percorso/backend/logs/api*.log | grep -A10 "sip-extensions"
+
+# 3. Verifica DB
+psql -U voip_user -d voip_production -c "\d extensions"
+psql -U voip_user -d voip_production -c "SELECT COUNT(*) FROM extensions WHERE tenant_id = (SELECT id FROM tenants WHERE slug='demo');"
+cat: /percorso/backend/src/routes/voip.ts: No such file or directory
+tail: cannot open '/percorso/backend/logs/api*.log' for reading: No such file or directory
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  Peer authentication failed for user "voip_user"
+root@my-vps:~#

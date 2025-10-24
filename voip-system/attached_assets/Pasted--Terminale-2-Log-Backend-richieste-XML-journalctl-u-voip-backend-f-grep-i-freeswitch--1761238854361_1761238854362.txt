@@ -1,0 +1,20 @@
+
+# Terminale 2 - Log Backend (richieste XML)
+journalctl -u voip-backend -f | grep -i "freeswitch"
+nta.c:11001 outgoing_answer_a() nta: sip.messagenet.it. IN A 109.233.129.13
+Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER                 , NOTIFY
+nta.c:1369 set_timeout() nta: timer shortened to 1000 ms
+nta.c:11001 outgoing_answer_a() nta: sip.messagenet.it. IN A 109.233.129.13
+Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+nta.c:1369 set_timeout() nta: timer shortened to 1000 ms
+^C
+Oct 23 16:46:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:46:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:47:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:47:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:48:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:48:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:49:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:49:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:50:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:50:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:51:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:51:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:52:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:52:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:53:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:53:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:54:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:54:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/demo/sip-trunks" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+Oct 23 16:55:39 my-vps voip-backend[399453]: 127.0.0.1 - - [23/Oct/2025:16:55:39 +0000] "GET /api/freeswitch/status HTTP/1.1" 200 173 "http://edgvoip.it/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"

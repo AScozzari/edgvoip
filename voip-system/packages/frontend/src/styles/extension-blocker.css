@@ -1,0 +1,46 @@
+/* Extension Blocker CSS - Hide extension elements */
+
+/* Hide any extension-related elements */
+[data-extension-id],
+[class*="extension"],
+[id*="extension"],
+[class*="chrome-extension"],
+[id*="chrome-extension"],
+iframe[src*="chrome-extension://"],
+iframe[src*="pejdijmoenmkgeppbflobdenhhabjlaj"],
+.completion_list,
+.autocomplete-extension,
+.extension-popup,
+.extension-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Hide any extension-related tooltips or overlays */
+[title*="extension"],
+[title*="chrome-extension"],
+[aria-label*="extension"],
+[aria-label*="chrome-extension"] {
+  display: none !important;
+}
+
+/* Prevent extension scripts from modifying our styles */
+body {
+  position: relative !important;
+}
+
+/* Hide any extension-injected content */
+script[src*="chrome-extension://"],
+script[src*="pejdijmoenmkgeppbflobdenhhabjlaj"],
+link[href*="chrome-extension://"],
+link[href*="pejdijmoenmkgeppbflobdenhhabjlaj"] {
+  display: none !important;
+}

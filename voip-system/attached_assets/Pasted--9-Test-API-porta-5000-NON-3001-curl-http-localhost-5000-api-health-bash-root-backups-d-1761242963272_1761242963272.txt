@@ -1,0 +1,120 @@
+# 9. Test API (porta 5000, NON 3001!)
+curl http://localhost:5000/api/health
+-bash: /root/backups/db_20251023_1808.sql: No such file or directory
+remote: Enumerating objects: 257, done.
+remote: Counting objects: 100% (257/257), done.
+remote: Compressing objects: 100% (46/46), done.
+remote: Total 204 (delta 160), reused 200 (delta 156), pack-reused 0 (from 0)
+Receiving objects: 100% (204/204), 1.05 MiB | 2.36 MiB/s, done.
+Resolving deltas: 100% (160/160), completed with 46 local objects.
+From github.com:AScozzari/edgvoip
+ * branch            main       -> FETCH_HEAD
+   69952d7..d9e2458  main       -> origin/main
+Updating 69952d7..d9e2458
+error: Your local changes to the following files would be overwritten by merge:
+        packages/backend/dist/services/extension.service.js
+        packages/backend/dist/services/extension.service.js.map
+        packages/backend/logs/api-2025-10-23.log
+        packages/backend/logs/freeswitch-2025-10-23.log
+        packages/backend/src/services/extension.service.ts
+Please commit your changes or stash them before you merge.
+Aborting
+
+added 18 packages, and audited 490 packages in 5s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+3 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+> w3-voip@1.0.0 build
+> npm run build:shared && npm run build:backend && npm run build:frontend
+
+
+> w3-voip@1.0.0 build:shared
+> cd packages/shared && npm run build
+
+
+> @voip/shared@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:backend
+> cd packages/backend && npm run build
+
+
+> @voip/backend@1.0.0 build
+> tsc
+
+
+> w3-voip@1.0.0 build:frontend
+> cd packages/frontend && npm run build
+
+
+> @voip/frontend@1.0.0 build
+> vite build
+
+▲ [WARNING] Duplicate key "skipLibCheck" in object literal [duplicate-object-key]
+
+    tsconfig.json:19:4:
+      19 │     "skipLibCheck": true,
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "skipLibCheck" is here:
+
+    tsconfig.json:7:4:
+      7 │     "skipLibCheck": true,
+        ╵     ~~~~~~~~~~~~~~
+
+vite v7.1.10 building for production...
+✓ 1492 modules transformed.
+dist/index.html                   7.51 kB │ gzip:   2.02 kB
+dist/assets/index-DCoLQ8N4.css   59.57 kB │ gzip:   9.59 kB
+dist/assets/index-8vcyjTX3.js   622.23 kB │ gzip: 155.34 kB │ map: 2,321.04 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.10s
+● voip-backend.service - EDG VoIP System Backend
+     Loaded: loaded (/etc/systemd/system/voip-backend.service; enabled; preset: enabled)
+     Active: active (running) since Thu 2025-10-23 18:09:14 UTC; 8ms ago
+   Main PID: 406853 (node)
+      Tasks: 6 (limit: 9441)
+     Memory: 1.5M
+        CPU: 7ms
+     CGroup: /system.slice/voip-backend.service
+             └─406853 /usr/bin/node dist/index.js
+
+Oct 23 18:09:14 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps voip-backend[406480]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:07:23 my-vps voip-backend[406480]: ✅ Server closed
+Oct 23 18:07:23 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:07:23 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.742Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.747Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.749Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: 2025-10-23T18:07:23.750Z [FREESWITCH] info: FreeSWITCH Event
+Oct 23 18:07:23 my-vps voip-backend[406648]: ✅ Database health check passed
+Oct 23 18:07:23 my-vps voip-backend[406648]: 🚀 W3 VoIP System API running on port 5000
+Oct 23 18:07:23 my-vps voip-backend[406648]: 📊 Environment: production
+Oct 23 18:07:23 my-vps voip-backend[406648]: 🔗 CORS Origin: http://93.93.113.13
+Oct 23 18:07:23 my-vps voip-backend[406648]: 📡 Socket.IO enabled for real-time updates
+Oct 23 18:09:14 my-vps systemd[1]: Stopping voip-backend.service - EDG VoIP System Backend...
+Oct 23 18:09:14 my-vps voip-backend[406648]: 🛑 SIGTERM received, shutting down gracefully
+Oct 23 18:09:14 my-vps voip-backend[406648]: ✅ Server closed
+Oct 23 18:09:14 my-vps systemd[1]: voip-backend.service: Deactivated successfully.
+Oct 23 18:09:14 my-vps systemd[1]: Stopped voip-backend.service - EDG VoIP System Backend.
+Oct 23 18:09:14 my-vps systemd[1]: Started voip-backend.service - EDG VoIP System Backend.
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+root@my-vps:/var/www/voip-system#
