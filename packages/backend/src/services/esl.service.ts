@@ -1,4 +1,4 @@
-import { Connection } from 'esl';
+import { FreeSwitchClient } from 'esl';
 import { EventEmitter } from 'events';
 import { getClient } from '@w3-voip/database';
 
@@ -7,7 +7,7 @@ import { getClient } from '@w3-voip/database';
  * Manages connection to FreeSWITCH Event Socket for real-time events and call control
  */
 export class ESLService extends EventEmitter {
-  private connection: Connection | null = null;
+  private connection: FreeSwitchClient | null = null;
   private reconnectTimer: NodeJS.Timeout | null = null;
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 10;
@@ -45,7 +45,11 @@ export class ESLService extends EventEmitter {
     try {
       console.log(`🔌 Connecting to FreeSWITCH ESL at ${this.host}:${this.port}...`);
       
-      this.connection = new Connection(this.host, this.port, this.password);
+      this.connection = new FreeSwitchClient({ 
+        host: this.host, 
+        port: this.port, 
+        password: this.password 
+      });
       
       // Setup event handlers
       this.setupEventHandlers();
@@ -56,7 +60,7 @@ export class ESLService extends EventEmitter {
           reject(new Error('ESL connection timeout'));
         }, 5000);
 
-        this.connection!.once('esl::ready', () => {
+        this.connection!.once('ready', () => {
           clearTimeout(timeout);
           resolve();
         });
