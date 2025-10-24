@@ -1,3 +1,16 @@
+import { useState, useEffect, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Phone, Plus, RefreshCw, Search, Eye, Trash2, X, Save, 
+  CheckCircle, XCircle, AlertCircle, Network, Server
+} from 'lucide-react';
+import { apiClient } from '@/lib/api';
+
+export default function SipTrunks() {
   const [trunks, setTrunks] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'view'>('create');
@@ -614,6 +627,7 @@
       </Card>
     </div>
   );
+
 
   return (
     <div className="space-y-6">
