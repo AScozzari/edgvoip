@@ -266,22 +266,47 @@ process.on('SIGINT', () => {
 
 // Handle uncaught exceptions (but don't crash on database connection errors)
 process.on('uncaughtException', (error: any) => {
-  // Don't crash on PostgreSQL connection termination (database may be restarting)
-  if (error?.code === '57P01' || error?.message?.includes('terminating connection')) {
-    console.error('⚠️ Database connection terminated, will retry on next request:', error.message);
+  // Database connection errors - log but don't crash (pool will handle reconnection)
+  const dbErrorCodes = ['57P01', '57P02', '57P03', '08003', '08006', '08P01', 'ECONNREFUSED', 'ECONNRESET'];
+  const isDbError = dbErrorCodes.includes(error?.code) || 
+                    error?.message?.includes('terminating connection') ||
+                    error?.message?.includes('Connection terminated') ||
+                    error?.message?.includes('server closed the connection');
+  
+  if (isDbError) {
+    console.error('⚠️ Database connection error (non-fatal):', error.message);
+    console.error('⚠️ Error code:', error.code);
+    console.error('⚠️ Connection pool will handle recovery automatically');
     return;
   }
+  
+  // For other critical errors, log and exit
   console.error('❌ Uncaught Exception:', error);
+  console.error('Stack trace:', error.stack);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason: any, promise) => {
-  // Don't crash on PostgreSQL connection errors
-  if (reason?.code === '57P01' || reason?.message?.includes('terminating connection')) {
-    console.error('⚠️ Database connection rejected, will retry on next request:', reason.message);
+  // Database connection errors - log but don't crash
+  const dbErrorCodes = ['57P01', '57P02', '57P03', '08003', '08006', '08P01', 'ECONNREFUSED', 'ECONNRESET'];
+  const isDbError = dbErrorCodes.includes(reason?.code) || 
+                    reason?.message?.includes('terminating connection') ||
+                    reason?.message?.includes('Connection terminated') ||
+                    reason?.message?.includes('server closed the connection');
+  
+  if (isDbError) {
+    console.error('⚠️ Database connection promise rejection (non-fatal):', reason.message);
+    console.error('⚠️ Error code:', reason.code);
+    console.error('⚠️ Connection pool will handle recovery automatically');
     return;
   }
-  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  
+  // For other critical rejections, log and exit
+  console.error('❌ Unhandled Rejection at:', promise);
+  console.error('Reason:', reason);
+  if (reason?.stack) {
+    console.error('Stack trace:', reason.stack);
+  }
   process.exit(1);
 });
 
