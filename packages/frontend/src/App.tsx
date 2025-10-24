@@ -119,6 +119,9 @@ function App() {
         <div className="min-h-screen bg-background">
           <ImpersonationBanner />
           <Routes>
+            {/* Root redirect to demo tenant */}
+            <Route path="/" element={<Navigate to="/demo/login" replace />} />
+            
             {/* Super admin routes */}
             <Route path="/edgvoip/login" element={<SuperAdminLogin />} />
             <Route path="/edgvoip/*" element={<SuperAdminRoutes />} />
