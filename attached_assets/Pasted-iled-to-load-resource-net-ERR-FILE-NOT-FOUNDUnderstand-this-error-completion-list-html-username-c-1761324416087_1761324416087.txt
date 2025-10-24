@@ -1,0 +1,25 @@
+iled to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+content_script.js:1 The Content Security Policy directive 'frame-ancestors' is ignored when delivered via a <meta> element.
+showCompletionList @ content_script.js:1
+elementWasFocused @ content_script.js:1
+focusInEventHandler @ content_script.js:1Understand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=&colorScheme=&screenX=3249&screenY=0&effectiveWindowWidth=1731.06&isD…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+content_script.js:1 The Content Security Policy directive 'frame-ancestors' is ignored when delivered via a <meta> element.
+showCompletionList @ content_script.js:1
+elementWasFocused @ content_script.js:1
+focusInEventHandler @ content_script.js:1Understand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+login:74  POST https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/demo/login 500 (Internal Server Error)

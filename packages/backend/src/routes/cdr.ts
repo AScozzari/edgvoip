@@ -84,9 +84,6 @@ router.get('/',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        filter: Object.keys(filter) 
-      });
 
       // Ensure tenant_id is set from context
       const cdrFilter = {
@@ -104,7 +101,6 @@ router.get('/',
           total: result.total,
           total_pages: result.totalPages
         }
-      });
 
     } catch (error) {
       console.error('Error listing CDR:', error);
@@ -123,9 +119,6 @@ router.get('/stats',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        filter: Object.keys(filter) 
-      });
 
       // Ensure tenant_id is set from context
       const statsFilter = {
@@ -153,9 +146,6 @@ router.get('/:cdr_id',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        cdr_id 
-      });
 
       const cdr = await cdrService.getCDRById(cdr_id, tenantId);
 
@@ -183,10 +173,7 @@ router.patch('/:cdr_id',
       const updates = req.body;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
         cdr_id, 
-        updates: Object.keys(updates) 
-      });
 
       const cdr = await cdrService.updateCDR(cdr_id, updates, tenantId);
 
@@ -211,9 +198,6 @@ router.post('/:cdr_id/anonymize',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        cdr_id 
-      });
 
       await cdrService.anonymizeCDR(cdr_id, tenantId);
 
@@ -221,7 +205,6 @@ router.post('/:cdr_id/anonymize',
         cdr_id,
         status: 'anonymized',
         message: 'CDR record has been anonymized for GDPR compliance'
-      });
 
     } catch (error) {
       console.error('Error anonymizing CDR:', error);
@@ -242,9 +225,6 @@ router.delete('/:cdr_id',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        cdr_id 
-      });
 
       await cdrService.deleteCDR(cdr_id, tenantId);
 
@@ -252,7 +232,6 @@ router.delete('/:cdr_id',
         cdr_id,
         status: 'deleted',
         message: 'CDR record has been deleted for GDPR compliance'
-      });
 
     } catch (error) {
       console.error('Error deleting CDR:', error);
@@ -274,14 +253,10 @@ router.get('/export/csv',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        filter: Object.keys(filter) 
-      });
 
       // Ensure tenant_id is set from context
       const cdrFilter = {
         ...filter,
-        tenant_id: tenantId,
         limit: 10000 // Large limit for export
       };
 
@@ -379,14 +354,10 @@ router.get('/export/json',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-        tenant_id: tenantId, 
-        filter: Object.keys(filter) 
-      });
 
       // Ensure tenant_id is set from context
       const cdrFilter = {
         ...filter,
-        tenant_id: tenantId,
         limit: 10000 // Large limit for export
       };
 
@@ -400,13 +371,11 @@ router.get('/export/json',
 
       successResponse(res, {
         export_info: {
-          tenant_id: tenantId,
           export_date: new Date().toISOString(),
           total_records: result.total,
           filters_applied: filter
         },
         cdr_records: result.cdr
-      });
 
     } catch (error) {
       console.error('Error exporting CDR JSON:', error);
@@ -428,9 +397,6 @@ router.post('/bulk/anonymize',
         return errorResponse(res, 'CDR IDs array is required', 400);
       }
 
-        tenant_id: tenantId, 
-        count: cdr_ids.length 
-      });
 
       const results = [];
       const errors = [];
@@ -450,7 +416,6 @@ router.post('/bulk/anonymize',
         failed: errors.length,
         results,
         errors
-      });
 
     } catch (error) {
       console.error('Error bulk anonymizing CDR:', error);
@@ -471,9 +436,6 @@ router.post('/bulk/delete',
         return errorResponse(res, 'CDR IDs array is required', 400);
       }
 
-        tenant_id: tenantId, 
-        count: cdr_ids.length 
-      });
 
       const results = [];
       const errors = [];
@@ -493,7 +455,6 @@ router.post('/bulk/delete',
         failed: errors.length,
         results,
         errors
-      });
 
     } catch (error) {
       console.error('Error bulk deleting CDR:', error);
