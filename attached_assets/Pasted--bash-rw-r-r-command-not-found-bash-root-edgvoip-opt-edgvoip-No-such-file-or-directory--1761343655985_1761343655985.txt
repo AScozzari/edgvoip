@@ -1,0 +1,94 @@
+-bash: -rw-r--r--: command not found
+-bash: root@edgvoip:/opt/edgvoip#: No such file or directory
+root@edgvoip:/opt/edgvoip# ls
+edgvoip.tar.gz
+root@edgvoip:/opt/edgvoip# rm edgvoip.tar.gz
+root@edgvoip:/opt/edgvoip# ls
+root@edgvoip:/opt/edgvoip# git clone https://github.com/AScozzari/edgvoip.git .
+ls -la
+Cloning into '.'...
+remote: Enumerating objects: 14143, done.
+remote: Counting objects: 100% (14143/14143), done.
+remote: Compressing objects: 100% (9154/9154), done.
+remote: Total 14143 (delta 4650), reused 14061 (delta 4583), pack-reused 0 (from 0)
+Receiving objects: 100% (14143/14143), 33.17 MiB | 25.46 MiB/s, done.
+Resolving deltas: 100% (4650/4650), done.
+Updating files: 100% (13857/13857), done.
+total 360
+drwxr-xr-x  10 root root   4096 Oct 24 22:06 .
+drwxr-xr-x   3 root root   4096 Oct 24 21:57 ..
+-rw-r--r--   1 root root   2740 Oct 24 22:06 .env.example
+drwxr-xr-x   8 root root   4096 Oct 24 22:06 .git
+-rw-r--r--   1 root root   1235 Oct 24 22:06 .replit
+-rw-r--r--   1 root root   4452 Oct 24 22:06 DEPLOYMENT.md
+-rw-r--r--   1 root root   6121 Oct 24 22:06 DEPLOYMENT_GUIDE.md
+-rw-r--r--   1 root root   4651 Oct 24 22:06 DEPLOYMENT_PRODUCTION.md
+-rw-r--r--   1 root root   3427 Oct 24 22:06 FREESWITCH_TROUBLESHOOTING.md
+-rw-r--r--   1 root root   1564 Oct 24 22:06 QUICK_DEPLOY.md
+drwxr-xr-x   2 root root  12288 Oct 24 22:06 attached_assets
+drwxr-xr-x   3 root root   4096 Oct 24 22:06 config
+drwxr-xr-x   3 root root   4096 Oct 24 22:06 deployment
+-rw-r--r--   1 root root   1685 Oct 24 22:06 env.production
+drwxr-xr-x 328 root root  12288 Oct 24 22:06 node_modules
+-rw-r--r--   1 root root 250348 Oct 24 22:06 package-lock.json
+-rw-r--r--   1 root root   1583 Oct 24 22:06 package.json
+drwxr-xr-x   6 root root   4096 Oct 24 22:06 packages
+-rw-r--r--   1 root root   4559 Oct 24 22:06 replit.md
+drwxr-xr-x   2 root root   4096 Oct 24 22:06 scripts
+drwxr-xr-x   6 root root   4096 Oct 24 22:06 voip-system
+root@edgvoip:/opt/edgvoip# cd /opt/edgvoip
+npm install
+cd packages/database && npm install && cd ../..
+cd packages/backend && npm install && cd ../..
+cd packages/frontend && npm install && cd ../..
+
+added 18 packages, and audited 490 packages in 6s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+3 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.6.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+npm notice To update run: npm install -g npm@11.6.2
+npm notice
+
+up to date, audited 490 packages in 1s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+up to date, audited 490 packages in 1s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+2 moderate severity vulnerabilities
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+up to date, audited 490 packages in 2s
+
+69 packages are looking for funding
+  run `npm fund` for details
+
+1 moderate severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
