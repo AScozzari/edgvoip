@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { 
   Phone, Plus, RefreshCw, Search, Eye, Trash2, X, Save, 
-  CheckCircle, XCircle, AlertCircle, Network, Server
+  CheckCircle, XCircle, AlertCircle, Network, Server, Activity
 } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 

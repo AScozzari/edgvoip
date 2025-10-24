@@ -84,7 +84,6 @@ router.get('/',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-      logAPICall('list_cdr', { 
         tenant_id: tenantId, 
         filter: Object.keys(filter) 
       });
@@ -124,7 +123,6 @@ router.get('/stats',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-      logAPICall('get_cdr_stats', { 
         tenant_id: tenantId, 
         filter: Object.keys(filter) 
       });
@@ -155,7 +153,6 @@ router.get('/:cdr_id',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-      logAPICall('get_cdr', { 
         tenant_id: tenantId, 
         cdr_id 
       });
@@ -186,7 +183,6 @@ router.patch('/:cdr_id',
       const updates = req.body;
       const tenantId = req.tenantId!;
 
-      logAPICall('update_cdr', { 
         tenant_id: tenantId, 
         cdr_id, 
         updates: Object.keys(updates) 
@@ -215,7 +211,6 @@ router.post('/:cdr_id/anonymize',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-      logAPICall('anonymize_cdr', { 
         tenant_id: tenantId, 
         cdr_id 
       });
@@ -247,7 +242,6 @@ router.delete('/:cdr_id',
       const { cdr_id } = req.params;
       const tenantId = req.tenantId!;
 
-      logAPICall('delete_cdr', { 
         tenant_id: tenantId, 
         cdr_id 
       });
@@ -280,7 +274,6 @@ router.get('/export/csv',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-      logAPICall('export_cdr_csv', { 
         tenant_id: tenantId, 
         filter: Object.keys(filter) 
       });
@@ -386,7 +379,6 @@ router.get('/export/json',
       const filter = req.query;
       const tenantId = req.tenantId!;
 
-      logAPICall('export_cdr_json', { 
         tenant_id: tenantId, 
         filter: Object.keys(filter) 
       });
@@ -436,7 +428,6 @@ router.post('/bulk/anonymize',
         return errorResponse(res, 'CDR IDs array is required', 400);
       }
 
-      logAPICall('bulk_anonymize_cdr', { 
         tenant_id: tenantId, 
         count: cdr_ids.length 
       });
@@ -480,7 +471,6 @@ router.post('/bulk/delete',
         return errorResponse(res, 'CDR IDs array is required', 400);
       }
 
-      logAPICall('bulk_delete_cdr', { 
         tenant_id: tenantId, 
         count: cdr_ids.length 
       });

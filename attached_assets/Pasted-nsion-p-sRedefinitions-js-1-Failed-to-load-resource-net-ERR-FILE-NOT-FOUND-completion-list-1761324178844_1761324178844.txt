@@ -1,0 +1,117 @@
+nsion://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+
+completion_list.html…ectiveWindowWid…:14 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ectiveWindowWid…:12 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ectiveWindowWid…:13 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…fectiveWindowWi…:12 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…fectiveWindowWi…:13 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…fectiveWindowWi…:14 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:13 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…extensionState.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:14 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…sRedefinitions.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:12 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUND
+chrome-extension://p…hhabjlaj/utils.js:1 
+ Failed to load resource: net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:12 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:14 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUND
+completion_list.html…ffectiveWindowW…:13 
+ GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUND
+login:74 
+ GET https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/cdr/stats?start_date=2025-10-23T16%3A42%3A38.660Z 500 (Internal Server Error)
+login:50 API request failed: Error: Failed to get CDR statistics
+    at ApiClient.request (api.ts:93:15)
+    at async loadDashboardData (Dashboard.tsx:39:24)
+login:50 Failed to load dashboard data: Error: Failed to get CDR statistics
+    at ApiClient.request (api.ts:93:15)
+    at async loadDashboardData (Dashboard.tsx:39:24)
+login:74 
+ GET https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/cdr/stats?start_date=2025-10-23T16%3A42%3A38.659Z 500 (Internal Server Error)
+login:50 API request failed: Error: Failed to get CDR statistics
+    at ApiClient.request (api.ts:93:15)
+    at async loadDashboardData (Dashboard.tsx:39:24)
+login:50 Failed to load dashboard data: Error: Failed to get CDR statistics
+    at ApiClient.request (api.ts:93:15)
+    at async loadDashboardData (Dashboard.tsx:39:24)
+login:62 📡 Extensions API Response: 
+{success: true, data: {…}, meta: {…}, message: 'SIP Extensions retrieved successfully'}
+login:62 ✅ Extensions loaded from database: 1
+login:62 📡 Extensions API Response: 
+{success: true, data: {…}, meta: {…}, message: 'SIP Extensions retrieved successfully'}
+login:62 ✅ Extensions loaded from database: 1
+SipTrunks.tsx:131 Uncaught ReferenceError: Activity is not defined
+    at renderSipStatusCard (SipTrunks.tsx:131:16)
+    at SipTrunks (SipTrunks.tsx:647:10)
+SipTrunks.tsx:131 Uncaught ReferenceError: Activity is not defined
+    at renderSipStatusCard (SipTrunks.tsx:131:16)
+    at SipTrunks (SipTrunks.tsx:647:10)
+login:50 The above error occurred in the <SipTrunks> component:
+
+    at SipTrunks (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/src/pages/SipTrunks.tsx?t=1761323767881:26:31)
+    at RenderedRoute (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4088:5)
+    at Routes (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4558:5)
+    at main
+    at div
+    at div
+    at div
+    at Layout (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/src/components/layout/Layout.tsx?t=1761322504263:8:34)
+    at RenderedRoute (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4088:5)
+    at Routes (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4558:5)
+    at TenantRoutes (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/src/App.tsx?t=1761323767881:36:26)
+    at RenderedRoute (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4088:5)
+    at Routes (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4558:5)
+    at div
+    at AuthProvider (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/src/contexts/AuthContext.tsx?t=1761322504263:8:32)
+    at Router (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:4501:15)
+    at BrowserRouter (https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/node_modules/.vite/deps/react-router-dom.js?v=96328218:5247:5)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-B3GHQWXA.js?v=96328218:19466 Uncaught ReferenceError: Activity is not defined
+    at renderSipStatusCard (SipTrunks.tsx:131:16)
+    at SipTrunks (SipTrunks.tsx:647:10)
