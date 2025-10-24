@@ -1,0 +1,241 @@
+      Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+
+13:47:24.733435 ens6  Out IP (tos 0x0, ttl 64, id 29502, offset 0, flags [none], proto UDP (17), length 1015)
+    93.93.113.13.5060 > 10.171.178.234.12234: [bad udp cksum 0x8ff4 -> 0xa0f5!] SIP, length: 987
+        NOTIFY sip:100@10.171.178.234:12234;pn-provider=fcm;pn-param=com.mizuvoip.mizudroid.app;pn-prid=fTIwMp7_TvOSfMJcaE2mJb:APA91bH0OrEfAQvPCZhstDSnIpXvprLdKbR3l5tcjI01uCBh8NyOszppKe-0skd7eoYDRVLTfz3Isa4DFsVMYylV09jHvSwYHeMlXfNeBEQigKNujIqzZCI SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKe0NKBB0paNgjH
+        Max-Forwards: 70
+        From: <sip:100@93.93.113.13>;tag=B9B3vNjX4r94D
+        To: <sip:100@93.93.113.13>
+        Call-ID: ce684e7d-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106103028 NOTIFY
+        Contact: <sip:mod_sofia@93.93.113.13:5060>
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Event: message-summary
+        Allow-Events: talk, hold, conference, refer
+        Subscription-State: terminated;reason=noresource
+        Content-Type: application/simple-message-summary
+        Content-Length: 66
+
+        Messages-Waiting: no
+        Message-Account: sip:100@demo.edgvoip.it
+
+13:47:25.211422 ens6  Out IP (tos 0x0, ttl 64, id 60408, offset 0, flags [none], proto UDP (17), length 842)
+    93.93.113.13.5060 > 151.47.235.122.12234: [bad udp cksum 0x545c -> 0x792a!] SIP, length: 814
+        SIP/2.0 480 Temporarily Unavailable
+        Via: SIP/2.0/UDP 10.171.178.234:17262;rport=12234;branch=z9hG4bK-241p4629901248196273575r;received=151.47.235.122
+        Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+
+13:47:25.824920 ens6  In  IP (tos 0x0, ttl 47, id 55562, offset 0, flags [DF], proto UDP (17), length 32)
+    151.47.235.122.12234 > 93.93.113.13.5060: [udp sum ok] SIP
+13:47:28.733523 ens6  Out IP (tos 0x0, ttl 64, id 29723, offset 0, flags [none], proto UDP (17), length 1015)
+    93.93.113.13.5060 > 10.171.178.234.12234: [bad udp cksum 0x8ff4 -> 0xa0f5!] SIP, length: 987
+        NOTIFY sip:100@10.171.178.234:12234;pn-provider=fcm;pn-param=com.mizuvoip.mizudroid.app;pn-prid=fTIwMp7_TvOSfMJcaE2mJb:APA91bH0OrEfAQvPCZhstDSnIpXvprLdKbR3l5tcjI01uCBh8NyOszppKe-0skd7eoYDRVLTfz3Isa4DFsVMYylV09jHvSwYHeMlXfNeBEQigKNujIqzZCI SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKe0NKBB0paNgjH
+        Max-Forwards: 70
+        From: <sip:100@93.93.113.13>;tag=B9B3vNjX4r94D
+        To: <sip:100@93.93.113.13>
+        Call-ID: ce684e7d-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106103028 NOTIFY
+        Contact: <sip:mod_sofia@93.93.113.13:5060>
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Event: message-summary
+        Allow-Events: talk, hold, conference, refer
+        Subscription-State: terminated;reason=noresource
+        Content-Type: application/simple-message-summary
+        Content-Length: 66
+
+        Messages-Waiting: no
+        Message-Account: sip:100@demo.edgvoip.it
+
+13:47:29.212517 ens6  Out IP (tos 0x0, ttl 64, id 60967, offset 0, flags [none], proto UDP (17), length 842)
+    93.93.113.13.5060 > 151.47.235.122.12234: [bad udp cksum 0x545c -> 0x792a!] SIP, length: 814
+        SIP/2.0 480 Temporarily Unavailable
+        Via: SIP/2.0/UDP 10.171.178.234:17262;rport=12234;branch=z9hG4bK-241p4629901248196273575r;received=151.47.235.122
+        Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+
+13:47:32.734679 ens6  Out IP (tos 0x0, ttl 64, id 30370, offset 0, flags [none], proto UDP (17), length 1015)
+    93.93.113.13.5060 > 10.171.178.234.12234: [bad udp cksum 0x8ff4 -> 0xa0f5!] SIP, length: 987
+        NOTIFY sip:100@10.171.178.234:12234;pn-provider=fcm;pn-param=com.mizuvoip.mizudroid.app;pn-prid=fTIwMp7_TvOSfMJcaE2mJb:APA91bH0OrEfAQvPCZhstDSnIpXvprLdKbR3l5tcjI01uCBh8NyOszppKe-0skd7eoYDRVLTfz3Isa4DFsVMYylV09jHvSwYHeMlXfNeBEQigKNujIqzZCI SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKe0NKBB0paNgjH
+        Max-Forwards: 70
+        From: <sip:100@93.93.113.13>;tag=B9B3vNjX4r94D
+        To: <sip:100@93.93.113.13>
+        Call-ID: ce684e7d-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106103028 NOTIFY
+        Contact: <sip:mod_sofia@93.93.113.13:5060>
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Event: message-summary
+        Allow-Events: talk, hold, conference, refer
+        Subscription-State: terminated;reason=noresource
+        Content-Type: application/simple-message-summary
+        Content-Length: 66
+
+        Messages-Waiting: no
+        Message-Account: sip:100@demo.edgvoip.it
+
+13:47:33.213736 ens6  Out IP (tos 0x0, ttl 64, id 61588, offset 0, flags [none], proto UDP (17), length 842)
+    93.93.113.13.5060 > 151.47.235.122.12234: [bad udp cksum 0x545c -> 0x792a!] SIP, length: 814
+        SIP/2.0 480 Temporarily Unavailable
+        Via: SIP/2.0/UDP 10.171.178.234:17262;rport=12234;branch=z9hG4bK-241p4629901248196273575r;received=151.47.235.122
+        Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+
+13:47:33.548607 ens6  Out IP (tos 0x0, ttl 64, id 63394, offset 0, flags [none], proto UDP (17), length 588)
+    93.93.113.13.5060 > 109.233.129.13.5060: [bad udp cksum 0xbfaa -> 0xaaae!] SIP, length: 560
+        OPTIONS sip:sip.messagenet.it;transport=udp SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKF9ecD6gt7X64c
+        Max-Forwards: 70
+        From: <sip:sip.messagenet.it>;tag=DUym0Bm4yapaN
+        To: <sip:sip.messagenet.it>
+        Call-ID: d57378a6-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106089075 OPTIONS
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Content-Length: 0
+
+13:47:33.578548 ens6  In  IP (tos 0x0, ttl 55, id 50282, offset 0, flags [none], proto UDP (17), length 353)
+    109.233.129.13.5060 > 93.93.113.13.5060: [udp sum ok] SIP, length: 325
+        SIP/2.0 200 OK
+        Via: SIP/2.0/UDP 93.93.113.13;rport=5060;received=93.93.113.13;branch=z9hG4bKF9ecD6gt7X64c
+        From: <sip:sip.messagenet.it>;tag=DUym0Bm4yapaN
+        To: <sip:sip.messagenet.it>;tag=c6e7756a856b4a4ff8bec62591133792.e43e0000
+        Call-ID: d57378a6-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106089075 OPTIONS
+        Content-Length: 0
+
+13:47:36.735764 ens6  Out IP (tos 0x0, ttl 64, id 30896, offset 0, flags [none], proto UDP (17), length 1015)
+    93.93.113.13.5060 > 10.171.178.234.12234: [bad udp cksum 0x8ff4 -> 0xa0f5!] SIP, length: 987
+        NOTIFY sip:100@10.171.178.234:12234;pn-provider=fcm;pn-param=com.mizuvoip.mizudroid.app;pn-prid=fTIwMp7_TvOSfMJcaE2mJb:APA91bH0OrEfAQvPCZhstDSnIpXvprLdKbR3l5tcjI01uCBh8NyOszppKe-0skd7eoYDRVLTfz3Isa4DFsVMYylV09jHvSwYHeMlXfNeBEQigKNujIqzZCI SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKe0NKBB0paNgjH
+        Max-Forwards: 70
+        From: <sip:100@93.93.113.13>;tag=B9B3vNjX4r94D
+        To: <sip:100@93.93.113.13>
+        Call-ID: ce684e7d-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106103028 NOTIFY
+        Contact: <sip:mod_sofia@93.93.113.13:5060>
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Event: message-summary
+        Allow-Events: talk, hold, conference, refer
+        Subscription-State: terminated;reason=noresource
+        Content-Type: application/simple-message-summary
+        Content-Length: 66
+
+        Messages-Waiting: no
+        Message-Account: sip:100@demo.edgvoip.it
+
+13:47:37.214772 ens6  Out IP (tos 0x0, ttl 64, id 62077, offset 0, flags [none], proto UDP (17), length 842)
+    93.93.113.13.5060 > 151.47.235.122.12234: [bad udp cksum 0x545c -> 0x792a!] SIP, length: 814
+        SIP/2.0 480 Temporarily Unavailable
+        Via: SIP/2.0/UDP 10.171.178.234:17262;rport=12234;branch=z9hG4bK-241p4629901248196273575r;received=151.47.235.122
+        Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+
+13:47:40.735796 ens6  Out IP (tos 0x0, ttl 64, id 31019, offset 0, flags [none], proto UDP (17), length 1015)
+    93.93.113.13.5060 > 10.171.178.234.12234: [bad udp cksum 0x8ff4 -> 0xa0f5!] SIP, length: 987
+        NOTIFY sip:100@10.171.178.234:12234;pn-provider=fcm;pn-param=com.mizuvoip.mizudroid.app;pn-prid=fTIwMp7_TvOSfMJcaE2mJb:APA91bH0OrEfAQvPCZhstDSnIpXvprLdKbR3l5tcjI01uCBh8NyOszppKe-0skd7eoYDRVLTfz3Isa4DFsVMYylV09jHvSwYHeMlXfNeBEQigKNujIqzZCI SIP/2.0
+        Via: SIP/2.0/UDP 93.93.113.13;rport;branch=z9hG4bKe0NKBB0paNgjH
+        Max-Forwards: 70
+        From: <sip:100@93.93.113.13>;tag=B9B3vNjX4r94D
+        To: <sip:100@93.93.113.13>
+        Call-ID: ce684e7d-2b82-123f-9199-0201f7b3ea57
+        CSeq: 106103028 NOTIFY
+        Contact: <sip:mod_sofia@93.93.113.13:5060>
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Event: message-summary
+        Allow-Events: talk, hold, conference, refer
+        Subscription-State: terminated;reason=noresource
+        Content-Type: application/simple-message-summary
+        Content-Length: 66
+
+        Messages-Waiting: no
+        Message-Account: sip:100@demo.edgvoip.it
+
+13:47:41.215818 ens6  Out IP (tos 0x0, ttl 64, id 62153, offset 0, flags [none], proto UDP (17), length 842)
+    93.93.113.13.5060 > 151.47.235.122.12234: [bad udp cksum 0x545c -> 0x792a!] SIP, length: 814
+        SIP/2.0 480 Temporarily Unavailable
+        Via: SIP/2.0/UDP 10.171.178.234:17262;rport=12234;branch=z9hG4bK-241p4629901248196273575r;received=151.47.235.122
+        Max-Forwards: 70
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=240g3572673681570286728m
+        To: <sip:3297626144@demo.edgvoip.it>;tag=9pSHSZgpa7vZp
+        Call-ID: 238e7956054013814678511k85500rmwp
+        CSeq: 14592 INVITE
+        User-Agent: FreeSWITCH-mod_sofia/1.10.13-dev+git~20251016T184751Z~9b0bbeaac9~64bit
+        Accept: application/sdp
+        Allow: INVITE, ACK, BYE, CANCEL, OPTIONS, MESSAGE, INFO, UPDATE, REGISTER, REFER, NOTIFY
+        Supported: timer, path, replaces
+        Allow-Events: talk, hold, conference, refer
+        Reason: Q.850;cause=16;text="NORMAL_CLEARING"
+        Content-Length: 0
+        Remote-Party-ID: "3297626144" <sip:3297626144@demo.edgvoip.it>;party=calling;privacy=off;screen=no
+

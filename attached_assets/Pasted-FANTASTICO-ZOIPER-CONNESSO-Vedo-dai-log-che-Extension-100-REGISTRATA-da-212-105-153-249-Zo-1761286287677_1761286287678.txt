@@ -1,0 +1,84 @@
+FANTASTICO! ZOIPER È CONNESSO!
+Vedo dai log che:
+Extension 100 è REGISTRATA da 212.105.153.249 (Zoiper via TCP)
+Ha fatto una chiamata al numero 3297626144!
+La chiamata è arrivata ma è stata rifiutata perché non c'è un dialplan configurato per il context public
+📊 ANALISI LOG:
+Problema: La chiamata sta usando il context public invece del context del tenant demo. Devo configurare il dialplan corretto!
+Verifico le registrazioni e configuro il dialplan:
+CallsOUT0
+FailedCallsIN0
+FailedCallsOUT0
+=================================================================================================        
+Perfetto! MessageNet gateway è UP e registrato!
+Ora il problema è che l'extension 100 sta usando il context public invece del context tenant demo. Devo configurare l'XML per impostare il context corretto:
+Ora aggiorno anche il dialplan per gestire le chiamate outbound dal tenant demo:
+Leggo il file aggiornato:
+Perfetto! Il dialplan è già aggiornato. Il problema è che l'extension sta usando il context public invece di demo. Devo configurare il profilo SIP external per impostare il context corretto in base al dominio:
+    <param name="dtmf-duration" value="2000"/>
+    <param name="inbound-codec-prefs" value="$${global_codec_prefs}"/>
+    <param name="outbound-codec-prefs" value="$${outbound_codec_prefs}"/>
+    <param name="hold-music" value="$${hold_music}"/>
+    <param name="rtp-timer-name" value="soft"/>
+Il context è definito nel profilo. Il problema è che il backend deve impostare il context corretto nell'XML dell'utente. Modifico per usare il context del tenant invece di lasciarlo al default public:
+Ora carico, compilo e testo:
++                                                                ~~
+Il token '&&' non è un separatore di istruzioni valido in questa versione.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvalidEndOfLine
+PowerShell error. Uso pscp separato:
+l.service.ts root@93.93.113.13:/var/www/voip-system/packages/backend/src/services/                       
+freeswitch-xml.service.ts | 8 kB |   8.6 kB/s | ETA: 00:00:00 | 100%
+Perfetto! Sistema aggiornato. Ora Zoiper dovrebbe poter chiamare usando il context demo invece di public.
+🎯 RIEPILOGO MODIFICHE:
+✅ Aggiunto user_context nell'XML dell'utente per forzare il context del tenant
+✅ Aggiunti caller ID variables per le chiamate outbound
+✅ Dialplan già configurato per:
+Chiamate interne: ^(\d{3,5})$ → bridge a user locale
+Chiamate esterne: ^(\+?[1-9]\d{1,14})$ → bridge a gateway MessageNet
+📱 PROVA ORA DA ZOIPER:
+Chiama un numero italiano (es: 3297626144)
+La chiamata dovrebbe passare attraverso il trunk MessageNet!
+Il sistema è in ascolto per i prossimi 120 secondi per catturare i log della chiamata! 🎉
+non va
+
+🔴 PROBLEMA IDENTIFICATO!
+Vedo dai log che la chiamata sta ancora usando il context public invece di demo:
+Il problema è che il profilo SIP external ha un context hardcoded a public. Devo modificare il profilo per usare il context dinamico basato sul dominio.
+La soluzione è usare mod_xml_curl anche per la sezione configuration oppure modificare direttamente il profilo external.xml:
+-ERR [[error near line 379]: missing >]
+
+
+ Configurazione ricaricata
+Errore XML. Il vero problema è che devo far sì che FreeSWITCH usi il context del tenant. La soluzione migliore è usare una transfer application nel dialplan public che reindirizzi al context corretto basato sul dominio:
++     <condition field=\"destination_number\" expression=\"^(.+)\$\">
++                                                            ~~
+    + CategoryInfo          : ObjectNotFound: (.+:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+PowerShell sta interpretando i caratteri. Creo il file localmente e lo carico:
+/local/freeswitch/conf/dialplan/public/                                                                  
+00_domain_router.xml      | 0 kB |   0.8 kB/s | ETA: 00:00:00 | 100%
+Perfetto! Ora ho creato un domain router nel dialplan public che:
+✅ Intercetta le chiamate per demo.edgvoip.it
+✅ Imposta le variabili domain_name e tenant_slug
+✅ Fa transfer al context demo dove c'è il dialplan corretto
+🎯 PROVA ORA DA ZOIPER:
+Chiama il numero 3297626144
+La chiamata dovrebbe essere trasferita al context demo
+E poi instradata al gateway MessageNet!
+Il sistema sta monitorando i log per vedere il transfer in azione! 📡
+non va
+
+🔴 IL DOMAIN ROUTER NON VIENE ESEGUITO!
+Vedo dai log che il dialplan sta ancora processando solo le extension di default (unloop, outside_call, call_debug, public_extensions, ecc.) ma NON vedo il mio domain_router_demo!
+Il problema è che il file 00_domain_router.xml probabilmente non viene caricato perché viene processato DOPO le altre extension. Devo verificare e fixare:
+</include>
+
+
+=== Test XML syntax ===
+bash: line 1: xmllint: command not found
+Il file esiste. Il problema è che FreeSWITCH processa i file in ordine alfabetico e il mio 00_domain_router.xml viene processato ma le condition DOPO le altre. Devo usare mod_xml_curl per il dialplan oppure modificare direttamente il file public.xml principale. Uso la seconda opzione:
+sr/local/freeswitch/conf/dialplan/ | grep public"                                                        
+drwxr-xr-x  2 root root  4096 Oct 24 06:06 public
+-rw-r--r--  1 root root  2582 Oct 23 17:56 public.xml
+Modifico il public.xml per inserire il domain router PRIMA di tutte le altre extension:

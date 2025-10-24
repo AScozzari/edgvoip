@@ -1,0 +1,437 @@
+59:56.824565 ens6  In  IP (tos 0x0, ttl 45, id 8113, offset 0, flags [DF], proto UDP (17), length 663)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 635
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-253p8035528515164610997r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15814 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@[2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+13:59:56.861238 ens6  In  IP (tos 0x0, ttl 45, id 8114, offset 0, flags [DF], proto UDP (17), length 663)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 635
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-253p8035528515164610997r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15814 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@[2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+13:59:57.630927 ens6  In  IP (tos 0x0, ttl 45, id 8210, offset 0, flags [DF], proto UDP (17), length 1339)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1311
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p5968480991846261198r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6428 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@10.171.178.234:10422>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Type: application/sdp
+        Content-Length: 580
+
+        v=0
+        o=100 7183 155 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=rtpmap:18 G729/8000
+        a=fmtp:18 annexb=no
+        a=rtpmap:0 PCMU/8000
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:8 PCMA/8000
+        a=rtpmap:97 iLBC/8000
+        a=fmtp:97 mode=30
+        a=rtpmap:101 telephone-event/8000
+        a=fmtp:101 0-16
+        a=sendrecv
+13:59:58.923590 ens6  In  IP (tos 0x0, ttl 45, id 8523, offset 0, flags [DF], proto UDP (17), length 637)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 609
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-253p8035528515164610997r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15815 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+13:59:59.041291 ens6  In  IP (tos 0x0, ttl 45, id 8524, offset 0, flags [DF], proto UDP (17), length 637)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 609
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-253p8035528515164610997r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15816 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+13:59:59.652664 ens6  In  IP (tos 0x0, ttl 45, id 8670, offset 0, flags [DF], proto UDP (17), length 1339)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1311
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p5968480991846261198r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6429 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Type: application/sdp
+        Content-Length: 580
+
+        v=0
+        o=100 7183 156 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=rtpmap:18 G729/8000
+        a=fmtp:18 annexb=no
+        a=rtpmap:0 PCMU/8000
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:8 PCMA/8000
+        a=rtpmap:97 iLBC/8000
+        a=fmtp:97 mode=30
+        a=rtpmap:101 telephone-event/8000
+        a=fmtp:101 0-16
+        a=sendrecv
+13:59:59.673698 ens6  In  IP (tos 0x0, ttl 45, id 8671, offset 0, flags [DF], proto UDP (17), length 1339)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1311
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p5968480991846261198r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6430 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Type: application/sdp
+        Content-Length: 580
+
+        v=0
+        o=100 7183 157 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=rtpmap:18 G729/8000
+        a=fmtp:18 annexb=no
+        a=rtpmap:0 PCMU/8000
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:8 PCMA/8000
+        a=rtpmap:97 iLBC/8000
+        a=fmtp:97 mode=30
+        a=rtpmap:101 telephone-event/8000
+        a=fmtp:101 0-16
+        a=sendrecv
+14:00:01.754658 ens6  In  IP (tos 0x0, ttl 45, id 8776, offset 0, flags [DF], proto UDP (17), length 637)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 609
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-257p2470705174036446305r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15816 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+14:00:01.771666 ens6  In  IP (tos 0x0, ttl 45, id 8777, offset 0, flags [DF], proto UDP (17), length 637)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 609
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-257p2464698481006450373r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15816 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+14:00:02.522809 ens6  In  IP (tos 0x0, ttl 45, id 8880, offset 0, flags [DF], proto UDP (17), length 1339)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1311
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p6573932251306614722r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6431 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Type: application/sdp
+        Content-Length: 580
+
+        v=0
+        o=100 7183 158 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=rtpmap:18 G729/8000
+        a=fmtp:18 annexb=no
+        a=rtpmap:0 PCMU/8000
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:8 PCMA/8000
+        a=rtpmap:97 iLBC/8000
+        a=fmtp:97 mode=30
+        a=rtpmap:101 telephone-event/8000
+        a=fmtp:101 0-16
+        a=sendrecv
+14:00:02.650455 ens6  In  IP (tos 0x0, ttl 45, id 8881, offset 0, flags [DF], proto UDP (17), length 1111)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1083
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p6959048130642958995r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6431 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@demo.edgvoip.it:5060>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Content-Type: application/sdp
+        Content-Length: 475
+
+        v=0
+        o=- 7183 159 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=fmtp:18 annexb=no
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:97 iLBC/8000
+        a=rtpmap:101 telephone-event/8000
+        a=sendrecv
+14:00:04.614773 ens6  In  IP (tos 0x0, ttl 45, id 9096, offset 0, flags [DF], proto UDP (17), length 663)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 635
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-257p4243400234013312831r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15816 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@[2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+14:00:04.629685 ens6  In  IP (tos 0x0, ttl 45, id 9097, offset 0, flags [DF], proto UDP (17), length 663)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 635
+        REGISTER sip:demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP [2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422;rport;branch=z9hG4bK-257p9165960304811677063r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=252g7866327050079797008m
+        To: "Extension 100" <sip:100@demo.edgvoip.it>
+        Call-ID: 250e8342598926640709810k85503rmwp
+        CSeq: 15816 REGISTER
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@[2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82]:10422>
+        Expires: 604800
+        User-Agent: MizuDroid/4.4.25060
+        Allow-Events: presence,refer,telephone-event,keep-alive,dialog
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Length: 0
+
+14:00:05.351888 ens6  In  IP (tos 0x0, ttl 45, id 9120, offset 0, flags [DF], proto UDP (17), length 1275)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1247
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1102683946071234548r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6431 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@10.171.178.234:10422>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Accept: application/sdp,application/dtmf-relay,text/plain
+        Content-Type: application/sdp
+        Content-Length: 580
+
+        v=0
+        o=100 7183 160 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=rtpmap:18 G729/8000
+        a=fmtp:18 annexb=no
+        a=rtpmap:0 PCMU/8000
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:8 PCMA/8000
+        a=rtpmap:97 iLBC/8000
+        a=fmtp:97 mode=30
+        a=rtpmap:101 telephone-event/8000
+        a=fmtp:101 0-16
+        a=sendrecv
+14:00:05.374045 ens6  In  IP (tos 0x0, ttl 45, id 9121, offset 0, flags [DF], proto UDP (17), length 1111)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 1083
+        INVITE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1659936226267068173r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6431 INVITE
+        Max-Forwards: 70
+        Contact: "Extension 100" <sip:100@10.171.178.234:10422>
+        User-Agent: MizuDroid/4.4.25060
+        X-CDDT: 317742,923362,10424,10.171.178.234,2a02:b121:f03:cafa:ddd3:5a07:a3cf:4f82,151.47.235.122,10.218.162.75,2a01:820:b1:a919:c839:8a70:fbcc:8dd2
+        Content-Type: application/sdp
+        Content-Length: 475
+
+        v=0
+        o=- 7183 161 IN IP4 10.171.178.234
+        s=mizudroid
+        c=IN IP4 10.171.178.234
+        t=0 0
+        m=audio 10424 RTP/AVP 111 105 18 0 97 3 8 101
+        a=rtpmap:111 opus/48000/2
+        a=fmtp:111 maxplaybackrate=16000; sprop-maxcapturerate=16000
+        a=rtpmap:105 speex/16000
+        a=fmtp:105 mode=8;mode=any
+        a=fmtp:18 annexb=no
+        a=rtpmap:110 opus/48000/2
+        a=fmtp:110 maxplaybackrate=8000; sprop-maxcapturerate=8000
+        a=rtpmap:3 GSM/8000
+        a=rtpmap:97 iLBC/8000
+        a=rtpmap:101 telephone-event/8000
+        a=sendrecv
+14:00:06.733658 ens6  In  IP (tos 0x0, ttl 45, id 9257, offset 0, flags [DF], proto UDP (17), length 503)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 475
+        CANCEL sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1659936226267068173r
+        From: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        To: <sip:102@demo.edgvoip.it>
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6431 CANCEL
+        Max-Forwards: 70
+        User-Agent: MizuDroid/4.4.25060
+        Reason: SIP;description="no response from server"
+        Warning: 399 10.171.178.234 "no response from server"
+        Content-Length: 0
+
+14:00:08.142538 ens6  In  IP (tos 0x0, ttl 45, id 9600, offset 0, flags [DF], proto UDP (17), length 497)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 469
+        BYE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1659936226267068173r
+        From: <sip:102@demo.edgvoip.it>
+        To: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6432 BYE
+        Max-Forwards: 70
+        User-Agent: MizuDroid/4.4.25060
+        Reason: SIP;description="no response from server"
+        Warning: 399 10.171.178.234 "no response from server"
+        Content-Length: 0
+
+14:00:10.253816 ens6  In  IP (tos 0x0, ttl 45, id 9766, offset 0, flags [DF], proto UDP (17), length 397)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 369
+        CANCEL sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1659936226267068173r
+        From: <sip:102@demo.edgvoip.it>
+        To: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6432 CANCEL
+        Max-Forwards: 70
+        User-Agent: MizuDroid/4.4.25060
+        Content-Length: 0
+
+14:00:10.255785 ens6  In  IP (tos 0x0, ttl 45, id 9767, offset 0, flags [DF], proto UDP (17), length 391)
+    151.47.235.122.12247 > 93.93.113.13.5060: [udp sum ok] SIP, length: 363
+        BYE sip:102@demo.edgvoip.it SIP/2.0
+        Via: SIP/2.0/UDP 10.171.178.234:10422;rport;branch=z9hG4bK-257p1659936226267068173r
+        From: <sip:102@demo.edgvoip.it>
+        To: "Extension 100" <sip:100@demo.edgvoip.it>;tag=256g5404522623409248843m
+        Call-ID: 254e5306099555188179299k85504rmwp
+        CSeq: 6433 BYE
+        Max-Forwards: 70
+        User-Agent: MizuDroid/4.4.25060
+        Content-Length: 0
