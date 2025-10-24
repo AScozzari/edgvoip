@@ -415,7 +415,7 @@ class ApiClient {
       if (value !== undefined) query.append(key, value.toString());
     });
     
-    return this.request(`/cdr-activity/cdr?${query.toString()}`);
+    return this.request(`/cdr?${query.toString()}`);
   }
 
   async getCdrStats(params?: { store_id?: string; start_date?: string; end_date?: string }) {
@@ -424,7 +424,7 @@ class ApiClient {
       if (value !== undefined) query.append(key, value.toString());
     });
     
-    return this.request(`/cdr-activity/cdr/stats?${query.toString()}`);
+    return this.request(`/cdr/stats?${query.toString()}`);
   }
 
   async getActivityLogs(params?: { actor?: string; action?: string; target_type?: string; target_id?: string; status?: string; start_date?: string; end_date?: string; limit?: number; offset?: number }) {
@@ -498,7 +498,7 @@ class ApiClient {
       if (value !== undefined && value !== null) query.append(key, value.toString());
     });
     
-    return this.request(`/cdr-activity/cdr?${query.toString()}`);
+    return this.request(`/cdr?${query.toString()}`);
   }
 
   async getCDRStats(params?: {
@@ -511,7 +511,7 @@ class ApiClient {
       if (value !== undefined && value !== null) query.append(key, value.toString());
     });
     
-    return this.request(`/cdr-activity/cdr/stats?${query.toString()}`);
+    return this.request(`/cdr/stats?${query.toString()}`);
   }
 
   async exportCDR(format: 'csv' | 'json', params?: any) {
