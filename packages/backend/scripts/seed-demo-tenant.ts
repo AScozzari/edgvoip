@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import * as bcrypt from 'bcryptjs';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -17,17 +18,19 @@ async function seedDemoTenant() {
 
     // 1. Create or update demo tenant
     const tenantResult = await client.query(`
-      INSERT INTO tenants (id, name, slug, sip_domain, status)
+      INSERT INTO tenants (id, name, slug, domain, sip_domain, status)
       VALUES (
         gen_random_uuid(),
         'Demo Tenant',
         'demo',
+        'demo.edgvoip.it',
         'demo.edgvoip.it',
         'active'
       )
       ON CONFLICT (slug) 
       DO UPDATE SET 
         name = EXCLUDED.name,
+        domain = EXCLUDED.domain,
         sip_domain = EXCLUDED.sip_domain,
         status = EXCLUDED.status
       RETURNING id
@@ -36,14 +39,41 @@ async function seedDemoTenant() {
     const tenantId = tenantResult.rows[0].id;
     console.log(`✅ Demo tenant created/updated: ${tenantId}`);
 
-    // 2. Create extensions 100 and 102
+    // 2. Create demo admin user for web login
+    console.log('👤 Creating demo admin user...');
+    
+    const hashedPassword = await bcrypt.hash('tenantadmin123', 10);
+    
+    await client.query(`
+      INSERT INTO users (
+        id, tenant_id, email, password_hash, first_name, last_name, role, status
+      )
+      VALUES (
+        gen_random_uuid(),
+        $1,
+        'admin@demo.local',
+        $2,
+        'Demo',
+        'Admin',
+        'tenant_admin',
+        'active'
+      )
+      ON CONFLICT (email)
+      DO UPDATE SET
+        password_hash = EXCLUDED.password_hash,
+        status = EXCLUDED.status
+    `, [tenantId, hashedPassword]);
+
+    console.log('✅ Demo admin user created/updated');
+
+    // 3. Create extensions 100 and 102
     console.log('📞 Creating extensions 100 and 102...');
     
     await client.query(`
-      INSERT INTO extensions (id, tenant_id, extension, password, display_name, email, status)
+      INSERT INTO extensions (id, tenant_id, extension, password, display_name, status)
       VALUES 
-        (gen_random_uuid(), $1, '100', 'test123456', 'Extension 100', 'ext100@demo.edgvoip.it', 'active'),
-        (gen_random_uuid(), $1, '102', 'test123456', 'Extension 102', 'ext102@demo.edgvoip.it', 'active')
+        (gen_random_uuid(), $1, '100', 'test123456', 'Extension 100', 'active'),
+        (gen_random_uuid(), $1, '102', 'test123456', 'Extension 102', 'active')
       ON CONFLICT (extension, tenant_id) 
       DO UPDATE SET 
         password = EXCLUDED.password,
@@ -56,47 +86,20 @@ async function seedDemoTenant() {
     // 3. Create MessageNet SIP Trunk
     console.log('🔗 Creating MessageNet SIP trunk...');
     
-    const trunkResult = await client.query(`
-      INSERT INTO sip_trunks (
-        id, tenant_id, name, username, password, 
-        host, port, register, codec, status
-      )
-      VALUES (
-        gen_random_uuid(),
-        $1,
-        'MessageNet Trunk',
-        'your_username',
-        'your_password',
-        'sip.messagenet.it',
-        5060,
-        false,
-        'PCMU,PCMA,G729',
-        'active'
-      )
-      ON CONFLICT ON CONSTRAINT unique_trunk_name_per_tenant
-      DO UPDATE SET
-        host = EXCLUDED.host,
-        port = EXCLUDED.port,
-        codec = EXCLUDED.codec,
-        status = EXCLUDED.status
-      RETURNING id
-    `, [tenantId]);
-
-    const trunkId = trunkResult.rows[0].id;
-    console.log(`✅ MessageNet trunk created/updated: ${trunkId}`);
+    // Skip trunk creation for now - can be configured via UI later
+    console.log('⏩ Skipping SIP trunk creation (can be configured via UI)');
 
     // 4. Create voicemail boxes for extensions
     console.log('📫 Creating voicemail boxes...');
     
     await client.query(`
-      INSERT INTO voicemail_boxes (id, tenant_id, mailbox_id, password, full_name, email, enabled)
+      INSERT INTO voicemail_boxes (id, tenant_id, mailbox_id, password, full_name, enabled)
       VALUES 
-        (gen_random_uuid(), $1, '100', '100', 'Extension 100', 'ext100@demo.edgvoip.it', true),
-        (gen_random_uuid(), $1, '102', '102', 'Extension 102', 'ext102@demo.edgvoip.it', true)
+        (gen_random_uuid(), $1, '100', '100', 'Extension 100', true),
+        (gen_random_uuid(), $1, '102', '102', 'Extension 102', true)
       ON CONFLICT (mailbox_id) 
       DO UPDATE SET 
         full_name = EXCLUDED.full_name,
-        email = EXCLUDED.email,
         enabled = EXCLUDED.enabled
     `, [tenantId]);
 

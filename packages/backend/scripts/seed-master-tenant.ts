@@ -18,17 +18,19 @@ async function seedMasterTenant() {
 
     // 1. Create or update edgvoip master tenant
     const tenantResult = await client.query(`
-      INSERT INTO tenants (id, name, slug, sip_domain, status)
+      INSERT INTO tenants (id, name, slug, domain, sip_domain, status)
       VALUES (
         gen_random_uuid(),
         'EdgeVoIP Master',
         'edgvoip',
+        'edgvoip.edgvoip.it',
         'edgvoip.edgvoip.it',
         'active'
       )
       ON CONFLICT (slug) 
       DO UPDATE SET 
         name = EXCLUDED.name,
+        domain = EXCLUDED.domain,
         sip_domain = EXCLUDED.sip_domain,
         status = EXCLUDED.status
       RETURNING id
@@ -44,20 +46,21 @@ async function seedMasterTenant() {
     
     await client.query(`
       INSERT INTO users (
-        id, tenant_id, email, password, full_name, role, status
+        id, tenant_id, email, password_hash, first_name, last_name, role, status
       )
       VALUES (
         gen_random_uuid(),
         $1,
         'admin@edgvoip.it',
         $2,
-        'Super Administrator',
+        'Super',
+        'Administrator',
         'super_admin',
         'active'
       )
       ON CONFLICT (email)
       DO UPDATE SET
-        password = EXCLUDED.password,
+        password_hash = EXCLUDED.password_hash,
         role = 'super_admin',
         status = EXCLUDED.status
     `, [tenantId, hashedPassword]);
@@ -68,10 +71,10 @@ async function seedMasterTenant() {
     console.log('📞 Creating master tenant extensions...');
     
     await client.query(`
-      INSERT INTO extensions (id, tenant_id, extension, password, display_name, email, status)
+      INSERT INTO extensions (id, tenant_id, extension, password, display_name, status)
       VALUES 
-        (gen_random_uuid(), $1, '1000', 'master123', 'Master Extension 1000', 'master1000@edgvoip.it', 'active'),
-        (gen_random_uuid(), $1, '1001', 'master123', 'Master Extension 1001', 'master1001@edgvoip.it', 'active')
+        (gen_random_uuid(), $1, '1000', 'master123', 'Master Extension 1000', 'active'),
+        (gen_random_uuid(), $1, '1001', 'master123', 'Master Extension 1001', 'active')
       ON CONFLICT (extension, tenant_id) 
       DO UPDATE SET 
         password = EXCLUDED.password,

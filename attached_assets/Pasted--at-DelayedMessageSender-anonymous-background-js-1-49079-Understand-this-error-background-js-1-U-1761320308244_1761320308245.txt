@@ -1,0 +1,35 @@
+  at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1235 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1236 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1237 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1238 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1245 does not exist in tab 656135886
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+Error handling response: Error: Attempting to use a disconnected port object
+    at chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/background.js:1:74890Understand this error
+background.js:1 Uncaught (in promise) Error: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1477 does not exist in tab 656136037
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)
+(anonymous) @ background.js:1Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1491 does not exist in tab 656136037
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)
+(anonymous) @ background.js:1Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1802 does not exist in tab 656135798
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+background.js:1 Uncaught (in promise) FrameDoesNotExistError: Frame 1886 does not exist in tab 656136093
+    at DelayedMessageSender.<anonymous> (background.js:1:49079)Understand this error
+21The Content Security Policy directive 'frame-ancestors' is ignored when delivered via a <meta> element.Understand this error
+login:62 🛡️ Extension blocker loaded immediately
+login:62 🛡️ Advanced extension blocker loading...
+login:62 🛡️ Advanced extension blocker loaded successfully
+sw.js:34 🛡️ Extension blocking service worker installed
+login:62 🛡️ Service Worker registered for extension blocking
+sw.js:40 🛡️ Extension blocking service worker activated
+/api/demo/login:1  Failed to load resource: the server responded with a status of 401 (Unauthorized)Understand this error
+extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUND
