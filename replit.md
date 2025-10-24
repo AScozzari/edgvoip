@@ -28,6 +28,11 @@ The W3 VoIP System adopts a microservices-like architecture with distinct fronte
 **Key Design Decisions & Features:**
 -   **Multi-tenancy:** Implemented with strict data isolation at the database level and enforced via backend middleware.
 -   **Security:** Focus on SQL injection prevention (whitelist validation), environment variable-based secrets management, and restrictive CORS configuration.
+-   **Database Stability (2025-10-24):**
+    -   **Connection Pool:** Enterprise-grade pool with automatic reconnection, exponential backoff retry logic (1s → 2s → 4s → 8s → 16s), and comprehensive event handlers (error, connect, remove, acquire, release)
+    -   **Health Monitoring:** Periodic health checks every 30 seconds with detailed pool statistics logging
+    -   **Error Handling:** Graceful handling of all PostgreSQL connection errors (57P01, 57P02, 57P03, 08003, 08006, ECONNREFUSED) without process termination
+    -   **Resilience:** Backend continues operation during PostgreSQL restarts/disconnections with automatic recovery
 -   **FreeSWITCH Integration:**
     -   **ESL Service:** Robust auto-reconnecting client for real-time event handling (CHANNEL_CREATE, CHANNEL_ANSWER, CHANNEL_HANGUP) and comprehensive CDR tracking.
     -   **XML Service:** Dynamic configuration generation for FreeSWITCH, including user authentication, dialplan, IVR, queue, and voicemail routing. Critical for dynamic tenant lookup and routing of Italian national and international numbers.

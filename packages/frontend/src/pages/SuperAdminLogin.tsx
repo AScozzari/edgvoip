@@ -79,7 +79,7 @@ export default function SuperAdminLogin() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@edgvoip.local"
+                placeholder="admin@edgvoip.it"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
