@@ -1,8 +1,16 @@
 import { Pool } from 'pg';
 
+// Validate DATABASE_URL is set
+if (!process.env.DATABASE_URL) {
+  console.error('❌ DATABASE_URL environment variable is required');
+  console.error('💡 Please set DATABASE_URL in your .env file');
+  console.error('Example: DATABASE_URL=postgresql://user:password@host:5432/database');
+  process.exit(1);
+}
+
 // Database connection pool
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://edgvoip_user:edgvoip_password@192.168.172.234:5432/edgvoip',
+  connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 20,
   idleTimeoutMillis: 30000,

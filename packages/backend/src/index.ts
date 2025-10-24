@@ -10,6 +10,28 @@ import { Server as SocketIOServer } from 'socket.io';
 // Load environment variables
 dotenv.config();
 
+// Validate required environment variables
+function validateEnvironment() {
+  const required = ['DATABASE_URL', 'JWT_SECRET'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length > 0) {
+    console.error('❌ Missing required environment variables:', missing.join(', '));
+    console.error('💡 Please set these in your .env file');
+    process.exit(1);
+  }
+
+  if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
+    console.error('❌ JWT_SECRET must be at least 32 characters long');
+    process.exit(1);
+  }
+
+  console.log('✅ Environment variables validated');
+}
+
+// Validate environment on startup
+validateEnvironment();
+
 // Import middleware
 import {
   securityHeaders,
@@ -32,25 +54,40 @@ import { validateTenantSlug } from './middleware/tenant.middleware';
 
 const app = express();
 const server = createServer(app);
+
+// Get CORS origin from environment or use restrictive default
+const corsOrigin = process.env.CORS_ORIGIN?.split(',').map(origin => origin.trim()) || ['http://localhost:3000'];
+
 const io = new SocketIOServer(server, {
   cors: {
-    origin: true,
+    origin: corsOrigin,
     methods: ['GET', 'POST'],
     credentials: true
   }
 });
 
 const PORT = process.env.PORT || 3001;
-const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET!; // Validated above
 
 // Security middleware
 app.use(securityHeaders);
 app.use(requestId);
 app.use(securityEventLogger);
 
-// CORS configuration - Allow all origins in development
+// CORS configuration - Secure, only allowed origins
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is in allowed list
+    if (corsOrigin.includes(origin) || corsOrigin.includes('*')) {
+      callback(null, true);
+    } else {
+      console.warn(`🚫 CORS blocked request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
@@ -189,7 +226,7 @@ async function startServer() {
     server.listen(Number(PORT), '0.0.0.0', () => {
       console.log(`🚀 W3 VoIP System API running on port ${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🔗 CORS Origin: ${process.env.CORS_ORIGIN || 'http://192.168.172.234:3000'}`);
+      console.log(`🔗 CORS Origins: ${corsOrigin.join(', ')}`);
       console.log(`📡 Socket.IO enabled for real-time updates`);
     });
   } catch (error) {
@@ -229,5 +266,4 @@ process.on('unhandledRejection', (reason, promise) => {
 // Start the server
 startServer();
 
-export { app, server, io };
-
+export { app, server, io, JWT_SECRET };
