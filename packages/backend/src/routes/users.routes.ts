@@ -156,7 +156,7 @@ router.delete('/:id',
       [userId, tenantId]
     );
 
-    deletedResponse(res, { id: userId }, 'User deleted successfully');
+    deletedResponse(res, 'User deleted successfully');
   })
 );
 

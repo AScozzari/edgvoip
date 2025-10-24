@@ -1,0 +1,78 @@
+> @w3-voip/database@1.0.0 seed
+> ts-node src/seed.ts
+
+🌱 Starting database seeding...
+⏭️  Database already seeded, skipping...
+📋 Existing tenants:
+  - EdgeVoIP Super Admin: 00000000-0000-0000-0000-000000000001
+📋 Existing extensions: 0
+root@edgvoip:/opt/edgvoip/packages/database# ^C
+root@edgvoip:/opt/edgvoip/packages/database# ^[[200~cd /opt/edgvoip/packages/backend
+-bash: $'\E[200~cd': command not found
+root@edgvoip:/opt/edgvoip/packages/database# npm run build~
+npm error Lifecycle script `build~` failed with error:
+npm error workspace @w3-voip/database@1.0.0
+npm error location /opt/edgvoip/packages/database
+npm error Missing script: "build~"
+npm error
+npm error Did you mean this?
+npm error   npm run build # run the "build" package script
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run --workspace=@w3-voip/database@1.0.0
+root@edgvoip:/opt/edgvoip/packages/database# ^C
+root@edgvoip:/opt/edgvoip/packages/database# cd /opt/edgvoip/packages/backend
+npm run build
+
+> @voip/backend@1.0.0 build
+> tsc
+
+src/routes/users.routes.ts:159:42 - error TS2554: Expected 1-2 arguments, but got 3.
+
+159     deletedResponse(res, { id: userId }, 'User deleted successfully');
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/services/esl.service.ts:95:24 - error TS2345: Argument of type '"ready"' is not assignable to parameter of type 'keyof FreeSwitchClientEvents'.
+
+95     this.connection.on('ready', () => {
+                          ~~~~~~~
+
+src/services/esl.service.ts:116:24 - error TS2345: Argument of type '"esl::event::*"' is not assignable to parameter of type 'keyof FreeSwitchClientEvents'.
+
+116     this.connection.on('esl::event::*', (event: any) => {
+                           ~~~~~~~~~~~~~~~
+
+src/services/esl.service.ts:328:24 - error TS2339: Property 'api' does not exist on type 'FreeSwitchClient'.
+
+328       this.connection!.api(command, (response: any) => {
+                           ~~~
+
+src/services/esl.service.ts:348:24 - error TS2339: Property 'bgapi' does not exist on type 'FreeSwitchClient'.
+
+348       this.connection!.bgapi(command, (response: any) => {
+                           ~~~~~
+
+src/services/esl.service.ts:437:23 - error TS2551: Property 'disconnect' does not exist on type 'FreeSwitchClient'. Did you mean 'connect'?
+
+437       this.connection.disconnect();
+                          ~~~~~~~~~~
+
+  ../../node_modules/esl/types/src/client.d.ts:37:5
+    37     connect(): void;
+           ~~~~~~~
+    'connect' is declared here.
+
+
+Found 6 errors in 2 files.
+
+Errors  Files
+     1  src/routes/users.routes.ts:159
+     5  src/services/esl.service.ts:95
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path /opt/edgvoip/packages/backend
+npm error workspace @voip/backend@1.0.0
+npm error location /opt/edgvoip/packages/backend
+npm error command failed
+npm error command sh -c tsc
+root@edgvoip:/opt/edgvoip/packages/backend#
