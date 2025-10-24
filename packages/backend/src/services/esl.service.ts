@@ -51,25 +51,15 @@ export class ESLService extends EventEmitter {
         password: this.password 
       });
       
-      // Setup event handlers
+      // Setup event handlers BEFORE connecting
       this.setupEventHandlers();
       
-      // Wait for connection to be established
-      await new Promise<void>((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          reject(new Error('ESL connection timeout'));
-        }, 5000);
-
-        this.connection!.once('ready', () => {
-          clearTimeout(timeout);
-          resolve();
-        });
-
-        this.connection!.once('error', (error: Error) => {
-          clearTimeout(timeout);
-          reject(error);
-        });
-      });
+      // Actually connect to FreeSWITCH (CRITICAL - was missing!)
+      await this.connection.connect();
+      
+      console.log('✅ ESL socket authenticated');
+      
+      // Connection is now ready (ready event already handled in setupEventHandlers)
 
       // Subscribe to all events
       await this.subscribeToEvents();
@@ -101,13 +91,13 @@ export class ESLService extends EventEmitter {
   private setupEventHandlers(): void {
     if (!this.connection) return;
 
-    // Connection ready
-    this.connection.on('esl::ready', () => {
+    // Connection ready (correct event name for FreeSwitchClient)
+    this.connection.on('ready', () => {
       console.log('✅ ESL connection ready');
     });
 
-    // Connection ended
-    this.connection.on('esl::end', () => {
+    // Connection ended (correct event name for FreeSwitchClient)
+    this.connection.on('end', () => {
       console.warn('⚠️ ESL connection ended');
       this.connection = null;
       
@@ -122,8 +112,8 @@ export class ESLService extends EventEmitter {
       this.emit('error', error);
     });
 
-    // Handle FreeSWITCH events
-    this.connection.on('esl::event::**', (event: any) => {
+    // Handle FreeSWITCH events (correct event pattern for FreeSwitchClient)
+    this.connection.on('esl::event::*', (event: any) => {
       this.handleFreeSWITCHEvent(event);
     });
   }
