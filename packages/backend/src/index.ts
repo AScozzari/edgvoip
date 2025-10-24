@@ -252,13 +252,23 @@ process.on('SIGINT', () => {
   });
 });
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
+// Handle uncaught exceptions (but don't crash on database connection errors)
+process.on('uncaughtException', (error: any) => {
+  // Don't crash on PostgreSQL connection termination (database may be restarting)
+  if (error?.code === '57P01' || error?.message?.includes('terminating connection')) {
+    console.error('⚠️ Database connection terminated, will retry on next request:', error.message);
+    return;
+  }
   console.error('❌ Uncaught Exception:', error);
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason: any, promise) => {
+  // Don't crash on PostgreSQL connection errors
+  if (reason?.code === '57P01' || reason?.message?.includes('terminating connection')) {
+    console.error('⚠️ Database connection rejected, will retry on next request:', reason.message);
+    return;
+  }
   console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
