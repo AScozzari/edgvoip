@@ -1,0 +1,77 @@
+<configuration name="modules.conf" description="Modules">
+  <modules>
+    <!-- Core Modules -->
+    <load module="mod_console"/>
+    <load module="mod_logfile"/>
+    
+    <!-- Dialplan Modules -->
+    <load module="mod_dialplan_xml"/>
+    <load module="mod_dptools"/>
+    
+    <!-- SIP/Sofia -->
+    <load module="mod_sofia"/>
+    
+    <!-- Event Socket -->
+    <load module="mod_event_socket"/>
+    
+    <!-- XML Curl for Dynamic Configuration -->
+    <load module="mod_xml_curl"/>
+    
+    <!-- Codecs -->
+    <load module="mod_opus"/>
+    <load module="mod_amr"/>
+    <load module="mod_g729"/>
+    <load module="mod_g723_1"/>
+    <load module="mod_amrwb"/>
+    <load module="mod_speex"/>
+    <load module="mod_pcmu"/>
+    <load module="mod_pcma"/>
+    <load module="mod_ilbc"/>
+    
+    <!-- Database -->
+    <load module="mod_db"/>
+    
+    <!-- File Formats -->
+    <load module="mod_sndfile"/>
+    <load module="mod_native_file"/>
+    <load module="mod_local_stream"/>
+    <load module="mod_tone_stream"/>
+    
+    <!-- Applications -->
+    <load module="mod_commands"/>
+    <load module="mod_conference"/>
+    <load module="mod_fifo"/>
+    <load module="mod_callcenter"/>
+    <load module="mod_voicemail"/>
+    <load module="mod_esf"/>
+    <load module="mod_fsv"/>
+    <load module="mod_valet_parking"/>
+    <load module="mod_httapi"/>
+    
+    <!-- Say -->
+    <load module="mod_say_en"/>
+    <load module="mod_say_it"/>
+    
+    <!-- CDR/Logging -->
+    <load module="mod_xml_cdr"/>
+    <load module="mod_cdr_csv"/>
+    
+    <!-- Languages -->
+    <load module="mod_lua"/>
+    
+    <!-- Endpoints -->
+    <load module="mod_loopback"/>
+    
+    <!-- ASR/TTS -->
+    <load module="mod_tts_commandline"/>
+    
+    <!-- Directory -->
+    <load module="mod_dialplan_directory"/>
+    
+    <!-- Utilities -->
+    <load module="mod_hash"/>
+    <load module="mod_enum"/>
+    <load module="mod_expr"/>
+    <load module="mod_curl"/>
+  </modules>
+</configuration>
