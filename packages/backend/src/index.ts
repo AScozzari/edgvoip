@@ -49,7 +49,12 @@ import { errorHandler } from './utils/response';
 import apiRoutes from './routes';
 
 // Import database
-import { healthCheck as dbHealthCheck, getClient } from '@w3-voip/database';
+import { 
+  healthCheck as dbHealthCheck, 
+  getClient, 
+  startPeriodicHealthCheck,
+  getPoolStats 
+} from '@w3-voip/database';
 import { validateTenantSlug } from './middleware/tenant.middleware';
 
 const app = express();
@@ -222,12 +227,19 @@ async function startServer() {
     // Check database health
     await checkDatabaseHealth();
     
+    // Start periodic health check (every 30 seconds)
+    startPeriodicHealthCheck(30000);
+    
     // Start HTTP server
     server.listen(Number(PORT), '0.0.0.0', () => {
       console.log(`🚀 W3 VoIP System API running on port ${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`🔗 CORS Origins: ${corsOrigin.join(', ')}`);
       console.log(`📡 Socket.IO enabled for real-time updates`);
+      
+      // Log initial pool stats
+      const stats = getPoolStats();
+      console.log(`🔌 Database pool: ${stats.totalCount} total, ${stats.idleCount} idle, ${stats.waitingCount} waiting`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);
