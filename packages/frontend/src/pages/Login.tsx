@@ -158,7 +158,7 @@ export default function Login({ tenantSlug }: LoginProps) {
                   <div>👨‍💼 Demo Tenant Admin: admin@demo.local / tenantadmin123</div>
                 )}
                 {tenantSlug === 'edgvoip' && (
-                  <div>👑 Super Admin: admin@edgvoip.local / admin123</div>
+                  <div>👑 Super Admin: admin@edgvoip.it / admin123</div>
                 )}
                 {tenantSlug !== 'demo' && tenantSlug !== 'edgvoip' && (
                   <>
