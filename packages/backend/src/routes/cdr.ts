@@ -102,6 +102,7 @@ router.get('/',
           total_pages: result.totalPages
         }
 
+      });
     } catch (error) {
       console.error('Error listing CDR:', error);
       errorResponse(res, 'Failed to list CDR records', 500);
@@ -207,6 +208,7 @@ router.post('/:cdr_id/anonymize',
         message: 'CDR record has been anonymized for GDPR compliance'
 
     } catch (error) {
+      });
       console.error('Error anonymizing CDR:', error);
       if (error.message === 'CDR not found') {
         return errorResponse(res, 'CDR not found', 404);
@@ -234,6 +236,7 @@ router.delete('/:cdr_id',
         message: 'CDR record has been deleted for GDPR compliance'
 
     } catch (error) {
+      });
       console.error('Error deleting CDR:', error);
       if (error.message === 'CDR not found') {
         return errorResponse(res, 'CDR not found', 404);
@@ -378,6 +381,7 @@ router.get('/export/json',
         cdr_records: result.cdr
 
     } catch (error) {
+      });
       console.error('Error exporting CDR JSON:', error);
       errorResponse(res, 'Failed to export CDR records', 500);
     }
@@ -419,6 +423,7 @@ router.post('/bulk/anonymize',
 
     } catch (error) {
       console.error('Error bulk anonymizing CDR:', error);
+      });
       errorResponse(res, 'Failed to bulk anonymize CDR records', 500);
     }
   }
@@ -459,6 +464,7 @@ router.post('/bulk/delete',
     } catch (error) {
       console.error('Error bulk deleting CDR:', error);
       errorResponse(res, 'Failed to bulk delete CDR records', 500);
+      });
     }
   }
 );
