@@ -25,34 +25,34 @@ import {
 import { apiClient } from '@/lib/api';
 
 export default function SipTrunks() {
-  const [trunks, setTrunks] = useState<any[]>([
-    {
-      id: 'messagenet-trunk',
-      name: 'Messagenet SIP Trunk',
-      provider: 'Messagenet',
-      proxy: 'sip.messagenet.it',
-      port: 5060,
-      transport: 'UDP',
-      auth_username: 'messagenet_user',
-      auth_password: 'messagenet_password',
-      realm: 'messagenet.it',
-      from_user: 'messagenet_user',
-      from_domain: 'messagenet.it',
-      extension: 'messagenet_user',
-      register_proxy: 'sip.messagenet.it',
-      expire_seconds: 3600,
-      register: true,
-      register_transport: 'udp',
-      retry_seconds: 30,
-      caller_id_in_from: true,
-      ping: 25,
-      cid_type: 'rpid',
-      status: 'failed',
-      codec_set: 'PCMU,PCMA,G722',
-      note: 'Messagenet trunk - Authentication failed (904/403)',
-      last_error: 'Operation has no matching challenge [904] / Try Later [403]'
-    }
-  ]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [trunks, setTrunks] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<'create' | 'edit' | 'view'>('create');
   const [loading, setLoading] = useState(false);

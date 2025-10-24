@@ -1,0 +1,67 @@
+(direct array): 1
+login:62 📡 Extensions API Response: {success: true, data: {…}, meta: {…}, message: 'SIP Extensions retrieved successfully'}
+login:62 ✅ Extensions loaded from database: 1
+login:74  GET https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/cdr-activity/cdr?limit=50&start_date=2025-10-17T15%3A46%3A51.437Z 404 (Not Found)
+window.fetch @ login:74
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:74
+getCDR @ api.ts:501
+loadCDR @ CDRViewer.tsx:46
+(anonymous) @ CDRViewer.tsx:40
+commitHookEffectListMount @ chunk-B3GHQWXA.js?v=96328218:16963
+invokePassiveEffectMountInDEV @ chunk-B3GHQWXA.js?v=96328218:18374
+invokeEffectsInDev @ chunk-B3GHQWXA.js?v=96328218:19754
+commitDoubleInvokeEffectsInDEV @ chunk-B3GHQWXA.js?v=96328218:19739
+flushPassiveEffectsImpl @ chunk-B3GHQWXA.js?v=96328218:19556
+flushPassiveEffects @ chunk-B3GHQWXA.js?v=96328218:19500
+(anonymous) @ chunk-B3GHQWXA.js?v=96328218:19381
+workLoop @ chunk-B3GHQWXA.js?v=96328218:197
+flushWork @ chunk-B3GHQWXA.js?v=96328218:176
+performWorkUntilDeadline @ chunk-B3GHQWXA.js?v=96328218:384Understand this error
+login:74  GET https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/cdr-activity/cdr?limit=50&start_date=2025-10-17T15%3A46%3A51.436Z 404 (Not Found)
+window.fetch @ login:74
+window.fetch @ chrome-extension-blocker.js:52
+window.fetch @ error-handler.ts:112
+request @ api.ts:74
+getCDR @ api.ts:501
+loadCDR @ CDRViewer.tsx:46
+(anonymous) @ CDRViewer.tsx:40
+commitHookEffectListMount @ chunk-B3GHQWXA.js?v=96328218:16963
+commitPassiveMountOnFiber @ chunk-B3GHQWXA.js?v=96328218:18206
+commitPassiveMountEffects_complete @ chunk-B3GHQWXA.js?v=96328218:18179
+commitPassiveMountEffects_begin @ chunk-B3GHQWXA.js?v=96328218:18169
+commitPassiveMountEffects @ chunk-B3GHQWXA.js?v=96328218:18159
+flushPassiveEffectsImpl @ chunk-B3GHQWXA.js?v=96328218:19543
+flushPassiveEffects @ chunk-B3GHQWXA.js?v=96328218:19500
+(anonymous) @ chunk-B3GHQWXA.js?v=96328218:19381
+workLoop @ chunk-B3GHQWXA.js?v=96328218:197
+flushWork @ chunk-B3GHQWXA.js?v=96328218:176
+performWorkUntilDeadline @ chunk-B3GHQWXA.js?v=96328218:384Understand this error
+login:50 API request failed: Error: Endpoint not found
+    at ApiClient.request (api.ts:93:15)
+    at async loadCDR (CDRViewer.tsx:46:24)
+console.error @ login:50
+console.<computed> @ login:133
+overrideMethod @ hook.js:608
+console.<computed> @ login:149
+console.<computed> @ chrome-extension-blocker.js:38
+console.error @ error-handler.ts:33
+request @ api.ts:98
+await in request
+getCDR @ api.ts:501
+loadCDR @ CDRViewer.tsx:46
+(anonymous) @ CDRViewer.tsx:40
+commitHookEffectListMount @ chunk-B3GHQWXA.js?v=96328218:16963
+invokePassiveEffectMountInDEV @ chunk-B3GHQWXA.js?v=96328218:18374
+invokeEffectsInDev @ chunk-B3GHQWXA.js?v=96328218:19754
+commitDoubleInvokeEffectsInDEV @ chunk-B3GHQWXA.js?v=96328218:19739
+flushPassiveEffectsImpl @ chunk-B3GHQWXA.js?v=96328218:19556
+flushPassiveEffects @ chunk-B3GHQWXA.js?v=96328218:19500
+(anonymous) @ chunk-B3GHQWXA.js?v=96328218:19381
+workLoop @ chunk-B3GHQWXA.js?v=96328218:197
+flushWork @ chunk-B3GHQWXA.js?v=96328218:176
+performWorkUntilDeadline @ chunk-B3GHQWXA.js?v=96328218:384Understand this error
+login:50 API request failed: Error: Endpoint not found
+    at ApiClient.request (api.ts:93:15)
+    at async loadCDR (CDRViewer.tsx:46:24)
