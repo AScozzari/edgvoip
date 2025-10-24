@@ -181,7 +181,7 @@ export const tenantRateLimit = (maxRequests: number = 100, windowMs: number = 90
   };
 };
 
-// Tenant Resource Validation Middleware
+// Tenant Resource Validation Middleware - FIXED SQL INJECTION VULNERABILITY
 export const validateTenantResource = (resourceType: string) => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
@@ -205,9 +205,30 @@ export const validateTenantResource = (resourceType: string) => {
       const client = await getClient();
       
       try {
-        const tableName = resourceType === 'extension' ? 'extensions' : 
-                         resourceType === 'trunk' ? 'sip_trunks' :
-                         resourceType === 'store' ? 'stores' : resourceType;
+        // Whitelist of allowed table names to prevent SQL injection
+        const tableNameMap: Record<string, string> = {
+          'extension': 'extensions',
+          'trunk': 'sip_trunks',
+          'store': 'stores',
+          'queue': 'call_queues',
+          'ivr': 'ivr_menus',
+          'conference': 'conference_rooms',
+          'voicemail': 'voicemail_boxes',
+          'ring_group': 'ring_groups',
+          'time_condition': 'time_conditions'
+        };
+        
+        const tableName = tableNameMap[resourceType];
+        
+        if (!tableName) {
+          return res.status(400).json({
+            success: false,
+            error: {
+              code: 'INVALID_RESOURCE_TYPE',
+              message: `Invalid resource type: ${resourceType}`
+            }
+          });
+        }
         
         const result = await client.query(
           `SELECT id FROM ${tableName} WHERE id = $1 AND tenant_id = $2`,
@@ -241,4 +262,3 @@ export const validateTenantResource = (resourceType: string) => {
     }
   };
 };
-
