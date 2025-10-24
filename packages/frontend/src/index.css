@@ -78,28 +78,80 @@
   .glass-light {
     @apply backdrop-blur-md bg-white/80 dark:bg-slate-900/80;
     @apply border border-white/20 dark:border-white/10;
-    @apply shadow-glass;
+    @apply shadow-lg shadow-black/5 dark:shadow-black/20;
   }
   
   .glass-card {
     @apply backdrop-blur-sm bg-white/60 dark:bg-slate-900/60;
     @apply border border-white/20 dark:border-white/10;
-    @apply shadow-glass;
-    @apply hover:shadow-glass-lg hover:-translate-y-0.5;
-    @apply transition-all duration-200 ease-smooth;
+    @apply shadow-xl shadow-black/5 dark:shadow-black/30;
+    @apply hover:shadow-2xl hover:-translate-y-0.5;
+    @apply transition-all duration-300 ease-in-out;
+    @apply rounded-xl;
   }
   
   .glass-nav {
     @apply backdrop-blur-md bg-white/80 dark:bg-slate-900/80;
     @apply border-r border-white/20 dark:border-white/10;
-    @apply shadow-glass;
+    @apply shadow-lg shadow-black/5 dark:shadow-black/20;
+  }
+  
+  .glass-header {
+    @apply backdrop-blur-lg bg-white/90 dark:bg-slate-900/90;
+    @apply border-b border-white/20 dark:border-white/10;
+    @apply shadow-md shadow-black/5 dark:shadow-black/20;
+  }
+  
+  .glass-sidebar {
+    @apply backdrop-blur-xl bg-white/85 dark:bg-slate-900/85;
+    @apply border-r border-white/20 dark:border-white/10;
+    @apply shadow-xl shadow-black/10 dark:shadow-black/30;
+  }
+  
+  .glass-modal {
+    @apply backdrop-blur-2xl bg-white/90 dark:bg-slate-900/90;
+    @apply border border-white/30 dark:border-white/20;
+    @apply shadow-2xl shadow-black/20 dark:shadow-black/50;
+    @apply rounded-2xl;
   }
   
   .glass-input {
     @apply backdrop-blur-sm bg-white/50 dark:bg-slate-800/50;
     @apply border border-white/30 dark:border-white/20;
-    @apply focus:ring-2 focus:ring-blue-500/50;
+    @apply focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50;
     @apply transition-all duration-200;
+    @apply rounded-lg;
+  }
+  
+  .glass-button {
+    @apply backdrop-blur-md bg-blue-500/90 dark:bg-blue-600/90;
+    @apply border border-white/20 dark:border-white/10;
+    @apply text-white font-medium;
+    @apply shadow-lg shadow-blue-500/20;
+    @apply hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5;
+    @apply transition-all duration-200;
+    @apply rounded-lg;
+  }
+  
+  /* Gradient backgrounds */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  }
+  
+  .bg-gradient-accent {
+    background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  }
+  
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+  }
+  
+  .bg-gradient-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  }
+  
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   }
   
   /* Shimmer loading effect */
@@ -111,17 +163,88 @@
     content: '';
     @apply absolute inset-0 -translate-x-full;
     @apply bg-gradient-to-r from-transparent via-white/20 to-transparent;
-    @apply animate-shimmer;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  /* Pulse effect for live indicators */
+  .pulse-dot {
+    @apply relative;
+  }
+  
+  .pulse-dot::before {
+    content: '';
+    @apply absolute inset-0 rounded-full;
+    @apply bg-current opacity-75;
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-ring {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.75;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
   }
   
   /* Smooth transitions for interactive elements */
   .interactive {
-    @apply transition-all duration-200 ease-smooth;
+    @apply transition-all duration-200 ease-in-out;
     @apply hover:scale-105 active:scale-95;
   }
   
   .interactive-subtle {
-    @apply transition-all duration-200 ease-smooth;
+    @apply transition-all duration-200 ease-in-out;
     @apply hover:scale-[1.02] active:scale-[0.98];
+  }
+  
+  /* Status badges */
+  .badge-active {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300;
+    @apply border border-green-200/50 dark:border-green-700/50;
+  }
+  
+  .badge-inactive {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-900/50 dark:text-gray-300;
+    @apply border border-gray-200/50 dark:border-gray-700/50;
+  }
+  
+  .badge-warning {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300;
+    @apply border border-yellow-200/50 dark:border-yellow-700/50;
+  }
+  
+  .badge-error {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300;
+    @apply border border-red-200/50 dark:border-red-700/50;
+  }
+  
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+    @apply hover:bg-gray-400 dark:hover:bg-gray-600;
   }
 }
