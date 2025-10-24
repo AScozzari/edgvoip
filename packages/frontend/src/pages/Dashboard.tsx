@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Phone, Users, Building, Activity, TrendingUp, Clock } from 'lucide-react';
+import { Phone, Users, Building, Activity, TrendingUp, Clock, UserPlus } from 'lucide-react';
 import apiClient from '@/lib/api';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -26,6 +27,8 @@ export default function Dashboard() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { tenantSlug } = useParams<{ tenantSlug: string }>();
 
   useEffect(() => {
     loadDashboardData();
@@ -212,15 +215,27 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-3">
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-              <Phone className="h-6 w-6 mb-2" />
-              <span>Make Call</span>
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center hover:bg-blue-50 transition-colors"
+              onClick={() => navigate(`/${tenantSlug}/ring-groups`)}
+            >
+              <UserPlus className="h-6 w-6 mb-2" />
+              <span>Ring Groups</span>
             </Button>
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center hover:bg-purple-50 transition-colors"
+              onClick={() => navigate(`/${tenantSlug}/extensions`)}
+            >
               <Users className="h-6 w-6 mb-2" />
               <span>Manage Extensions</span>
             </Button>
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center hover:bg-orange-50 transition-colors"
+              onClick={() => navigate(`/${tenantSlug}/stores`)}
+            >
               <Building className="h-6 w-6 mb-2" />
               <span>Store Settings</span>
             </Button>
