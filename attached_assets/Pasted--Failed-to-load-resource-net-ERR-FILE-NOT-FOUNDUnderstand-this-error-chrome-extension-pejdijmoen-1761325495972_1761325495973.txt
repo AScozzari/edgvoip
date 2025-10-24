@@ -1,0 +1,26 @@
+ Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.loc&colorScheme=&screenX=3249&screenY=0&effectiveWindowWid…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.loca&colorScheme=&screenX=3249&screenY=0&effectiveWindowWi…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.loca&colorScheme=&screenX=3249&screenY=0&effectiveWindowWi…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.loca&colorScheme=&screenX=3249&screenY=0&effectiveWindowWi…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js:1  Failed to load resource: net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:12  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/utils.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:14  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/heuristicsRedefinitions.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+completion_list.html?username=admin@demo.local&colorScheme=&screenX=3249&screenY=0&effectiveWindowW…:13  GET chrome-extension://pejdijmoenmkgeppbflobdenhhabjlaj/extensionState.js net::ERR_FILE_NOT_FOUNDUnderstand this error
+login:74  POST https://872105e8-3f94-4b87-a6f2-99b1a8ac42b3-00-1we0tlwi9z2qi.janeway.replit.dev/api/demo/login 500 (Internal Server Error)

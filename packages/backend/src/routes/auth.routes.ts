@@ -91,6 +91,22 @@ router.post('/superadmin/login', async (req, res) => {
   }
 });
 
+
+/**
+ * Validate tenant exists: GET /:tenantSlug/validate
+ * Public endpoint to check if a tenant exists (no authentication required)
+ */
+router.get('/:tenantSlug/validate', validateTenantSlug, (req: TenantRequest, res) => {
+  return res.status(200).json({
+    success: true,
+    data: {
+      slug: req.tenant?.slug,
+      name: req.tenant?.name,
+      domain: req.tenant?.domain
+    }
+  });
+});
+
 /**
  * Tenant-scoped login: POST /:tenantSlug/login
  * Validates tenant slug and authenticates user within that tenant

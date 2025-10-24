@@ -29,17 +29,23 @@ import IvrMenus from '@/pages/IvrMenus';
 import ConferenceRooms from '@/pages/ConferenceRooms';
 import Voicemail from '@/pages/Voicemail';
 import TimeConditions from '@/pages/TimeConditions';
+import { useTenantValidation } from '@/hooks/useTenantValidation';
 
 function TenantRoutes() {
   const { tenantSlug } = useParams();
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth();
+  const { isValid: tenantValid, isLoading: tenantLoading } = useTenantValidation(tenantSlug);
 
-  if (isLoading) {
+  if (authLoading || tenantLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
+  }
+
+  if (tenantValid === false) {
+    return <TenantNotFound />;
   }
 
   return (
