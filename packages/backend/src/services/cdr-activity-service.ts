@@ -38,7 +38,7 @@ export interface VoipActivityLog {
 
 export interface TenantContext {
   tenant_id: string;
-  sip_domain: string;
+  sip_domain?: string; // Optional for master tenant
   store_id?: string;
 }
 
