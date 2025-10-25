@@ -151,16 +151,16 @@ app.get('/', (req, res) => {
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    error: {
-      code: 'NOT_FOUND',
-      message: 'Endpoint not found'
-    }
-  });
-});
+// 404 handler - moved to AFTER all routes to prevent catching API requests
+// app.use('*', (req, res) => {
+//   res.status(404).json({
+//     success: false,
+//     error: {
+//       code: 'NOT_FOUND',
+//       message: 'Endpoint not found'
+//     }
+//   });
+// });
 
 // Body parser error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
