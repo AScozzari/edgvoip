@@ -1,5 +1,12 @@
 // Check current database status and tenant information
-const { pool } = require('@w3-voip/database');
+// Note: This script uses a direct Pool connection to avoid DATABASE_URL validation issues
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  connectionTimeoutMillis: 10000
+});
 
 async function checkStatus() {
   const client = await pool.connect();
