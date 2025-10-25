@@ -6,6 +6,12 @@ import { validateTenantSlug, TenantRequest } from '../middleware/tenant.middlewa
 
 const router = express.Router();
 
+// Debug middleware for auth router
+router.use((req, res, next) => {
+  console.log(`📍 AUTH.ROUTES.TS: ${req.method} ${req.path}`);
+  next();
+});
+
 /**
  * Validate tenant exists: GET /:tenantSlug/validate
  * Public endpoint to check if a tenant exists (no authentication required)

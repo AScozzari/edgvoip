@@ -127,10 +127,20 @@ app.use(sanitizeInput);
 // Request size limiting
 app.use(requestSizeLimit('10mb'));
 
+// Debug middleware - log ALL requests
+app.use((req, res, next) => {
+  console.log(`📍 REQUEST: ${req.method} ${req.path}`);
+  next();
+});
+
 // Rate limiting
 app.use('/api', apiRateLimit);
 
-// API routes
+// API routes - with debug
+app.use('/api', (req, res, next) => {
+  console.log(`📍 API ROUTER: ${req.method} ${req.path}`);
+  next();
+});
 app.use('/api', apiRoutes);
 
 // Root endpoint

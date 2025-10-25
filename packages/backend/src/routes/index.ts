@@ -18,6 +18,12 @@ import routingRouter from './routing.routes';
 
 const router = Router();
 
+// Debug middleware for this router
+router.use((req, res, next) => {
+  console.log(`📍 ROUTES/INDEX.TS: ${req.method} ${req.path}`);
+  next();
+});
+
 // FreeSWITCH XML Curl endpoint (NO auth - internal FreeSWITCH call)
 router.use('/freeswitch', freeswitchXmlRouter);
 
