@@ -36,21 +36,7 @@ router.use('/freeswitch-deploy', freeswitchDeployRouter);
 router.use('/dialplan', dialplanRulesRouter);
 router.use('/routing', routingRouter);
 
-// Mount routers with root paths LAST to avoid catching other routes
-router.use('/', systemRouter);
-router.use('/', authRouter); // Auth routes at root level (/:tenantSlug/login, /:tenantSlug/validate)
-
-// TEST DIRECT ROUTE
-router.get('/test-direct', (req, res) => {
-  res.json({
-    success: true,
-    data: {
-      message: 'Direct route in index.ts works!'
-    }
-  });
-});
-
-// Health check endpoint
+// Health check endpoint - BEFORE catch-all routers
 router.get('/health', (req, res) => {
   res.json({
     success: true,
@@ -61,5 +47,9 @@ router.get('/health', (req, res) => {
     }
   });
 });
+
+// Mount routers with root paths LAST to avoid catching other routes
+router.use('/', systemRouter);
+router.use('/', authRouter); // Auth routes at root level (/:tenantSlug/login, /:tenantSlug/validate)
 
 export default router;

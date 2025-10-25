@@ -6,27 +6,13 @@ import { validateTenantSlug, TenantRequest } from '../middleware/tenant.middlewa
 
 const router = express.Router();
 
-// =====================================================
-// GET ROUTES FIRST - Testing route order issue
-// =====================================================
-
-// TEST ROUTE - Simple GET without params
-router.get('/test-validate', (req, res) => {
-  console.log('✅ TEST-VALIDATE ROUTE HIT!');
-  return res.status(200).json({
-    success: true,
-    data: {
-      message: 'Test route works!'
-    }
-  });
-});
-
 /**
  * Validate tenant exists: GET /:tenantSlug/validate
  * Public endpoint to check if a tenant exists (no authentication required)
+ * MUST BE BEFORE tenant login to avoid route conflicts
  */
 router.get('/:tenantSlug/validate', validateTenantSlug, (req: TenantRequest, res) => {
-  console.log('✅ VALIDATE ROUTE HIT! tenantSlug:', req.params.tenantSlug);
+  console.log('🔵 VALIDATE ROUTE HIT! Tenant:', req.tenant);
   return res.status(200).json({
     success: true,
     data: {
@@ -36,10 +22,6 @@ router.get('/:tenantSlug/validate', validateTenantSlug, (req: TenantRequest, res
     }
   });
 });
-
-// =====================================================
-// POST ROUTES
-// =====================================================
 
 /**
  * Super admin login: POST /superadmin/login
