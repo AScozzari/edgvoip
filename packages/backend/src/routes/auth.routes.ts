@@ -6,6 +6,40 @@ import { validateTenantSlug, TenantRequest } from '../middleware/tenant.middlewa
 
 const router = express.Router();
 
+// =====================================================
+// GET ROUTES FIRST - Testing route order issue
+// =====================================================
+
+// TEST ROUTE - Simple GET without params
+router.get('/test-validate', (req, res) => {
+  console.log('✅ TEST-VALIDATE ROUTE HIT!');
+  return res.status(200).json({
+    success: true,
+    data: {
+      message: 'Test route works!'
+    }
+  });
+});
+
+/**
+ * Validate tenant exists: GET /:tenantSlug/validate
+ * Public endpoint to check if a tenant exists (no authentication required)
+ */
+router.get('/:tenantSlug/validate', (req: TenantRequest, res) => {
+  console.log('✅ VALIDATE ROUTE HIT! tenantSlug:', req.params.tenantSlug);
+  return res.status(200).json({
+    success: true,
+    data: {
+      slug: req.params.tenantSlug,
+      message: 'Route works! (without middleware validation)'
+    }
+  });
+});
+
+// =====================================================
+// POST ROUTES
+// =====================================================
+
 /**
  * Super admin login: POST /superadmin/login
  * Authenticates super admin users (no tenant validation)
@@ -89,33 +123,6 @@ router.post('/superadmin/login', async (req, res) => {
       error: 'Internal server error'
     });
   }
-});
-
-
-// TEST ROUTE - Simple GET without params
-router.get('/test-validate', (req, res) => {
-  return res.status(200).json({
-    success: true,
-    data: {
-      message: 'Test route works!'
-    }
-  });
-});
-
-/**
- * Validate tenant exists: GET /:tenantSlug/validate
- * Public endpoint to check if a tenant exists (no authentication required)
- */
-router.get('/:tenantSlug/validate', (req: TenantRequest, res) => {
-  console.log('🔍 VALIDATE ROUTE HIT! tenantSlug:', req.params.tenantSlug);
-  console.log('🔍 THIS ROUTE WAS REACHED WITHOUT MIDDLEWARE!');
-  return res.status(200).json({
-    success: true,
-    data: {
-      slug: req.params.tenantSlug,
-      message: 'Route works! (without middleware validation)'
-    }
-  });
 });
 
 /**
