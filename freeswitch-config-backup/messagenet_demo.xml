@@ -1,0 +1,44 @@
+<include>
+  <gateway name="messagenet_demo">
+    <!-- Server -->
+    <param name="proxy" value="sip.messagenet.it"/>
+    <param name="register" value="true"/>
+    
+    <!-- Authentication -->
+    <param name="username" value="5406594427"/>
+    <param name="password" value="UjcHYnZa"/>
+    <param name="realm" value="sip.messagenet.it"/>
+    
+    <!-- From Header (DEVE essere uguale a username per Messagenet) -->
+    <param name="from-user" value="5406594427"/>
+    <param name="from-domain" value="sip.messagenet.it"/>
+    
+    <!-- Contact (DID senza +39) -->
+    <param name="extension" value="0686356924"/>
+    <param name="contact-params" value="gw=messagenet_demo"/>
+    
+    <!-- Registration -->
+    <param name="expire-seconds" value="600"/>
+    <param name="retry-seconds" value="30"/>
+    <param name="register-transport" value="udp"/>
+    
+    <!-- Keepalive -->
+    <param name="ping" value="30"/>
+    
+    <!-- Codec (CRITICO per audio) -->
+    <param name="codec-prefs" value="PCMU,PCMA"/>
+    <param name="inbound-codec-prefs" value="PCMU,PCMA"/>
+    <param name="outbound-codec-prefs" value="PCMU,PCMA"/>
+    
+    <!-- Context -->
+    <param name="context" value="public"/>
+    
+    <!-- Tenant Variables -->
+    <variables>
+      <variable name="tenant_id" value="42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+      <variable name="tenant_slug" value="demo"/>
+      <variable name="trunk_id" value="b773a426-c646-47e4-ba13-1320dc8724cb"/>
+    </variables>
+  </gateway>
+</include>
+

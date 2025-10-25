@@ -1,0 +1,63 @@
+<include>
+  <!-- Domain configuration for Demo Tenant -->
+  <domain name="demo.edgvoip.it">
+    <params>
+      <param name="dial-string" value="{^^:sip_invite_domain=${dialed_domain}:presence_id=${dialed_user}@${dialed_domain}}${sofia_contact(*/${dialed_user}@${dialed_domain})},${verto_contact(${dialed_user}@${dialed_domain})}"/>
+      <param name="jsonrpc-allowed-methods" value="verto"/>
+    </params>
+
+    <variables>
+      <variable name="tenant_id" value="42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+      <variable name="tenant_slug" value="demo"/>
+      <variable name="tenant_name" value="Demo Tenant"/>
+      <variable name="domain_name" value="demo.edgvoip.it"/>
+    </variables>
+
+    <groups>
+      <group name="default">
+        <users>
+          
+          <!-- User 2000 -->
+          <user id="2000">
+            <params>
+              <param name="password" value="test123456"/>
+              <param name="vm-password" value="2000"/>
+            </params>
+            <variables>
+              <variable name="tenant_id" value="42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+              <variable name="tenant_slug" value="demo"/>
+              <variable name="tenant_name" value="Demo Tenant"/>
+              <variable name="domain_name" value="demo.edgvoip.it"/>
+              <variable name="user_context" value="demo.edgvoip.it"/>
+              <variable name="effective_caller_id_name" value="Demo 2000"/>
+              <variable name="effective_caller_id_number" value="2000"/>
+              <variable name="outbound_caller_id_name" value="Demo Company"/>
+              <variable name="outbound_caller_id_number" value="+390686356924"/>
+            </variables>
+          </user>
+
+          <!-- User 2001 -->
+          <user id="2001">
+            <params>
+              <param name="password" value="test123456"/>
+              <param name="vm-password" value="2001"/>
+            </params>
+            <variables>
+              <variable name="tenant_id" value="42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+              <variable name="tenant_slug" value="demo"/>
+              <variable name="tenant_name" value="Demo Tenant"/>
+              <variable name="domain_name" value="demo.edgvoip.it"/>
+              <variable name="user_context" value="demo.edgvoip.it"/>
+              <variable name="effective_caller_id_name" value="Demo 2001"/>
+              <variable name="effective_caller_id_number" value="2001"/>
+              <variable name="outbound_caller_id_name" value="Demo Company"/>
+              <variable name="outbound_caller_id_number" value="+390686356924"/>
+            </variables>
+          </user>
+
+        </users>
+      </group>
+    </groups>
+  </domain>
+</include>
+
