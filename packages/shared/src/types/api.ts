@@ -48,6 +48,7 @@ export const JWTPayloadSchema = z.object({
   store_id: z.string().uuid().optional(),
   role: z.enum(['super_admin', 'tenant_admin', 'admin', 'manager', 'user']),
   permissions: z.array(z.string()).optional(),
+  is_master_tenant: z.boolean().optional(), // True if user belongs to master tenant (edgvoip)
   iat: z.number(),
   exp: z.number()
 });

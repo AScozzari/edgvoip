@@ -8,8 +8,10 @@ dotenv.config();
 
 export interface TenantContext {
   tenant_id: string;
-  sip_domain: string;
+  sip_domain?: string;
   store_id?: string;
+  is_impersonating?: boolean;
+  original_user?: any;
 }
 
 // Extend Express Request interface
