@@ -28,7 +28,7 @@ export function useAuth() {
 
   // Initialize auth state from localStorage
   useEffect(() => {
-    const token = localStorage.getItem('edg-voip-token');
+    const token = localStorage.getItem('edgvoip-token');
     if (token) {
       try {
         // Check if token is a valid JWT format
@@ -50,7 +50,7 @@ export function useAuth() {
 
         // Check if token is expired
         if (user.exp && user.exp * 1000 < Date.now()) {
-          localStorage.removeItem('edg-voip-token');
+          localStorage.removeItem('edgvoip-token');
           setAuthState({
             user: null,
             token: null,
@@ -68,7 +68,7 @@ export function useAuth() {
         }
       } catch (error) {
         console.error('Invalid token:', error);
-        localStorage.removeItem('edg-voip-token');
+        localStorage.removeItem('edgvoip-token');
         setAuthState({
           user: null,
           token: null,
@@ -104,7 +104,7 @@ export function useAuth() {
         exp: payload.exp,
       };
 
-      localStorage.setItem('edg-voip-token', token);
+      localStorage.setItem('edgvoip-token', token);
       apiClient.setToken(token);
       
       setAuthState({
@@ -116,13 +116,13 @@ export function useAuth() {
     } catch (error) {
       console.error('Invalid token:', error);
       // Clear any invalid token
-      localStorage.removeItem('edg-voip-token');
+      localStorage.removeItem('edgvoip-token');
       throw new Error('Invalid token');
     }
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('edg-voip-token');
+    localStorage.removeItem('edgvoip-token');
     apiClient.clearToken();
     setAuthState({
       user: null,

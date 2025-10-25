@@ -46,7 +46,7 @@ if (!process.env.JWT_SECRET && process.env.NODE_ENV === 'production') {
   console.error('❌ ERRORE CRITICO: JWT_SECRET non configurato in produzione!');
   process.exit(1);
 }
-const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024-DEVELOPMENT-ONLY';
+const JWT_SECRET = process.env.JWT_SECRET || 'edgvoip-secret-key-2024-DEVELOPMENT-ONLY';
 
 // Security middleware
 app.use(securityHeaders);

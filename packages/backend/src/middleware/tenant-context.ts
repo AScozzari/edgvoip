@@ -35,7 +35,7 @@ export async function tenantContextMiddleware(req: Request, res: Response, next:
     }
 
     const token = authHeader.split(' ')[1];
-    const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024';
+    const JWT_SECRET = process.env.JWT_SECRET || 'edgvoip-secret-key-2024';
 
     // Verify and decode JWT
     const payload = jwt.verify(token, JWT_SECRET) as any;

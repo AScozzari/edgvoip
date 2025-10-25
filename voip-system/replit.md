@@ -43,8 +43,8 @@ The application runs automatically via Replit workflows:
 ### Multi-Tenant System
 The VoIP system is multi-tenant. Access via:
 - URL pattern: `/{tenantSlug}/login`
-- Default tenant: `edg-voip`
-- Login URL: `/edg-voip/login`
+- Default tenant: `edgvoip`
+- Login URL: `/edgvoip/login`
 
 Demo credentials are shown on the login page.
 
@@ -57,7 +57,7 @@ Demo credentials are shown on the login page.
    - **Impact**: Tenant `demo` now has SIP domain `demo.edgvoip.it`
 
 2. **Super Admin Tenant Architecture**
-   - **Tenant `edg-voip`**: Now has `sip_domain = NULL` 
+   - **Tenant `edgvoip`**: Now has `sip_domain = NULL` 
    - **Purpose**: Super admin tenant ONLY manages other tenants (no SIP functionality)
    - **Regular Tenants**: Auto-generate `sip_domain = {slug}.edgvoip.it`
    - **Migration 018**: `packages/database/src/migrations/018_allow_null_sip_domain.sql`

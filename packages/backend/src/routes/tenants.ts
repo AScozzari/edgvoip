@@ -56,7 +56,7 @@ router.post('/', asyncHandler(async (req: AuthRequest, res) => {
   const tenantData = validationResult.data;
   
   // Determine if this is a super admin tenant
-  const isSuperAdmin = tenantData.slug === 'edg-voip' || 
+  const isSuperAdmin = tenantData.slug === 'edgvoip' || 
                        tenantData.admin_user?.role === 'super_admin';
   
   // Auto-generate sip_domain if not provided

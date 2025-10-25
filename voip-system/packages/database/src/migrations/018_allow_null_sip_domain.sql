@@ -1,5 +1,5 @@
 -- Allow NULL sip_domain for super admin tenants
--- Super admin tenants (like edg-voip) don't need a SIP domain as they only manage other tenants
+-- Super admin tenants (like edgvoip) don't need a SIP domain as they only manage other tenants
 
 -- Remove UNIQUE constraint first (will recreate as partial unique below)
 ALTER TABLE tenants DROP CONSTRAINT IF EXISTS tenants_sip_domain_key;
