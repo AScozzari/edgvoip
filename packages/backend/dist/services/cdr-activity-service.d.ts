@@ -31,7 +31,7 @@ export interface VoipActivityLog {
 }
 export interface TenantContext {
     tenant_id: string;
-    sip_domain: string;
+    sip_domain?: string;
     store_id?: string;
 }
 export interface CdrFilters {

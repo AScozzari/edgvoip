@@ -19,6 +19,11 @@
             "date": 1761215269286,
             "name": "/var/www/voip-system/packages/backend/logs/api-2025-10-23.log",
             "hash": "af45a2cb2de50442d7920b931c6290c2f738dbb3521cb2a2f9304147df74c2f4"
+        },
+        {
+            "date": 1761377554616,
+            "name": "/var/www/voip-system/packages/backend/logs/api-2025-10-25.log",
+            "hash": "35b5da7e2d946c87ba30a25a057caff08b37371f55d79e3ffac0850b88461637"
         }
     ],
     "hashType": "sha256"

@@ -23,7 +23,7 @@ async function tenantContextMiddleware(req, res, next) {
             return res.status(401).json({ error: 'No valid authorization header' });
         }
         const token = authHeader.split(' ')[1];
-        const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024';
+        const JWT_SECRET = process.env.JWT_SECRET || 'edgvoip-secret-key-2024';
         // Verify and decode JWT
         const payload = jsonwebtoken_1.default.verify(token, JWT_SECRET);
         if (!payload.tenant_id) {
@@ -56,11 +56,11 @@ function generateSipDomain(tenantName) {
         .toLowerCase()
         .trim()
         .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')}.edgvoip.local`;
+        .replace(/[^a-z0-9-]/g, '')}.edgvoip.it`;
 }
 // Helper function to validate SIP domain format
 function validateSipDomain(sipDomain) {
-    const regex = /^[a-z0-9-]+\.edgvoip\.local$/;
+    const regex = /^[a-z0-9-]+\.edgvoip\.it$/;
     return regex.test(sipDomain) && sipDomain.length <= 253;
 }
 //# sourceMappingURL=tenant-context.js.map

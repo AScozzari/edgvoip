@@ -34,5 +34,25 @@ export declare class FreeSWITCHConfigService {
     deleteTenantConfig(tenant: Tenant): Promise<void>;
     private generateSecurePassword;
     syncAllTenantConfigs(): Promise<void>;
+    /**
+     * Generate tenant contexts XML from template
+     */
+    generateTenantContexts(tenant: any): Promise<string>;
+    /**
+     * Generate all extensions XML for a tenant
+     */
+    generateExtensionsXML(tenant: any): Promise<string[]>;
+    /**
+     * Generate single extension XML from template
+     */
+    generateExtensionXML(extension: any, tenant: any): Promise<string>;
+    /**
+     * Generate all trunks XML for a tenant
+     */
+    generateTrunksXML(tenant: any): Promise<string[]>;
+    /**
+     * Generate single trunk gateway XML from template
+     */
+    generateTrunkGatewayXML(trunk: any, tenant: any): Promise<string>;
 }
 //# sourceMappingURL=freeswitch-config.service.d.ts.map

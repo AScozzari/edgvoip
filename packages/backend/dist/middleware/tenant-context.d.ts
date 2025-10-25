@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 export interface TenantContext {
     tenant_id: string;
-    sip_domain: string;
+    sip_domain?: string;
     store_id?: string;
+    is_impersonating?: boolean;
+    original_user?: any;
 }
 declare global {
     namespace Express {

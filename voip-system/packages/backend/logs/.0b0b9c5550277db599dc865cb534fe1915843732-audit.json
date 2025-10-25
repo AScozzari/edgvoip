@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/var/www/voip-system/voip-system/packages/backend/logs/.0b0b9c5550277db599dc865cb534fe1915843732-audit.json",
+    "files": [
+        {
+            "date": 1761377590440,
+            "name": "/var/www/voip-system/voip-system/packages/backend/logs/freeswitch-2025-10-25.log",
+            "hash": "94a674ee060fe0ef0a3260f57bf58c7dfca91aaba70a4df9a79283597670d3de"
+        }
+    ],
+    "hashType": "sha256"
+}

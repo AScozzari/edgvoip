@@ -88,7 +88,7 @@ export interface CreateContactPolicyRequest {
 }
 export interface TenantContext {
     tenant_id: string;
-    sip_domain: string;
+    sip_domain?: string;
     store_id?: string;
 }
 export declare class W3VoipService {

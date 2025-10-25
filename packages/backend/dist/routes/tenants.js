@@ -46,13 +46,27 @@ router.post('/', (0, response_1.asyncHandler)(async (req, res) => {
         return (0, response_1.errorResponse)(res, 'Invalid request data', 400, 'VALIDATION_ERROR', validationResult.error.errors);
     }
     const tenantData = validationResult.data;
-    // Auto-generate sip_domain if not provided
+    // Determine if this is a super admin tenant
+    const isSuperAdmin = tenantData.slug === 'edgvoip' ||
+        tenantData.admin_user?.role === 'super_admin';
+    // Auto-generate sip_domain and context_prefix if not provided
     if (!tenantData.sip_domain) {
-        tenantData.sip_domain = tenantData.slug + '.edgvoip.it';
-        console.log('Auto-generated SIP domain: ' + tenantData.sip_domain);
+        if (isSuperAdmin) {
+            // Super admin tenants don't need SIP domain (they only manage other tenants)
+            tenantData.sip_domain = null;
+            console.log('Super admin tenant - no SIP domain needed');
+        }
+        else {
+            // Regular tenants get auto-generated SIP domain
+            tenantData.sip_domain = tenantData.slug + '.edgvoip.it';
+            console.log('Auto-generated SIP domain: ' + tenantData.sip_domain);
+        }
     }
-    const tenant = await tenantService.createTenantWithCompanies(tenantData);
-    (0, response_1.successResponse)(res, tenant, 'Tenant created successfully');
+    // Use enhanced method that creates tenant + FreeSWITCH contexts automatically
+    const tenant = await tenantService.createTenantWithContexts(tenantData);
+    // Log context creation
+    console.log(`✅ Tenant ${tenantData.slug} created with FreeSWITCH contexts`);
+    (0, response_1.successResponse)(res, tenant, 'Tenant created successfully with FreeSWITCH contexts');
 }));
 // GET /api/tenants/:id - Get tenant details with companies and contacts
 router.get('/:id', (0, response_1.asyncHandler)(async (req, res) => {

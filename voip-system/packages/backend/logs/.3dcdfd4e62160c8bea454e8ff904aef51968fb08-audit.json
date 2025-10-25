@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/var/www/voip-system/voip-system/packages/backend/logs/.3dcdfd4e62160c8bea454e8ff904aef51968fb08-audit.json",
+    "files": [
+        {
+            "date": 1761377590432,
+            "name": "/var/www/voip-system/voip-system/packages/backend/logs/security-2025-10-25.log",
+            "hash": "2bc1ff37fc7397a9b6dbb2d9dee0ae2afb4e451fb0f0ca41d14b0b082b95356b"
+        }
+    ],
+    "hashType": "sha256"
+}

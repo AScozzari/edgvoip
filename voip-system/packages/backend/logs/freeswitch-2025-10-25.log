@@ -1,0 +1,3 @@
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-25 07:33:11:3311"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-25 19:03:34:334"}
+{"data":{"host":"localhost","mode":"MOCK","port":8021,"status":"connected"},"event":"mock_connection","level":"info","message":"FreeSWITCH Event","timestamp":"2025-10-25 19:13:55:1355"}

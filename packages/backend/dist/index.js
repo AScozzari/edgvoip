@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.io = exports.server = exports.app = void 0;
+exports.JWT_SECRET = exports.io = exports.server = exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const compression_1 = __importDefault(require("compression"));
@@ -13,6 +13,23 @@ const http_1 = require("http");
 const socket_io_1 = require("socket.io");
 // Load environment variables
 dotenv_1.default.config();
+// Validate required environment variables
+function validateEnvironment() {
+    const required = ['DATABASE_URL', 'JWT_SECRET'];
+    const missing = required.filter(key => !process.env[key]);
+    if (missing.length > 0) {
+        console.error('❌ Missing required environment variables:', missing.join(', '));
+        console.error('💡 Please set these in your .env file');
+        process.exit(1);
+    }
+    if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
+        console.error('❌ JWT_SECRET must be at least 32 characters long');
+        process.exit(1);
+    }
+    console.log('✅ Environment variables validated');
+}
+// Validate environment on startup
+validateEnvironment();
 // Import middleware
 const security_1 = require("./middleware/security");
 const logger_1 = require("./utils/logger");
@@ -25,23 +42,38 @@ const app = (0, express_1.default)();
 exports.app = app;
 const server = (0, http_1.createServer)(app);
 exports.server = server;
+// Get CORS origin from environment or use restrictive default
+const corsOrigin = process.env.CORS_ORIGIN?.split(',').map(origin => origin.trim()) || ['http://localhost:3000'];
 const io = new socket_io_1.Server(server, {
     cors: {
-        origin: true,
+        origin: corsOrigin,
         methods: ['GET', 'POST'],
         credentials: true
     }
 });
 exports.io = io;
 const PORT = process.env.PORT || 3001;
-const JWT_SECRET = process.env.JWT_SECRET || 'edg-voip-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET; // Validated above
+exports.JWT_SECRET = JWT_SECRET;
 // Security middleware
 app.use(security_1.securityHeaders);
 app.use(security_1.requestId);
 app.use(security_1.securityEventLogger);
-// CORS configuration - Allow all origins in development
+// CORS configuration - Secure, only allowed origins
 app.use((0, cors_1.default)({
-    origin: true,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, Postman, curl)
+        if (!origin)
+            return callback(null, true);
+        // Check if origin is in allowed list
+        if (corsOrigin.includes(origin) || corsOrigin.includes('*')) {
+            callback(null, true);
+        }
+        else {
+            console.warn(`🚫 CORS blocked request from origin: ${origin}`);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID']
@@ -142,14 +174,15 @@ async function checkDatabaseHealth() {
     try {
         const isHealthy = await (0, database_1.healthCheck)();
         if (!isHealthy) {
-            console.error('❌ Database health check failed');
-            process.exit(1);
+            console.warn('⚠️ Database health check returned false, but continuing anyway');
         }
-        console.log('✅ Database health check passed');
+        else {
+            console.log('✅ Database health check passed');
+        }
     }
     catch (error) {
-        console.error('❌ Database connection failed:', error);
-        process.exit(1);
+        console.error('⚠️ Database connection failed:', error);
+        console.warn('⚠️ Continuing despite health check failure (database may recover)');
     }
 }
 // Start server
@@ -157,12 +190,17 @@ async function startServer() {
     try {
         // Check database health
         await checkDatabaseHealth();
+        // Start periodic health check (every 30 seconds)
+        (0, database_1.startPeriodicHealthCheck)(30000);
         // Start HTTP server
         server.listen(Number(PORT), '0.0.0.0', () => {
             console.log(`🚀 W3 VoIP System API running on port ${PORT}`);
             console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-            console.log(`🔗 CORS Origin: ${process.env.CORS_ORIGIN || 'http://192.168.172.234:3000'}`);
+            console.log(`🔗 CORS Origins: ${corsOrigin.join(', ')}`);
             console.log(`📡 Socket.IO enabled for real-time updates`);
+            // Log initial pool stats
+            const stats = (0, database_1.getPoolStats)();
+            console.log(`🔌 Database pool: ${stats.totalCount} total, ${stats.idleCount} idle, ${stats.waitingCount} waiting`);
         });
     }
     catch (error) {
@@ -185,13 +223,44 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
-// Handle uncaught exceptions
+// Handle uncaught exceptions (but don't crash on database connection errors)
 process.on('uncaughtException', (error) => {
+    // Database connection errors - log but don't crash (pool will handle reconnection)
+    const dbErrorCodes = ['57P01', '57P02', '57P03', '08003', '08006', '08P01', 'ECONNREFUSED', 'ECONNRESET'];
+    const isDbError = dbErrorCodes.includes(error?.code) ||
+        error?.message?.includes('terminating connection') ||
+        error?.message?.includes('Connection terminated') ||
+        error?.message?.includes('server closed the connection');
+    if (isDbError) {
+        console.error('⚠️ Database connection error (non-fatal):', error.message);
+        console.error('⚠️ Error code:', error.code);
+        console.error('⚠️ Connection pool will handle recovery automatically');
+        return;
+    }
+    // For other critical errors, log and exit
     console.error('❌ Uncaught Exception:', error);
+    console.error('Stack trace:', error.stack);
     process.exit(1);
 });
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+    // Database connection errors - log but don't crash
+    const dbErrorCodes = ['57P01', '57P02', '57P03', '08003', '08006', '08P01', 'ECONNREFUSED', 'ECONNRESET'];
+    const isDbError = dbErrorCodes.includes(reason?.code) ||
+        reason?.message?.includes('terminating connection') ||
+        reason?.message?.includes('Connection terminated') ||
+        reason?.message?.includes('server closed the connection');
+    if (isDbError) {
+        console.error('⚠️ Database connection promise rejection (non-fatal):', reason.message);
+        console.error('⚠️ Error code:', reason.code);
+        console.error('⚠️ Connection pool will handle recovery automatically');
+        return;
+    }
+    // For other critical rejections, log and exit
+    console.error('❌ Unhandled Rejection at:', promise);
+    console.error('Reason:', reason);
+    if (reason?.stack) {
+        console.error('Stack trace:', reason.stack);
+    }
     process.exit(1);
 });
 // Start the server

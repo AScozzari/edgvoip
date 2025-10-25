@@ -31,6 +31,7 @@ exports.JWTPayloadSchema = zod_1.z.object({
     store_id: zod_1.z.string().uuid().optional(),
     role: zod_1.z.enum(['super_admin', 'tenant_admin', 'admin', 'manager', 'user']),
     permissions: zod_1.z.array(zod_1.z.string()).optional(),
+    is_master_tenant: zod_1.z.boolean().optional(), // True if user belongs to master tenant (edgvoip)
     iat: zod_1.z.number(),
     exp: zod_1.z.number()
 });

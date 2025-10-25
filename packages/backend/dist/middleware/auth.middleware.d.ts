@@ -20,6 +20,10 @@ export declare function requireSuperAdmin(req: AuthenticatedRequest, res: Respon
  */
 export declare function requireAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): Response<any, Record<string, any>>;
 /**
+ * Middleware to require tenant admin role
+ */
+export declare function requireTenantAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction): Response<any, Record<string, any>>;
+/**
  * Middleware to require tenant access (user must belong to the tenant)
  */
 export declare function requireTenantAccess(req: AuthenticatedRequest, res: Response, next: NextFunction): void | Response<any, Record<string, any>>;

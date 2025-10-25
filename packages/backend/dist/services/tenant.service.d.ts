@@ -3,13 +3,21 @@ export interface Tenant {
     id: string;
     name: string;
     domain: string;
-    sip_domain: string;
+    sip_domain: string | null;
+    slug: string;
+    context_prefix: string;
+    parent_tenant_id: string | null;
+    is_master: boolean;
+    timezone: string;
+    language: string;
     status: 'active' | 'suspended' | 'pending';
     settings: {
         max_extensions: number;
+        max_trunks: number;
         max_concurrent_calls: number;
         recording_enabled: boolean;
-        voicemail_enabled: boolean;
+        voicemail_enabled?: boolean;
+        voicemail_directory: string;
     };
     created_at: Date;
     updated_at: Date;
@@ -35,7 +43,7 @@ export declare class TenantService {
     }>;
     activateTenant(tenantId: string): Promise<Tenant>;
     suspendTenant(tenantId: string): Promise<Tenant>;
-    validateDomainUniqueness(domain: string, sipDomain: string, excludeTenantId?: string): Promise<boolean>;
+    validateDomainUniqueness(domain: string, sipDomain: string | null, excludeTenantId?: string): Promise<boolean>;
     createTenantWithCompanies(data: CreateTenantRequest): Promise<Tenant>;
     getCrossTenantStats(): Promise<CrossTenantStats>;
     getTenantStatsList(): Promise<TenantStats[]>;
@@ -45,5 +53,18 @@ export declare class TenantService {
         companies: Company[];
         contacts: TenantContact[];
     }>;
+    /**
+     * Generate context prefix from tenant slug
+     */
+    generateContextPrefix(slug: string): string;
+    /**
+     * Create default FreeSWITCH contexts for a tenant
+     * Creates 6 contexts: internal, outbound, external, features, voicemail, emergency
+     */
+    createTenantContexts(tenantId: string): Promise<void>;
+    /**
+     * Enhanced createTenantWithCompanies that also creates FreeSWITCH contexts
+     */
+    createTenantWithContexts(data: CreateTenantRequest): Promise<any>;
 }
 //# sourceMappingURL=tenant.service.d.ts.map

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticateJWT = authenticateJWT;
 exports.requireSuperAdmin = requireSuperAdmin;
 exports.requireAdmin = requireAdmin;
+exports.requireTenantAdmin = requireTenantAdmin;
 exports.requireTenantAccess = requireTenantAccess;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 /**
@@ -70,6 +71,24 @@ function requireAdmin(req, res, next) {
         return res.status(403).json({
             success: false,
             error: 'Admin access required'
+        });
+    }
+    next();
+}
+/**
+ * Middleware to require tenant admin role
+ */
+function requireTenantAdmin(req, res, next) {
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            error: 'Authentication required'
+        });
+    }
+    if (req.user.role !== 'super_admin' && req.user.role !== 'tenant_admin') {
+        return res.status(403).json({
+            success: false,
+            error: 'Tenant admin access required'
         });
     }
     next();

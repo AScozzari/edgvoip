@@ -7,6 +7,7 @@ const express_1 = require("express");
 const auth_routes_1 = __importDefault(require("./auth.routes"));
 const tenants_1 = __importDefault(require("./tenants"));
 const stores_1 = __importDefault(require("./stores"));
+const users_routes_1 = __importDefault(require("./users.routes"));
 const extensions_1 = __importDefault(require("./extensions"));
 const calls_1 = __importDefault(require("./calls"));
 const cdr_1 = __importDefault(require("./cdr"));
@@ -16,6 +17,9 @@ const system_1 = __importDefault(require("./system"));
 const voip_1 = __importDefault(require("./voip"));
 const sip_trunks_1 = __importDefault(require("./sip-trunks"));
 const freeswitch_xml_routes_1 = __importDefault(require("./freeswitch-xml.routes"));
+const freeswitch_deploy_routes_1 = __importDefault(require("./freeswitch-deploy.routes"));
+const dialplan_rules_routes_1 = __importDefault(require("./dialplan-rules.routes"));
+const routing_routes_1 = __importDefault(require("./routing.routes"));
 const router = (0, express_1.Router)();
 // FreeSWITCH XML Curl endpoint (NO auth - internal FreeSWITCH call)
 router.use('/freeswitch', freeswitch_xml_routes_1.default);
@@ -23,6 +27,7 @@ router.use('/freeswitch', freeswitch_xml_routes_1.default);
 router.use('/', auth_routes_1.default); // Auth routes at root level (/:tenantSlug/login)
 router.use('/tenants', tenants_1.default);
 router.use('/stores', stores_1.default);
+router.use('/users', users_routes_1.default);
 router.use('/extensions', extensions_1.default);
 router.use('/calls', calls_1.default);
 router.use('/cdr', cdr_1.default);
@@ -30,6 +35,9 @@ router.use('/webhooks', webhooks_1.default);
 router.use('/analytics', analytics_1.default);
 router.use('/voip', voip_1.default);
 router.use('/sip-trunks', sip_trunks_1.default);
+router.use('/freeswitch-deploy', freeswitch_deploy_routes_1.default);
+router.use('/dialplan', dialplan_rules_routes_1.default);
+router.use('/routing', routing_routes_1.default);
 router.use('/', system_1.default);
 // Health check endpoint
 router.get('/health', (req, res) => {

@@ -19,6 +19,11 @@
             "date": 1761215269287,
             "name": "/var/www/voip-system/packages/backend/logs/cdr-2025-10-23.log",
             "hash": "e39933a5bcc46a9c11a7dec2630f4dd018f605d1da84708e6de1251f102cb37d"
+        },
+        {
+            "date": 1761377554617,
+            "name": "/var/www/voip-system/packages/backend/logs/cdr-2025-10-25.log",
+            "hash": "089c1671ed730e9354d290a53fd448214114d14318140a788ed7c4685f520e5a"
         }
     ],
     "hashType": "sha256"

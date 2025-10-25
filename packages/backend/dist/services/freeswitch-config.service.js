@@ -246,6 +246,137 @@ class FreeSWITCHConfigService {
             throw error;
         }
     }
+    /**
+     * Generate tenant contexts XML from template
+     */
+    async generateTenantContexts(tenant) {
+        try {
+            const template = await promises_1.default.readFile(path_1.default.join(this.templatePath, 'tenant-contexts-template.xml'), 'utf-8');
+            const contextsXML = template
+                .replace(/\{\{TENANT_ID\}\}/g, tenant.id)
+                .replace(/\{\{SLUG\}\}/g, tenant.slug || tenant.domain)
+                .replace(/\{\{SIP_DOMAIN\}\}/g, tenant.sip_domain)
+                .replace(/\{\{CONTEXT_PREFIX\}\}/g, tenant.context_prefix || `tenant-${tenant.slug}`);
+            return contextsXML;
+        }
+        catch (error) {
+            (0, logger_1.logFreeSWITCHEvent)('context_generation_error', {
+                tenant_id: tenant.id,
+                error: error.message
+            });
+            throw error;
+        }
+    }
+    /**
+     * Generate all extensions XML for a tenant
+     */
+    async generateExtensionsXML(tenant) {
+        const client = await (0, database_1.getClient)();
+        try {
+            // Get all extensions for tenant
+            const result = await client.query('SELECT * FROM extensions WHERE tenant_id = $1 AND status = $2', [tenant.id, 'active']);
+            const extensionsXML = [];
+            for (const extension of result.rows) {
+                const xml = await this.generateExtensionXML(extension, tenant);
+                extensionsXML.push(xml);
+            }
+            return extensionsXML;
+        }
+        finally {
+            await client.release();
+        }
+    }
+    /**
+     * Generate single extension XML from template
+     */
+    async generateExtensionXML(extension, tenant) {
+        try {
+            const template = await promises_1.default.readFile(path_1.default.join(this.templatePath, 'extension-template.xml'), 'utf-8');
+            const settings = extension.settings || {};
+            const extensionXML = template
+                .replace(/\{\{EXTENSION\}\}/g, extension.extension)
+                .replace(/\{\{PASSWORD\}\}/g, extension.password)
+                .replace(/\{\{TENANT_ID\}\}/g, tenant.id)
+                .replace(/\{\{SLUG\}\}/g, tenant.slug || tenant.domain)
+                .replace(/\{\{SIP_DOMAIN\}\}/g, tenant.sip_domain)
+                .replace(/\{\{DISPLAY_NAME\}\}/g, extension.display_name)
+                .replace(/\{\{CALLER_ID_NUMBER\}\}/g, extension.caller_id_number || extension.extension)
+                .replace(/\{\{CONTEXT\}\}/g, extension.context || `tenant-${tenant.slug}-internal`)
+                .replace(/\{\{VM_PIN\}\}/g, extension.voicemail_pin || extension.extension)
+                .replace(/\{\{VM_ENABLED\}\}/g, settings.voicemail_enabled !== false ? 'true' : 'false')
+                .replace(/\{\{VM_EMAIL_ENABLED\}\}/g, settings.email_notification ? 'true' : 'false')
+                .replace(/\{\{VM_EMAIL\}\}/g, settings.email || '')
+                .replace(/\{\{VM_ATTACH_AUDIO\}\}/g, settings.attach_audio !== false ? 'true' : 'false')
+                .replace(/\{\{VM_DELETE_AFTER_EMAIL\}\}/g, settings.delete_after_email ? 'true' : 'false')
+                .replace(/\{\{CALL_FORWARD\}\}/g, settings.call_forwarding?.destination || '')
+                .replace(/\{\{DND_ENABLED\}\}/g, settings.dnd_enabled ? 'true' : 'false')
+                .replace(/\{\{RECORD_CALLS\}\}/g, settings.recording_enabled ? 'true' : 'false')
+                .replace(/\{\{PICKUP_GROUP\}\}/g, extension.pickup_group || '')
+                .replace(/\{\{LIMIT_MAX\}\}/g, String(extension.limit_max || 3))
+                .replace(/\{\{CODEC_PREFS\}\}/g, settings.codec_prefs?.join(',') || 'PCMA,OPUS')
+                .replace(/\{\{TIMEZONE\}\}/g, settings.timezone || tenant.timezone || 'Europe/Rome');
+            return extensionXML;
+        }
+        catch (error) {
+            (0, logger_1.logFreeSWITCHEvent)('extension_xml_error', {
+                extension_id: extension.id,
+                error: error.message
+            });
+            throw error;
+        }
+    }
+    /**
+     * Generate all trunks XML for a tenant
+     */
+    async generateTrunksXML(tenant) {
+        const client = await (0, database_1.getClient)();
+        try {
+            // Get all trunks for tenant
+            const result = await client.query('SELECT * FROM sip_trunks WHERE tenant_id = $1 AND status != $2', [tenant.id, 'inactive']);
+            const trunksXML = [];
+            for (const trunk of result.rows) {
+                const xml = await this.generateTrunkGatewayXML(trunk, tenant);
+                trunksXML.push(xml);
+            }
+            return trunksXML;
+        }
+        finally {
+            await client.release();
+        }
+    }
+    /**
+     * Generate single trunk gateway XML from template
+     */
+    async generateTrunkGatewayXML(trunk, tenant) {
+        try {
+            const template = await promises_1.default.readFile(path_1.default.join(this.templatePath, 'gateway-template.xml'), 'utf-8');
+            const sipConfig = trunk.sip_config || {};
+            const gatewayXML = template
+                .replace(/\{\{TRUNK_NAME\}\}/g, trunk.name.toLowerCase().replace(/\s+/g, '_'))
+                .replace(/\{\{TRUNK_ID\}\}/g, trunk.id)
+                .replace(/\{\{TENANT_ID\}\}/g, tenant.id)
+                .replace(/\{\{SLUG\}\}/g, tenant.slug || tenant.domain)
+                .replace(/\{\{CONTEXT_PREFIX\}\}/g, tenant.context_prefix || `tenant-${tenant.slug}`)
+                .replace(/\{\{USERNAME\}\}/g, sipConfig.username || '')
+                .replace(/\{\{PASSWORD\}\}/g, sipConfig.password || '')
+                .replace(/\{\{HOST\}\}/g, sipConfig.host || '')
+                .replace(/\{\{PORT\}\}/g, String(sipConfig.port || 5060))
+                .replace(/\{\{REGISTER\}\}/g, sipConfig.register ? 'true' : 'false')
+                .replace(/\{\{CALLER_ID_IN_FROM\}\}/g, 'true')
+                .replace(/\{\{OUTBOUND_CALLER_ID\}\}/g, trunk.outbound_caller_id || '')
+                .replace(/\{\{CODEC_PREFS\}\}/g, trunk.codec_prefs || 'PCMA,OPUS,G729')
+                .replace(/\{\{MAX_CONCURRENT_CALLS\}\}/g, String(trunk.max_concurrent_calls || 10))
+                .replace(/\{\{TRANSPORT\}\}/g, sipConfig.transport || 'udp');
+            return gatewayXML;
+        }
+        catch (error) {
+            (0, logger_1.logFreeSWITCHEvent)('trunk_xml_error', {
+                trunk_id: trunk.id,
+                error: error.message
+            });
+            throw error;
+        }
+    }
 }
 exports.FreeSWITCHConfigService = FreeSWITCHConfigService;
 //# sourceMappingURL=freeswitch-config.service.js.map

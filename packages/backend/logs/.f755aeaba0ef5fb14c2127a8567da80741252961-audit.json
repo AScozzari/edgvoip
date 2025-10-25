@@ -19,6 +19,11 @@
             "date": 1761215253972,
             "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-23.log",
             "hash": "92dad6bd5cfe407d2b392eec1c3f18cc409923eb8fcd196a358485a8972d8f5d"
+        },
+        {
+            "date": 1761377554618,
+            "name": "/var/www/voip-system/packages/backend/logs/freeswitch-2025-10-25.log",
+            "hash": "ada95d34f3b0b21b3dd4501ab4791ea24899357419105d2561dbf06f9bc467a7"
         }
     ],
     "hashType": "sha256"

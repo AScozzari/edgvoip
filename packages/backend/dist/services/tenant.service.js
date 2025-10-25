@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -204,10 +237,20 @@ class TenantService {
     async validateDomainUniqueness(domain, sipDomain, excludeTenantId) {
         const client = await (0, database_1.getClient)();
         try {
-            let query = 'SELECT id FROM tenants WHERE domain = $1 OR sip_domain = $2';
-            let params = [domain, sipDomain];
+            let query;
+            let params;
+            if (sipDomain === null) {
+                // For super admin tenants (no SIP domain), only check domain uniqueness
+                query = 'SELECT id FROM tenants WHERE domain = $1';
+                params = [domain];
+            }
+            else {
+                // For regular tenants, check both domain and sip_domain uniqueness
+                query = 'SELECT id FROM tenants WHERE domain = $1 OR sip_domain = $2';
+                params = [domain, sipDomain];
+            }
             if (excludeTenantId) {
-                query += ' AND id != $3';
+                query += ` AND id != $${params.length + 1}`;
                 params.push(excludeTenantId);
             }
             const result = await client.query(query, params);
@@ -384,6 +427,46 @@ class TenantService {
         finally {
             await client.release();
         }
+    }
+    /**
+     * Generate context prefix from tenant slug
+     */
+    generateContextPrefix(slug) {
+        return `tenant-${slug.toLowerCase()}`;
+    }
+    /**
+     * Create default FreeSWITCH contexts for a tenant
+     * Creates 6 contexts: internal, outbound, external, features, voicemail, emergency
+     */
+    async createTenantContexts(tenantId) {
+        const { DialplanRulesService } = await Promise.resolve().then(() => __importStar(require('./dialplan-rules.service')));
+        const dialplanRulesService = new DialplanRulesService();
+        const tenant = await this.getTenantById(tenantId);
+        if (!tenant) {
+            throw new Error(`Tenant not found: ${tenantId}`);
+        }
+        const contexts = ['internal', 'outbound', 'external', 'features', 'voicemail', 'emergency'];
+        for (const ctx of contexts) {
+            const contextName = `${tenant.context_prefix}-${ctx}`;
+            await dialplanRulesService.createDefaultRulesForContext(tenantId, contextName);
+        }
+    }
+    /**
+     * Enhanced createTenantWithCompanies that also creates FreeSWITCH contexts
+     */
+    async createTenantWithContexts(data) {
+        // First create tenant with companies and contacts
+        const tenant = await this.createTenantWithCompanies(data);
+        // Then create FreeSWITCH contexts automatically
+        try {
+            await this.createTenantContexts(tenant.tenant.id);
+        }
+        catch (error) {
+            console.error('Error creating tenant contexts:', error);
+            // Don't fail the tenant creation if context creation fails
+            // The contexts can be created manually later
+        }
+        return tenant;
     }
 }
 exports.TenantService = TenantService;

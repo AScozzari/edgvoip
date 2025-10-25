@@ -92,6 +92,7 @@ export declare const JWTPayloadSchema: z.ZodObject<{
     store_id: z.ZodOptional<z.ZodString>;
     role: z.ZodEnum<["super_admin", "tenant_admin", "admin", "manager", "user"]>;
     permissions: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    is_master_tenant: z.ZodOptional<z.ZodBoolean>;
     iat: z.ZodNumber;
     exp: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
@@ -102,6 +103,7 @@ export declare const JWTPayloadSchema: z.ZodObject<{
     tenant_id?: string | undefined;
     store_id?: string | undefined;
     permissions?: string[] | undefined;
+    is_master_tenant?: boolean | undefined;
 }, {
     sub: string;
     role: "user" | "super_admin" | "tenant_admin" | "admin" | "manager";
@@ -110,6 +112,7 @@ export declare const JWTPayloadSchema: z.ZodObject<{
     tenant_id?: string | undefined;
     store_id?: string | undefined;
     permissions?: string[] | undefined;
+    is_master_tenant?: boolean | undefined;
 }>;
 export type JWTPayload = z.infer<typeof JWTPayloadSchema>;
 export declare const CompanySchema: z.ZodObject<{
