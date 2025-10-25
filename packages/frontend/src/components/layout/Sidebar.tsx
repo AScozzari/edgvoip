@@ -61,6 +61,8 @@ const getNavigationForRole = (role: string, tenantSlug: string) => {
             children: [
               { name: 'Extensions', href: `/${tenantSlug}/extensions`, icon: Phone, level: 1 },
               { name: 'SIP Trunks', href: `/${tenantSlug}/sip-trunks`, icon: Network, level: 1 },
+              { name: 'Call Routing', href: `/${tenantSlug}/call-routing`, icon: Network, level: 1 },
+              { name: 'Dialplan Editor', href: `/${tenantSlug}/dialplan-editor`, icon: Terminal, level: 1 },
               { name: 'Ring Groups', href: `/${tenantSlug}/ring-groups`, icon: Users2, level: 1 },
               { name: 'Call Queues', href: `/${tenantSlug}/queues`, icon: Headphones, level: 1 },
               { name: 'IVR Menus', href: `/${tenantSlug}/ivr-menus`, icon: Menu, level: 1 },

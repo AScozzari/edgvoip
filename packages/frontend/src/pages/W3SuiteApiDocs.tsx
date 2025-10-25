@@ -349,6 +349,131 @@ export default function W3SuiteApiDocs() {
 }`
         }
       ]
+    },
+    {
+      title: 'Multi-Tenant Management',
+      description: 'API per gestione multi-tenant, dialplan, routing e deployment FreeSWITCH',
+      endpoints: [
+        {
+          method: 'POST',
+          path: '/freeswitch-deploy/tenant/:tenantId',
+          description: 'Deploy completo configurazione tenant su FreeSWITCH',
+          example: `curl -X POST "http://localhost:5000/api/freeswitch-deploy/tenant/{tenant-id}" \\
+  -H "Authorization: ${authToken}"`,
+          response: `{
+  "success": true,
+  "data": {
+    "success": true,
+    "message": "Tenant Demo configuration deployed successfully"
+  }
+}`
+        },
+        {
+          method: 'POST',
+          path: '/dialplan/rules',
+          description: 'Crea regola dialplan per un context',
+          example: `curl -X POST "http://localhost:5000/api/dialplan/rules" \\
+  -H "Authorization: ${authToken}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "tenant_id": "uuid",
+    "context": "tenant-demo-internal",
+    "name": "Internal Calls",
+    "priority": 100,
+    "match_pattern": "^(1\\\\d{3})$",
+    "actions": [
+      {"type": "bridge", "target": "user/$1@demo.edgvoip.it"}
+    ],
+    "enabled": true
+  }'`,
+          response: `{
+  "success": true,
+  "data": {
+    "id": "rule-uuid",
+    "tenant_id": "uuid",
+    "context": "tenant-demo-internal",
+    "name": "Internal Calls",
+    "priority": 100,
+    "enabled": true
+  }
+}`
+        },
+        {
+          method: 'POST',
+          path: '/routing/inbound',
+          description: 'Crea inbound route (DID → destination)',
+          example: `curl -X POST "http://localhost:5000/api/routing/inbound" \\
+  -H "Authorization: ${authToken}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "tenant_id": "uuid",
+    "name": "Main Number",
+    "did_number": "0591234567",
+    "destination_type": "extension",
+    "destination_value": "1001",
+    "enabled": true
+  }'`,
+          response: `{
+  "success": true,
+  "data": {
+    "id": "route-uuid",
+    "name": "Main Number",
+    "did_number": "0591234567",
+    "destination_type": "extension",
+    "destination_value": "1001"
+  }
+}`
+        },
+        {
+          method: 'POST',
+          path: '/routing/outbound',
+          description: 'Crea outbound route (pattern → trunk)',
+          example: `curl -X POST "http://localhost:5000/api/routing/outbound" \\
+  -H "Authorization: ${authToken}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "tenant_id": "uuid",
+    "name": "Mobile Numbers",
+    "dial_pattern": "^3[0-9]{9}$",
+    "trunk_id": "trunk-uuid",
+    "strip_digits": 0,
+    "priority": 100,
+    "enabled": true
+  }'`,
+          response: `{
+  "success": true,
+  "data": {
+    "id": "route-uuid",
+    "name": "Mobile Numbers",
+    "dial_pattern": "^3[0-9]{9}$",
+    "trunk_id": "trunk-uuid",
+    "priority": 100
+  }
+}`
+        },
+        {
+          method: 'POST',
+          path: '/dialplan/test-pattern',
+          description: 'Test pattern regex contro un numero',
+          example: `curl -X POST "http://localhost:5000/api/dialplan/test-pattern" \\
+  -H "Authorization: ${authToken}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "pattern": "^3[0-9]{9}$",
+    "number": "3297626144"
+  }'`,
+          response: `{
+  "success": true,
+  "data": {
+    "match": true,
+    "groups": [],
+    "pattern": "^3[0-9]{9}$",
+    "number": "3297626144"
+  },
+  "message": "Pattern matches"
+}`
+        }
+      ]
     }
   ];
 
@@ -405,11 +530,12 @@ export default function W3SuiteApiDocs() {
 
       {/* API Endpoints */}
       <Tabs defaultValue="trunks" className="w-full">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="trunks">Trunks</TabsTrigger>
           <TabsTrigger value="extensions">Extensions</TabsTrigger>
           <TabsTrigger value="dids">DIDs</TabsTrigger>
           <TabsTrigger value="routes">Routes</TabsTrigger>
+          <TabsTrigger value="multitenant">Multi-Tenant</TabsTrigger>
           <TabsTrigger value="policies">Policies</TabsTrigger>
           <TabsTrigger value="cdr">CDR</TabsTrigger>
         </TabsList>

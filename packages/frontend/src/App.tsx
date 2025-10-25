@@ -19,6 +19,7 @@ import CDRViewer from '@/pages/CDRViewer';
 import LiveCalls from '@/pages/LiveCalls';
 import TrunkRegistration from '@/pages/TrunkRegistration';
 import CallRouting from '@/pages/CallRouting';
+import DialplanEditor from '@/pages/DialplanEditor';
 import SipTrunks from '@/pages/SipTrunks';
 import Destinations from '@/pages/Destinations';
 import W3SuiteApiDocs from '@/pages/W3SuiteApiDocs';
@@ -63,6 +64,7 @@ function TenantRoutes() {
               <Route path="live-calls" element={<LiveCalls />} />
               <Route path="trunk-registration" element={<TrunkRegistration />} />
               <Route path="call-routing" element={<CallRouting />} />
+              <Route path="dialplan-editor" element={<DialplanEditor />} />
               <Route path="sip-trunks" element={<SipTrunks />} />
               <Route path="destinations" element={<Destinations />} />
               <Route path="logs" element={<Logs />} />
