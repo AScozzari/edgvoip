@@ -6,7 +6,7 @@
 set -e
 
 # Configurazione server
-SERVER_IP="YOUR_SERVER_IP"  # Sostituire con l'IP del server
+SERVER_IP="93.93.113.13"  # IP del server
 SERVER_USER="root"
 SERVER_PASSWORD="B66v6My6"
 LOCAL_PROJECT_PATH="."

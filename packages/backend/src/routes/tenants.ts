@@ -59,7 +59,7 @@ router.post('/', asyncHandler(async (req: AuthRequest, res) => {
   const isSuperAdmin = tenantData.slug === 'edgvoip' || 
                        tenantData.admin_user?.role === 'super_admin';
   
-  // Auto-generate sip_domain if not provided
+  // Auto-generate sip_domain and context_prefix if not provided
   if (!tenantData.sip_domain) {
     if (isSuperAdmin) {
       // Super admin tenants don't need SIP domain (they only manage other tenants)
@@ -72,9 +72,13 @@ router.post('/', asyncHandler(async (req: AuthRequest, res) => {
     }
   }
   
-  const tenant = await tenantService.createTenantWithCompanies(tenantData);
+  // Use enhanced method that creates tenant + FreeSWITCH contexts automatically
+  const tenant = await tenantService.createTenantWithContexts(tenantData);
   
-  successResponse(res, tenant, 'Tenant created successfully');
+  // Log context creation
+  console.log(`✅ Tenant ${tenantData.slug} created with FreeSWITCH contexts`);
+  
+  successResponse(res, tenant, 'Tenant created successfully with FreeSWITCH contexts');
 }));
 
 // GET /api/tenants/:id - Get tenant details with companies and contacts

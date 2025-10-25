@@ -1,0 +1,56 @@
+<!-- FreeSWITCH Extension/User Directory Template -->
+<include>
+  <user id="{{EXTENSION}}">
+    <params>
+      <param name="password" value="{{PASSWORD}}"/>
+      <param name="vm-password" value="{{VM_PIN}}"/>
+      <param name="vm-enabled" value="{{VM_ENABLED}}"/>
+      <param name="vm-email-all-messages" value="{{VM_EMAIL_ENABLED}}"/>
+      <param name="vm-mailto" value="{{VM_EMAIL}}"/>
+      <param name="vm-attach-file" value="{{VM_ATTACH_AUDIO}}"/>
+      <param name="vm-delete-file" value="{{VM_DELETE_AFTER_EMAIL}}"/>
+    </params>
+    
+    <variables>
+      <!-- Tenant Context -->
+      <variable name="tenant_id" value="{{TENANT_ID}}"/>
+      <variable name="tenant_slug" value="{{SLUG}}"/>
+      <variable name="user_context" value="{{CONTEXT}}" />
+      
+      <!-- Caller ID -->
+      <variable name="effective_caller_id_name" value="{{DISPLAY_NAME}}"/>
+      <variable name="effective_caller_id_number" value="{{CALLER_ID_NUMBER}}"/>
+      <variable name="outbound_caller_id_number" value="{{CALLER_ID_NUMBER}}"/>
+      
+      <!-- Call Features -->
+      <variable name="call_forward_number" value="{{CALL_FORWARD}}"/>
+      <variable name="dnd" value="{{DND_ENABLED}}"/>
+      
+      <!-- Recording -->
+      <variable name="record_stereo" value="{{RECORD_CALLS}}"/>
+      <variable name="record_waste_resources" value="true"/>
+      <variable name="record_sample_rate" value="8000"/>
+      
+      <!-- Call Pickup -->
+      <variable name="pickup_group" value="{{PICKUP_GROUP}}"/>
+      
+      <!-- Call Limits -->
+      <variable name="max_calls" value="{{LIMIT_MAX}}"/>
+      
+      <!-- CODEC Preferences -->
+      <variable name="sip_codec_string" value="{{CODEC_PREFS}}"/>
+      
+      <!-- Timezone -->
+      <variable name="timezone" value="{{TIMEZONE}}"/>
+      
+      <!-- Presence -->
+      <variable name="presence_id" value="{{EXTENSION}}@{{SIP_DOMAIN}}"/>
+      
+      <!-- Misc -->
+      <variable name="accountcode" value="{{EXTENSION}}"/>
+      <variable name="toll_allow" value="domestic,international"/>
+      <variable name="callgroup" value="{{PICKUP_GROUP}}"/>
+    </variables>
+  </user>
+</include>
+

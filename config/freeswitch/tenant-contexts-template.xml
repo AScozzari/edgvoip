@@ -1,0 +1,154 @@
+<!-- FreeSWITCH Multi-Tenant Dialplan Contexts Template -->
+<!-- This file is dynamically generated for each tenant -->
+<include>
+  <!-- ============================================ -->
+  <!-- INTERNAL CONTEXT (Extensions → Extensions) -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-internal">
+    <!-- Internal extension to extension calls -->
+    <extension name="internal-calls">
+      <condition field="destination_number" expression="^(1\d{3})$">
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="set" data="tenant_id={{TENANT_ID}}"/>
+        <action application="set" data="tenant_slug={{SLUG}}"/>
+        <action application="bridge" data="user/$1@{{SIP_DOMAIN}}"/>
+      </condition>
+    </extension>
+
+    <!-- Transfer to outbound context for external calls -->
+    <extension name="to-outbound">
+      <condition field="destination_number" expression="^0(\d+)$">
+        <action application="transfer" data="$1 XML {{CONTEXT_PREFIX}}-outbound"/>
+      </condition>
+    </extension>
+
+    <!-- Transfer to features context for feature codes -->
+    <extension name="to-features">
+      <condition field="destination_number" expression="^(\*\d{2,3}.*)$">
+        <action application="transfer" data="$1 XML {{CONTEXT_PREFIX}}-features"/>
+      </condition>
+    </extension>
+  </context>
+
+  <!-- ============================================ -->
+  <!-- OUTBOUND CONTEXT (External Calls) -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-outbound">
+    <!-- Include dynamic outbound routes from database -->
+    <X-PRE-PROCESS cmd="include" data="dialplan/{{CONTEXT_PREFIX}}-outbound-dynamic.xml"/>
+    
+    <!-- Default: No route destination -->
+    <extension name="outbound-default">
+      <condition field="destination_number" expression="^(.+)$">
+        <action application="answer"/>
+        <action application="playback" data="ivr/ivr-no_route_destination.wav"/>
+        <action application="hangup" data="NO_ROUTE_DESTINATION"/>
+      </condition>
+    </extension>
+  </context>
+
+  <!-- ============================================ -->
+  <!-- EXTERNAL CONTEXT (Inbound from Trunks) -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-external">
+    <!-- Include dynamic inbound routes from database -->
+    <X-PRE-PROCESS cmd="include" data="dialplan/{{CONTEXT_PREFIX}}-external-dynamic.xml"/>
+    
+    <!-- Default: Announce no destination -->
+    <extension name="external-default">
+      <condition field="destination_number" expression="^(.+)$">
+        <action application="answer"/>
+        <action application="sleep" data="1000"/>
+        <action application="playback" data="ivr/ivr-no_one_available.wav"/>
+        <action application="hangup"/>
+      </condition>
+    </extension>
+  </context>
+
+  <!-- ============================================ -->
+  <!-- FEATURES CONTEXT (Feature Codes) -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-features">
+    <!-- Call Forward Enable: *21 + extension -->
+    <extension name="call-forward-enable">
+      <condition field="destination_number" expression="^\*21(\d+)$">
+        <action application="set" data="user_data(${caller_id_number}@${domain_name} var call_forward_number)=$1"/>
+        <action application="answer"/>
+        <action application="sleep" data="500"/>
+        <action application="playback" data="ivr/ivr-call_forwarding_has_been_set.wav"/>
+        <action application="hangup"/>
+      </condition>
+    </extension>
+
+    <!-- Call Forward Disable: *22 -->
+    <extension name="call-forward-disable">
+      <condition field="destination_number" expression="^\*22$">
+        <action application="set" data="user_data(${caller_id_number}@${domain_name} var call_forward_number)="/>
+        <action application="answer"/>
+        <action application="sleep" data="500"/>
+        <action application="playback" data="ivr/ivr-call_forwarding_has_been_cancelled.wav"/>
+        <action application="hangup"/>
+      </condition>
+    </extension>
+
+    <!-- DND Enable: *76 -->
+    <extension name="dnd-enable">
+      <condition field="destination_number" expression="^\*76$">
+        <action application="set" data="user_data(${caller_id_number}@${domain_name} var dnd)=true"/>
+        <action application="answer"/>
+        <action application="sleep" data="500"/>
+        <action application="playback" data="ivr/ivr-dnd_activated.wav"/>
+        <action application="hangup"/>
+      </condition>
+    </extension>
+
+    <!-- DND Disable: *77 -->
+    <extension name="dnd-disable">
+      <condition field="destination_number" expression="^\*77$">
+        <action application="set" data="user_data(${caller_id_number}@${domain_name} var dnd)=false"/>
+        <action application="answer"/>
+        <action application="sleep" data="500"/>
+        <action application="playback" data="ivr/ivr-dnd_cancelled.wav"/>
+        <action application="hangup"/>
+      </condition>
+    </extension>
+
+    <!-- Voicemail Check: *98 -->
+    <extension name="voicemail-check">
+      <condition field="destination_number" expression="^\*98$">
+        <action application="answer"/>
+        <action application="sleep" data="500"/>
+        <action application="voicemail" data="check default {{SIP_DOMAIN}} ${caller_id_number}"/>
+      </condition>
+    </extension>
+  </context>
+
+  <!-- ============================================ -->
+  <!-- VOICEMAIL CONTEXT -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-voicemail">
+    <extension name="voicemail-deposit">
+      <condition field="destination_number" expression="^(\d+)$">
+        <action application="answer"/>
+        <action application="sleep" data="1000"/>
+        <action application="set" data="tenant_id={{TENANT_ID}}"/>
+        <action application="voicemail" data="default {{SIP_DOMAIN}} $1"/>
+      </condition>
+    </extension>
+  </context>
+
+  <!-- ============================================ -->
+  <!-- EMERGENCY CONTEXT (112, 113, 115, 118) -->
+  <!-- ============================================ -->
+  <context name="{{CONTEXT_PREFIX}}-emergency">
+    <extension name="emergency-numbers">
+      <condition field="destination_number" expression="^(112|113|115|118)$">
+        <action application="set" data="effective_caller_id_number=${outbound_caller_id_number}"/>
+        <action application="set" data="tenant_id={{TENANT_ID}}"/>
+        <action application="log" data="NOTICE Emergency call from tenant {{SLUG}}: $1"/>
+        <action application="bridge" data="sofia/external/$1"/>
+      </condition>
+    </extension>
+  </context>
+</include>
+

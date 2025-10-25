@@ -52,7 +52,13 @@ export default function CreateTenant() {
     name: '',
     slug: '',
     domain: '',
-    sip_domain: ''
+    sip_domain: '',
+    context_prefix: '',
+    timezone: 'Europe/Rome',
+    language: 'it',
+    max_extensions: 100,
+    max_trunks: 10,
+    max_concurrent_calls: 20
   });
 
   const [adminUser, setAdminUser] = useState<AdminUser>({
@@ -96,17 +102,34 @@ export default function CreateTenant() {
     { id: 4, title: 'Contatti', icon: Users }
   ];
 
-  const handleTenantDataChange = (field: string, value: string) => {
+  const handleTenantDataChange = (field: string, value: string | number) => {
     setTenantData(prev => ({ ...prev, [field]: value }));
     
-    // Auto-generate slug from name
+    // Auto-generate slug, sip_domain, context_prefix from name
     if (field === 'name') {
-      const slug = value.toLowerCase()
+      const slug = (value as string).toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim();
-      setTenantData(prev => ({ ...prev, slug }));
+      setTenantData(prev => ({ 
+        ...prev, 
+        slug,
+        domain: slug,
+        sip_domain: `${slug}.edgvoip.it`,
+        context_prefix: `tenant-${slug}`
+      }));
+    }
+    
+    // Also auto-generate when slug is directly changed
+    if (field === 'slug') {
+      const slug = (value as string).toLowerCase().replace(/[^a-z0-9-]/g, '');
+      setTenantData(prev => ({
+        ...prev,
+        slug,
+        sip_domain: `${slug}.edgvoip.it`,
+        context_prefix: `tenant-${slug}`
+      }));
     }
   };
 
@@ -211,12 +234,20 @@ export default function CreateTenant() {
         ...tenantData,
         admin_user: adminUser,
         companies,
-        contacts
+        contacts,
+        settings: {
+          max_extensions: tenantData.max_extensions,
+          max_trunks: tenantData.max_trunks,
+          max_concurrent_calls: tenantData.max_concurrent_calls,
+          recording_enabled: true,
+          gdpr_compliant: true,
+          voicemail_directory: `/var/lib/freeswitch/storage/${tenantData.slug}/voicemail`
+        }
       });
 
       toast({
-        title: "Successo",
-        description: "Tenant creato con successo",
+        title: "Successo!",
+        description: `Tenant ${tenantData.name} creato con successo. Contesti FreeSWITCH generati automaticamente.`,
       });
 
       navigate('/edgvoip/tenants');
@@ -235,45 +266,132 @@ export default function CreateTenant() {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">Nome Tenant *</Label>
-                <Input
-                  id="name"
-                  value={tenantData.name}
-                  onChange={(e) => handleTenantDataChange('name', e.target.value)}
-                  placeholder="Es. Azienda Demo"
-                />
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Informazioni Generali</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Nome Tenant *</Label>
+                  <Input
+                    id="name"
+                    value={tenantData.name}
+                    onChange={(e) => handleTenantDataChange('name', e.target.value)}
+                    placeholder="Es. Demo Tenant"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="slug">Slug Tenant * (solo lettere minuscole, numeri, trattini)</Label>
+                  <Input
+                    id="slug"
+                    value={tenantData.slug}
+                    onChange={(e) => handleTenantDataChange('slug', e.target.value)}
+                    placeholder="Es. demo"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Verrà usato per generare il dominio SIP</p>
+                </div>
               </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="domain">Dominio (per autenticazione web) *</Label>
+                  <Input
+                    id="domain"
+                    value={tenantData.domain}
+                    onChange={(e) => handleTenantDataChange('domain', e.target.value)}
+                    placeholder="Es. demo"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="sip_domain">Dominio SIP (auto-generato)</Label>
+                  <Input
+                    id="sip_domain"
+                    value={tenantData.sip_domain}
+                    disabled
+                    className="bg-gray-100"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="context_prefix">Prefisso Contesti FreeSWITCH (auto-generato)</Label>
+                  <Input
+                    id="context_prefix"
+                    value={tenantData.context_prefix}
+                    disabled
+                    className="bg-gray-100"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="timezone">Fuso Orario</Label>
+                  <Select value={tenantData.timezone} onValueChange={(val) => handleTenantDataChange('timezone', val)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Europe/Rome">Europe/Rome (IT)</SelectItem>
+                      <SelectItem value="Europe/London">Europe/London (UK)</SelectItem>
+                      <SelectItem value="Europe/Paris">Europe/Paris (FR)</SelectItem>
+                      <SelectItem value="Europe/Berlin">Europe/Berlin (DE)</SelectItem>
+                      <SelectItem value="America/New_York">America/New_York (US-EST)</SelectItem>
+                      <SelectItem value="UTC">UTC</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
               <div>
-                <Label htmlFor="slug">Slug *</Label>
-                <Input
-                  id="slug"
-                  value={tenantData.slug}
-                  onChange={(e) => handleTenantDataChange('slug', e.target.value)}
-                  placeholder="Es. azienda-demo"
-                />
+                <Label htmlFor="language">Lingua IVR</Label>
+                <Select value={tenantData.language} onValueChange={(val) => handleTenantDataChange('language', val)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="it">Italiano</SelectItem>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="es">Español</SelectItem>
+                    <SelectItem value="fr">Français</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="domain">Dominio *</Label>
-                <Input
-                  id="domain"
-                  value={tenantData.domain}
-                  onChange={(e) => handleTenantDataChange('domain', e.target.value)}
-                  placeholder="Es. azienda-demo.local"
-                />
-              </div>
-              <div>
-                <Label htmlFor="sip_domain">SIP Domain *</Label>
-                <Input
-                  id="sip_domain"
-                  value={tenantData.sip_domain}
-                  onChange={(e) => handleTenantDataChange('sip_domain', e.target.value)}
-                  placeholder="Es. sip.azienda-demo.local"
-                />
+            
+            <div className="space-y-4 border-t pt-4">
+              <h3 className="text-lg font-semibold">Limiti Tenant</h3>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="max_extensions">Max Extensions</Label>
+                  <Input
+                    id="max_extensions"
+                    type="number"
+                    min="1"
+                    max="1000"
+                    value={tenantData.max_extensions}
+                    onChange={(e) => handleTenantDataChange('max_extensions', parseInt(e.target.value) || 100)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="max_trunks">Max Trunks</Label>
+                  <Input
+                    id="max_trunks"
+                    type="number"
+                    min="1"
+                    max="50"
+                    value={tenantData.max_trunks}
+                    onChange={(e) => handleTenantDataChange('max_trunks', parseInt(e.target.value) || 10)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="max_concurrent_calls">Max Chiamate Simultanee</Label>
+                  <Input
+                    id="max_concurrent_calls"
+                    type="number"
+                    min="1"
+                    max="1000"
+                    value={tenantData.max_concurrent_calls}
+                    onChange={(e) => handleTenantDataChange('max_concurrent_calls', parseInt(e.target.value) || 20)}
+                  />
+                </div>
               </div>
             </div>
           </div>

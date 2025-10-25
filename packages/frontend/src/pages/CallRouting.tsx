@@ -1,752 +1,561 @@
 import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Search, 
-  Edit, 
-  Trash2, 
-  ArrowRight, 
-  ArrowLeft,
-  Save,
-  X,
-  RefreshCw,
-  Eye,
-  Mic
-} from 'lucide-react';
-import { 
-  InboundRoute, 
-  OutboundRoute 
-} from '@voip/shared';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
+import { Plus, Edit, Trash2, ArrowRight } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
-import { useVoipEntityOptions } from '@/hooks/use-voip-entities';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CallRouting() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('inbound');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState<'create' | 'edit' | 'view'>('create');
   const [loading, setLoading] = useState(false);
-  
-  // Data states
-  const [inboundRoutes, setInboundRoutes] = useState<InboundRoute[]>([]);
-  const [outboundRoutes, setOutboundRoutes] = useState<OutboundRoute[]>([]);
 
-  // Form states
-  const [formData, setFormData] = useState<any>({});
-  const [editingItem, setEditingItem] = useState<any>(null);
+  // Inbound Routes
+  const [inboundRoutes, setInboundRoutes] = useState<any[]>([]);
+  const [showInboundModal, setShowInboundModal] = useState(false);
+  const [inboundForm, setInboundForm] = useState({
+    name: '',
+    did_number: '',
+    destination_type: 'extension',
+    destination_value: '',
+    enabled: true
+  });
 
-  // VoIP Entity Options for dropdowns
-  const { options: extensionOptions } = useVoipEntityOptions('extensions');
-  const { options: ringGroupOptions } = useVoipEntityOptions('ring-groups');
-  const { options: queueOptions } = useVoipEntityOptions('queues');
-  const { options: conferenceOptions } = useVoipEntityOptions('conference-rooms');
-  const { options: voicemailOptions } = useVoipEntityOptions('voicemail-boxes');
-  const { options: ivrOptions } = useVoipEntityOptions('ivr-menus');
-  const { options: timeConditionOptions } = useVoipEntityOptions('time-conditions');
-  const { options: trunkOptions } = useVoipEntityOptions('extensions');
+  // Outbound Routes
+  const [outboundRoutes, setOutboundRoutes] = useState<any[]>([]);
+  const [showOutboundModal, setShowOutboundModal] = useState(false);
+  const [outboundForm, setOutboundForm] = useState({
+    name: '',
+    dial_pattern: '',
+    trunk_id: '',
+    strip_digits: 0,
+    add_digits: '',
+    priority: 100,
+    enabled: true
+  });
 
-  // Load data on component mount
+  // Time Conditions
+  const [timeConditions, setTimeConditions] = useState<any[]>([]);
+  const [showTimeModal, setShowTimeModal] = useState(false);
+  const [timeForm, setTimeForm] = useState({
+    name: '',
+    timezone: 'Europe/Rome',
+    business_hours: {},
+    after_hours_action: 'voicemail',
+    enabled: true
+  });
+
+  // Available trunks and extensions for selects
+  const [trunks, setTrunks] = useState<any[]>([]);
+  const [extensions, setExtensions] = useState<any[]>([]);
+
   useEffect(() => {
-    loadAllData();
+    loadData();
   }, []);
 
-  const loadAllData = async () => {
-    if (!user?.tenant_id) return;
-    
+  const loadData = async () => {
     setLoading(true);
     try {
-      const [inboundRes, outboundRes] = await Promise.all([
-        apiClient.get(`/voip/inbound-routes?tenant_id=${user.tenant_id}`),
-        apiClient.get(`/voip/outbound-routes?tenant_id=${user.tenant_id}`)
+      const [inboundRes, outboundRes, timeRes, trunksRes, extensionsRes] = await Promise.all([
+        apiClient.get(`/routing/inbound?tenant_id=${user?.tenant_id}`),
+        apiClient.get(`/routing/outbound?tenant_id=${user?.tenant_id}`),
+        apiClient.get(`/routing/time-conditions?tenant_id=${user?.tenant_id}`),
+        apiClient.getSipTrunks(),
+        apiClient.getExtensions({ limit: 1000 })
       ]);
 
-      setInboundRoutes((inboundRes.data as InboundRoute[]) || []);
-      setOutboundRoutes((outboundRes.data as OutboundRoute[]) || []);
+      setInboundRoutes(inboundRes.data?.routes || []);
+      setOutboundRoutes(outboundRes.data?.routes || []);
+      setTimeConditions(timeRes.data?.time_conditions || []);
+      setTrunks(Array.isArray(trunksRes.data?.data) ? trunksRes.data.data : []);
+      setExtensions(extensionsRes.data?.data?.items || []);
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Error loading routing data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCreate = async (type: string, data: any) => {
-    if (!user?.tenant_id) return;
-    
-    setLoading(true);
+  // ========== INBOUND ROUTES ==========
+  const handleCreateInbound = async () => {
     try {
-      const response = await apiClient.post(`/voip/${type}`, {
-        ...data,
-        tenant_id: user.tenant_id
+      await apiClient.post('/routing/inbound', {
+        ...inboundForm,
+        tenant_id: user?.tenant_id
       });
       
-      // Update local state
-      if (type === 'inbound-routes') {
-        setInboundRoutes(prev => [...prev, response.data]);
-      } else {
-        setOutboundRoutes(prev => [...prev, response.data]);
-      }
+      await loadData();
+      setShowInboundModal(false);
       
-      setShowModal(false);
-      setFormData({});
-    } catch (error) {
-      console.error('Error creating route:', error);
-    } finally {
-      setLoading(false);
+      toast({ title: "Successo", description: "Inbound route creata" });
+    } catch (error: any) {
+      toast({ title: "Errore", description: error.message, variant: "destructive" });
     }
   };
 
-  const handleUpdate = async (type: string, id: string, data: any) => {
-    setLoading(true);
-    try {
-      const response = await apiClient.put(`/voip/${type}/${id}`, data);
-      
-      // Update local state
-      if (type === 'inbound-routes') {
-        setInboundRoutes(prev => prev.map(item => item.id === id ? response.data : item));
-      } else {
-        setOutboundRoutes(prev => prev.map(item => item.id === id ? response.data : item));
-      }
-      
-      setShowModal(false);
-      setFormData({});
-    } catch (error) {
-      console.error('Error updating route:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (type: string, id: string) => {
-    if (!confirm('Are you sure you want to delete this route?')) return;
+  const handleDeleteInbound = async (id: string) => {
+    if (!confirm('Eliminare questa inbound route?')) return;
     
-    setLoading(true);
     try {
-      await apiClient.delete(`/voip/${type}/${id}`);
+      await apiClient.delete(`/routing/inbound/${id}`);
+      await loadData();
+      toast({ title: "Eliminata", description: "Inbound route eliminata" });
+    } catch (error: any) {
+      toast({ title: "Errore", description: error.message, variant: "destructive" });
+    }
+  };
+
+  // ========== OUTBOUND ROUTES ==========
+  const handleCreateOutbound = async () => {
+    try {
+      await apiClient.post('/routing/outbound', {
+        ...outboundForm,
+        tenant_id: user?.tenant_id
+      });
       
-      // Update local state
-      if (type === 'inbound-routes') {
-        setInboundRoutes(prev => prev.filter(item => item.id !== id));
-      } else {
-        setOutboundRoutes(prev => prev.filter(item => item.id !== id));
-      }
-    } catch (error) {
-      console.error('Error deleting route:', error);
-    } finally {
-      setLoading(false);
+      await loadData();
+      setShowOutboundModal(false);
+      
+      toast({ title: "Successo", description: "Outbound route creata" });
+    } catch (error: any) {
+      toast({ title: "Errore", description: error.message, variant: "destructive" });
     }
   };
 
-  const openModal = (type: 'create' | 'edit' | 'view', item?: any) => {
-    setModalType(type);
-    if (item) {
-      setEditingItem(item);
-      setFormData(item);
-    } else {
-      setEditingItem(null);
-      setFormData({});
+  const handleDeleteOutbound = async (id: string) => {
+    if (!confirm('Eliminare questa outbound route?')) return;
+    
+    try {
+      await apiClient.delete(`/routing/outbound/${id}`);
+      await loadData();
+      toast({ title: "Eliminata", description: "Outbound route eliminata" });
+    } catch (error: any) {
+      toast({ title: "Errore", description: error.message, variant: "destructive" });
     }
-    setShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingItem(null);
-    setFormData({});
-  };
-
-  const getDestinationTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      extension: 'Extension',
-      ring_group: 'Ring Group',
-      queue: 'Queue',
-      voicemail: 'Voicemail',
-      ivr: 'IVR Menu',
-      conference: 'Conference',
-      external: 'External Number',
-    };
-    return labels[type] || type;
-  };
-
-  const renderDataTable = (data: any[], type: string, columns: any[]) => (
-    <div className="w-full">
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b bg-gray-50">
-              {columns.map((col, index) => (
-                <th key={index} className="text-left p-3 font-medium text-gray-700">
-                  {col.header}
-                </th>
-              ))}
-              <th className="text-right p-3 font-medium text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={item.id || index} className="border-b hover:bg-gray-50">
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="p-3">
-                    {col.render ? col.render(item) : item[col.key]}
-                  </td>
-                ))}
-                <td className="p-3">
-                  <div className="flex items-center justify-end space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openModal('view', item)}
-                      title="View Details"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openModal('edit', item)}
-                      title="Edit"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(type, item.id)}
-                      title="Delete"
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  const renderInboundRoutes = () => {
-    const columns = [
-      { header: 'Name', key: 'name' },
-      { header: 'DID Number', key: 'did_number' },
-      { 
-        header: 'Destination', 
-        key: 'destination',
-        render: (item: any) => `${getDestinationTypeLabel(item.destination_type)}: ${item.destination_value}`
-      },
-      { 
-        header: 'Status', 
-        key: 'status',
-        render: (item: any) => (
-          <div className="flex items-center space-x-2">
-            <Badge variant={item.enabled ? 'default' : 'secondary'}>
-              {item.enabled ? 'Enabled' : 'Disabled'}
-            </Badge>
-            {item.record_calls && (
-              <Badge variant="outline" className="text-red-600">
-                <Mic className="h-3 w-3 mr-1" />
-                Recording
-              </Badge>
-            )}
-          </div>
-        )
-      },
-      { header: 'Description', key: 'description' }
-    ];
-
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold flex items-center">
-            <ArrowRight className="h-5 w-5 mr-2" />
-            Inbound Routes ({inboundRoutes.length})
-          </h3>
-          <div className="flex items-center space-x-2">
-            <Button onClick={loadAllData} variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
-            <Button 
-              onClick={() => openModal('create')} 
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Inbound Route
-            </Button>
-          </div>
-        </div>
-        {renderDataTable(inboundRoutes, 'inbound-routes', columns)}
-      </div>
-    );
-  };
-
-  const renderOutboundRoutes = () => {
-    const columns = [
-      { header: 'Name', key: 'name' },
-      { header: 'Dial Pattern', key: 'dial_pattern' },
-      { header: 'Trunk', key: 'trunk_id' },
-      { 
-        header: 'Status', 
-        key: 'status',
-        render: (item: any) => (
-          <div className="flex items-center space-x-2">
-            <Badge variant={item.enabled ? 'default' : 'secondary'}>
-              {item.enabled ? 'Enabled' : 'Disabled'}
-            </Badge>
-            {item.record_calls && (
-              <Badge variant="outline" className="text-red-600">
-                <Mic className="h-3 w-3 mr-1" />
-                Recording
-              </Badge>
-            )}
-          </div>
-        )
-      },
-      { header: 'Description', key: 'description' }
-    ];
-
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold flex items-center">
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Outbound Routes ({outboundRoutes.length})
-          </h3>
-          <div className="flex items-center space-x-2">
-            <Button onClick={loadAllData} variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
-            <Button 
-              onClick={() => openModal('create')} 
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Outbound Route
-            </Button>
-          </div>
-        </div>
-        {renderDataTable(outboundRoutes, 'outbound-routes', columns)}
-      </div>
-    );
-  };
-
-  const renderModal = () => {
-    if (!showModal) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">
-              {modalType === 'create' ? 'Create New' : modalType === 'edit' ? 'Edit' : 'View'} {activeTab} Route
-            </h2>
-            <Button variant="ghost" size="sm" onClick={closeModal}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="basic">Basic</TabsTrigger>
-              <TabsTrigger value="routing">Routing</TabsTrigger>
-              <TabsTrigger value="advanced">Advanced</TabsTrigger>
-              <TabsTrigger value="recording">Recording</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="basic" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Route Name</label>
-                  <Input 
-                    placeholder="Route name" 
-                    value={formData.name || ''}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Description</label>
-                  <Input 
-                    placeholder="Route description" 
-                    value={formData.description || ''}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              </div>
-              {activeTab === 'inbound' && (
-                <div>
-                  <label className="text-sm font-medium">DID Number</label>
-                  <Input 
-                    placeholder="+1234567890" 
-                    value={formData.did_number || ''}
-                    onChange={(e) => setFormData({...formData, did_number: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              )}
-              {activeTab === 'outbound' && (
-                <div>
-                  <label className="text-sm font-medium">Dial Pattern</label>
-                  <Input 
-                    placeholder="^\+1([0-9]{10})$" 
-                    value={formData.dial_pattern || ''}
-                    onChange={(e) => setFormData({...formData, dial_pattern: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              )}
-              <div className="flex items-center space-x-2">
-                <Switch 
-                  id="enabled" 
-                  checked={formData.enabled || false}
-                  onCheckedChange={(checked) => setFormData({...formData, enabled: checked})}
-                  disabled={modalType === 'view'}
-                />
-                <label htmlFor="enabled" className="text-sm font-medium">Enabled</label>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="routing" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Destination Type</label>
-                  <Select 
-                    value={formData.destination_type || ''}
-                    onValueChange={(value) => setFormData({...formData, destination_type: value})}
-                    disabled={modalType === 'view'}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select destination" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="extension">Extension</SelectItem>
-                      <SelectItem value="ring_group">Ring Group</SelectItem>
-                      <SelectItem value="queue">Queue</SelectItem>
-                      <SelectItem value="voicemail">Voicemail</SelectItem>
-                      <SelectItem value="ivr">IVR Menu</SelectItem>
-                      <SelectItem value="conference">Conference</SelectItem>
-                      <SelectItem value="external">External Number</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Destination Value</label>
-                  {formData.destination_type === 'extension' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select extension" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {extensionOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {formData.destination_type === 'ring_group' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select ring group" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ringGroupOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {formData.destination_type === 'queue' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select queue" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {queueOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {formData.destination_type === 'conference' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select conference room" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {conferenceOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {formData.destination_type === 'voicemail' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select voicemail box" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {voicemailOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {formData.destination_type === 'ivr' && (
-                    <Select 
-                      value={formData.destination_value || ''}
-                      onValueChange={(value) => setFormData({...formData, destination_value: value})}
-                      disabled={modalType === 'view'}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select IVR menu" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ivrOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {(formData.destination_type === 'external' || !formData.destination_type) && (
-                    <Input 
-                      placeholder="External number or ID"
-                      value={formData.destination_value || ''}
-                      onChange={(e) => setFormData({...formData, destination_value: e.target.value})}
-                      disabled={modalType === 'view'}
-                    />
-                  )}
-                </div>
-              </div>
-              
-              {/* Time Condition */}
-              <div>
-                <label className="text-sm font-medium">Time Condition (Optional)</label>
-                <Select 
-                  value={formData.time_condition_id || ''}
-                  onValueChange={(value) => setFormData({...formData, time_condition_id: value})}
-                  disabled={modalType === 'view'}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select time condition" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No time condition</SelectItem>
-                    {timeConditionOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {activeTab === 'outbound' && (
-                <div>
-                  <label className="text-sm font-medium">SIP Trunk</label>
-                  <Select 
-                    value={formData.trunk_id || ''}
-                    onValueChange={(value) => setFormData({...formData, trunk_id: value})}
-                    disabled={modalType === 'view'}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select SIP trunk" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {trunkOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="advanced" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Priority</label>
-                  <Input 
-                    type="number"
-                    placeholder="100" 
-                    value={formData.priority || ''}
-                    onChange={(e) => setFormData({...formData, priority: parseInt(e.target.value)})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Timeout (seconds)</label>
-                  <Input 
-                    type="number"
-                    placeholder="30" 
-                    value={formData.timeout || ''}
-                    onChange={(e) => setFormData({...formData, timeout: parseInt(e.target.value)})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="caller-id-override" 
-                    checked={formData.caller_id_override || false}
-                    onCheckedChange={(checked) => setFormData({...formData, caller_id_override: checked})}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="caller-id-override" className="text-sm font-medium">Caller ID Override</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="failover-enabled" 
-                    checked={formData.failover_enabled || false}
-                    onCheckedChange={(checked) => setFormData({...formData, failover_enabled: checked})}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="failover-enabled" className="text-sm font-medium">Failover Enabled</label>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="recording" className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Switch 
-                  id="record-calls" 
-                  checked={formData.record_calls || false}
-                  onCheckedChange={(checked) => setFormData({...formData, record_calls: checked})}
-                  disabled={modalType === 'view'}
-                />
-                <label htmlFor="record-calls" className="text-sm font-medium">Record Calls</label>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Recording Path</label>
-                <Input 
-                  placeholder="/var/recordings/" 
-                  value={formData.recording_path || ''}
-                  onChange={(e) => setFormData({...formData, recording_path: e.target.value})}
-                  disabled={modalType === 'view'}
-                />
-              </div>
-            </TabsContent>
-          </Tabs>
-          
-          {modalType !== 'view' && (
-            <div className="flex justify-end space-x-2 mt-6">
-              <Button 
-                variant="outline"
-                onClick={closeModal}
-              >
-                <X className="h-4 w-4 mr-2" />
-                Cancel
-              </Button>
-              <Button 
-                onClick={() => {
-                  if (editingItem) {
-                    handleUpdate(`${activeTab}-routes`, editingItem.id, formData);
-                  } else {
-                    handleCreate(`${activeTab}-routes`, formData);
-                  }
-                }}
-                disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {loading ? 'Saving...' : 'Save Route'}
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
-    );
+  // ========== TIME CONDITIONS ==========
+  const handleCreateTimeCondition = async () => {
+    try {
+      await apiClient.post('/routing/time-conditions', {
+        ...timeForm,
+        tenant_id: user?.tenant_id
+      });
+      
+      await loadData();
+      setShowTimeModal(false);
+      
+      toast({ title: "Successo", description: "Time condition creata" });
+    } catch (error: any) {
+      toast({ title: "Errore", description: error.message, variant: "destructive" });
+    }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Call Routing</h1>
-          <p className="text-muted-foreground">
-            Configure inbound and outbound call routing rules
-          </p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search routes..."
-              className="pl-8 w-64"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Call Routing</h1>
+        <p className="text-muted-foreground">
+          Gestisci instradamento chiamate entranti e uscenti
+        </p>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="inbound">Inbound Routes</TabsTrigger>
+          <TabsTrigger value="outbound">Outbound Routes</TabsTrigger>
+          <TabsTrigger value="time">Time Conditions</TabsTrigger>
+          <TabsTrigger value="emergency">Emergency</TabsTrigger>
+        </TabsList>
+
+        {/* INBOUND ROUTES TAB */}
+        <TabsContent value="inbound">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Inbound Routes (Chiamate Entranti)</CardTitle>
+              <Button onClick={() => setShowInboundModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Nuova Route
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-3">Nome</th>
+                    <th className="text-left p-3">DID</th>
+                    <th className="text-left p-3">Destinazione</th>
+                    <th className="text-left p-3">Status</th>
+                    <th className="text-right p-3">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {inboundRoutes.map((route) => (
+                    <tr key={route.id} className="border-b hover:bg-gray-50">
+                      <td className="p-3 font-semibold">{route.name}</td>
+                      <td className="p-3 font-mono">{route.did_number || 'ANY'}</td>
+                      <td className="p-3">
+                        <span className="text-gray-600">{route.destination_type}</span>
+                        <ArrowRight className="inline h-3 w-3 mx-1" />
+                        <span className="font-mono">{route.destination_value}</span>
+                      </td>
+                      <td className="p-3">
+                        <Badge variant={route.enabled ? 'default' : 'secondary'}>
+                          {route.enabled ? 'Attiva' : 'Disattiva'}
+                        </Badge>
+                      </td>
+                      <td className="p-3 text-right">
+                        <Button variant="destructive" size="sm" onClick={() => handleDeleteInbound(route.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* OUTBOUND ROUTES TAB */}
+        <TabsContent value="outbound">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Outbound Routes (Chiamate Uscenti)</CardTitle>
+              <Button onClick={() => setShowOutboundModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Nuova Route
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-3">Priorità</th>
+                    <th className="text-left p-3">Nome</th>
+                    <th className="text-left p-3">Pattern</th>
+                    <th className="text-left p-3">Trunk</th>
+                    <th className="text-left p-3">Status</th>
+                    <th className="text-right p-3">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {outboundRoutes.map((route) => (
+                    <tr key={route.id} className="border-b hover:bg-gray-50">
+                      <td className="p-3 font-semibold">{route.priority}</td>
+                      <td className="p-3">{route.name}</td>
+                      <td className="p-3 font-mono text-sm">{route.dial_pattern}</td>
+                      <td className="p-3">{trunks.find(t => t.id === route.trunk_id)?.name || 'N/A'}</td>
+                      <td className="p-3">
+                        <Badge variant={route.enabled ? 'default' : 'secondary'}>
+                          {route.enabled ? 'Attiva' : 'Disattiva'}
+                        </Badge>
+                      </td>
+                      <td className="p-3 text-right">
+                        <Button variant="destructive" size="sm" onClick={() => handleDeleteOutbound(route.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* TIME CONDITIONS TAB */}
+        <TabsContent value="time">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Time Conditions (Orari)</CardTitle>
+              <Button onClick={() => setShowTimeModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Nuova Condizione
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-3">Nome</th>
+                    <th className="text-left p-3">Timezone</th>
+                    <th className="text-left p-3">Azione Orario</th>
+                    <th className="text-left p-3">Azione Fuori Orario</th>
+                    <th className="text-left p-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {timeConditions.map((cond) => (
+                    <tr key={cond.id} className="border-b hover:bg-gray-50">
+                      <td className="p-3 font-semibold">{cond.name}</td>
+                      <td className="p-3">{cond.timezone}</td>
+                      <td className="p-3">{cond.business_hours_action}</td>
+                      <td className="p-3">{cond.after_hours_action}</td>
+                      <td className="p-3">
+                        <Badge variant={cond.enabled ? 'default' : 'secondary'}>
+                          {cond.enabled ? 'Attiva' : 'Disattiva'}
+                        </Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* EMERGENCY TAB */}
+        <TabsContent value="emergency">
+          <Card>
+            <CardHeader>
+              <CardTitle>Numeri di Emergenza</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-gray-600">
+                  I numeri di emergenza (112, 113, 115, 118) sono automaticamente configurati 
+                  nel context <code className="bg-gray-100 px-2 py-1 rounded">tenant-{'{'}slug{'}'}-emergency</code>
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="border rounded p-4">
+                    <div className="font-semibold mb-2">112 - Emergenza Generale</div>
+                    <p className="text-sm text-gray-600">Carabinieri, Polizia, Vigili del Fuoco</p>
+                  </div>
+                  <div className="border rounded p-4">
+                    <div className="font-semibold mb-2">118 - Emergenza Sanitaria</div>
+                    <p className="text-sm text-gray-600">Ambulanza</p>
+                  </div>
+                  <div className="border rounded p-4">
+                    <div className="font-semibold mb-2">113 - Polizia di Stato</div>
+                    <p className="text-sm text-gray-600">Soccorso pubblico</p>
+                  </div>
+                  <div className="border rounded p-4">
+                    <div className="font-semibold mb-2">115 - Vigili del Fuoco</div>
+                    <p className="text-sm text-gray-600">Emergenze antincendio</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* INBOUND MODAL */}
+      <Dialog open={showInboundModal} onOpenChange={setShowInboundModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Nuova Inbound Route</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Nome Route *</Label>
+              <Input
+                value={inboundForm.name}
+                onChange={(e) => setInboundForm(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Es. Main Number Route"
+              />
+            </div>
+            <div>
+              <Label>Numero DID</Label>
+              <Input
+                value={inboundForm.did_number}
+                onChange={(e) => setInboundForm(prev => ({ ...prev, did_number: e.target.value }))}
+                placeholder="Es. 0591234567"
+              />
+            </div>
+            <div>
+              <Label>Tipo Destinazione</Label>
+              <Select 
+                value={inboundForm.destination_type} 
+                onValueChange={(val) => setInboundForm(prev => ({ ...prev, destination_type: val }))}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="extension">Extension</SelectItem>
+                  <SelectItem value="ring_group">Ring Group</SelectItem>
+                  <SelectItem value="queue">Queue</SelectItem>
+                  <SelectItem value="ivr">IVR Menu</SelectItem>
+                  <SelectItem value="voicemail">Voicemail</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Valore Destinazione *</Label>
+              {inboundForm.destination_type === 'extension' ? (
+                <Select 
+                  value={inboundForm.destination_value} 
+                  onValueChange={(val) => setInboundForm(prev => ({ ...prev, destination_value: val }))}
+                >
+                  <SelectTrigger><SelectValue placeholder="Seleziona extension" /></SelectTrigger>
+                  <SelectContent>
+                    {extensions.map(ext => (
+                      <SelectItem key={ext.id} value={ext.extension}>{ext.extension} - {ext.display_name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  value={inboundForm.destination_value}
+                  onChange={(e) => setInboundForm(prev => ({ ...prev, destination_value: e.target.value }))}
+                  placeholder="Valore destinazione"
+                />
+              )}
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                checked={inboundForm.enabled}
+                onCheckedChange={(checked) => setInboundForm(prev => ({ ...prev, enabled: checked }))}
+              />
+              <Label>Route Abilitata</Label>
+            </div>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button variant="outline" onClick={() => setShowInboundModal(false)}>Annulla</Button>
+              <Button onClick={handleCreateInbound}>Crea Route</Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
 
-      {/* Main Content */}
-      <div className="space-y-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="inbound">Inbound Routes</TabsTrigger>
-            <TabsTrigger value="outbound">Outbound Routes</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="inbound" className="mt-6">
-            {renderInboundRoutes()}
-          </TabsContent>
-          
-          <TabsContent value="outbound" className="mt-6">
-            {renderOutboundRoutes()}
-          </TabsContent>
-        </Tabs>
-      </div>
+      {/* OUTBOUND MODAL */}
+      <Dialog open={showOutboundModal} onOpenChange={setShowOutboundModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Nuova Outbound Route</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Nome Route *</Label>
+              <Input
+                value={outboundForm.name}
+                onChange={(e) => setOutboundForm(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Es. Mobile Numbers"
+              />
+            </div>
+            <div>
+              <Label>Pattern Numero (regex) *</Label>
+              <Input
+                value={outboundForm.dial_pattern}
+                onChange={(e) => setOutboundForm(prev => ({ ...prev, dial_pattern: e.target.value }))}
+                placeholder="Es. ^3[0-9]{9}$ per mobili italiani"
+              />
+            </div>
+            <div>
+              <Label>Trunk *</Label>
+              <Select 
+                value={outboundForm.trunk_id} 
+                onValueChange={(val) => setOutboundForm(prev => ({ ...prev, trunk_id: val }))}
+              >
+                <SelectTrigger><SelectValue placeholder="Seleziona trunk" /></SelectTrigger>
+                <SelectContent>
+                  {trunks.map(trunk => (
+                    <SelectItem key={trunk.id} value={trunk.id}>{trunk.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Cifre da Rimuovere</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={outboundForm.strip_digits}
+                  onChange={(e) => setOutboundForm(prev => ({ ...prev, strip_digits: parseInt(e.target.value) || 0 }))}
+                />
+              </div>
+              <div>
+                <Label>Cifre da Aggiungere</Label>
+                <Input
+                  value={outboundForm.add_digits}
+                  onChange={(e) => setOutboundForm(prev => ({ ...prev, add_digits: e.target.value }))}
+                  placeholder="Es. 0"
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Priorità</Label>
+              <Input
+                type="number"
+                value={outboundForm.priority}
+                onChange={(e) => setOutboundForm(prev => ({ ...prev, priority: parseInt(e.target.value) || 100 }))}
+              />
+              <p className="text-sm text-gray-500 mt-1">Numero più basso = priorità più alta</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                checked={outboundForm.enabled}
+                onCheckedChange={(checked) => setOutboundForm(prev => ({ ...prev, enabled: checked }))}
+              />
+              <Label>Route Abilitata</Label>
+            </div>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button variant="outline" onClick={() => setShowOutboundModal(false)}>Annulla</Button>
+              <Button onClick={handleCreateOutbound}>Crea Route</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-      {/* Modal */}
-      {renderModal()}
+      {/* TIME CONDITION MODAL */}
+      <Dialog open={showTimeModal} onOpenChange={setShowTimeModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Nuova Time Condition</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Nome *</Label>
+              <Input
+                value={timeForm.name}
+                onChange={(e) => setTimeForm(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Es. Orario Ufficio"
+              />
+            </div>
+            <div>
+              <Label>Timezone</Label>
+              <Select 
+                value={timeForm.timezone} 
+                onValueChange={(val) => setTimeForm(prev => ({ ...prev, timezone: val }))}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Europe/Rome">Europe/Rome</SelectItem>
+                  <SelectItem value="Europe/London">Europe/London</SelectItem>
+                  <SelectItem value="UTC">UTC</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Azione Fuori Orario</Label>
+              <Select 
+                value={timeForm.after_hours_action} 
+                onValueChange={(val) => setTimeForm(prev => ({ ...prev, after_hours_action: val }))}
+              >
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="voicemail">Voicemail</SelectItem>
+                  <SelectItem value="external">Numero Esterno</SelectItem>
+                  <SelectItem value="hangup">Riaggancia</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button variant="outline" onClick={() => setShowTimeModal(false)}>Annulla</Button>
+              <Button onClick={handleCreateTimeCondition}>Crea Condizione</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -12,6 +12,9 @@ import systemRouter from './system';
 import voipRouter from './voip';
 import sipTrunksRouter from './sip-trunks';
 import freeswitchXmlRouter from './freeswitch-xml.routes';
+import freeswitchDeployRouter from './freeswitch-deploy.routes';
+import dialplanRulesRouter from './dialplan-rules.routes';
+import routingRouter from './routing.routes';
 
 const router = Router();
 
@@ -30,6 +33,9 @@ router.use('/webhooks', webhookRoutes);
 router.use('/analytics', analyticsRouter);
 router.use('/voip', voipRouter);
 router.use('/sip-trunks', sipTrunksRouter);
+router.use('/freeswitch-deploy', freeswitchDeployRouter);
+router.use('/dialplan', dialplanRulesRouter);
+router.use('/routing', routingRouter);
 router.use('/', systemRouter);
 
 // Health check endpoint

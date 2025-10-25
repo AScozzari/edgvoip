@@ -1,0 +1,98 @@
+<include>
+  <!-- Dialplan for Demo Tenant - Complete with Outbound -->
+  <context name="demo.edgvoip.it">
+    
+    <!-- Internal Extensions (2000-2999) -->
+    <extension name="demo_local_extensions">
+      <condition field="destination_number" expression="^(2[0-9]{3})$">
+        <action application="export" data="dialed_extension=$1"/>
+        <action application="set" data="call_direction=internal"/>
+        <action application="set" data="tenant_id=42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+        <action application="set" data="tenant_slug=demo"/>
+        <action application="set" data="ringback=${us-ring}"/>
+        <action application="set" data="transfer_ringback=$${hold_music}"/>
+        <action application="set" data="call_timeout=30"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="set" data="continue_on_fail=true"/>
+        <action application="bridge" data="user/${destination_number}@demo.edgvoip.it"/>
+        <action application="answer"/>
+        <action application="sleep" data="1000"/>
+        <action application="voicemail" data="default ${domain_name} ${dialed_extension}"/>
+      </condition>
+    </extension>
+    
+    <!-- Outbound Calls - Italian Mobile (3xx xxxxxxxx) -->
+    <extension name="demo_outbound_italian_mobile">
+      <condition field="destination_number" expression="^(3\d{9})$">
+        <action application="set" data="call_direction=outbound"/>
+        <action application="set" data="tenant_id=42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+        <action application="set" data="tenant_slug=demo"/>
+        <action application="set" data="trunk_id=b773a426-c646-47e4-ba13-1320dc8724cb"/>
+        <action application="set" data="effective_caller_id_name=Demo Tenant"/>
+        <action application="set" data="effective_caller_id_number=+390686356924"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="bridge" data="sofia/gateway/messagenet_demo/$1"/>
+      </condition>
+    </extension>
+    
+    <!-- Outbound Calls - Italian Landline (0x xxxxxxxx) -->
+    <extension name="demo_outbound_italian_landline">
+      <condition field="destination_number" expression="^(0\d{6,10})$">
+        <action application="set" data="call_direction=outbound"/>
+        <action application="set" data="tenant_id=42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+        <action application="set" data="tenant_slug=demo"/>
+        <action application="set" data="trunk_id=b773a426-c646-47e4-ba13-1320dc8724cb"/>
+        <action application="set" data="effective_caller_id_name=Demo Tenant"/>
+        <action application="set" data="effective_caller_id_number=+390686356924"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="bridge" data="sofia/gateway/messagenet_demo/$1"/>
+      </condition>
+    </extension>
+    
+    <!-- Outbound Calls - International (00 + country code) -->
+    <extension name="demo_outbound_international">
+      <condition field="destination_number" expression="^(00\d{8,15})$">
+        <action application="set" data="call_direction=outbound"/>
+        <action application="set" data="tenant_id=42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+        <action application="set" data="tenant_slug=demo"/>
+        <action application="set" data="trunk_id=b773a426-c646-47e4-ba13-1320dc8724cb"/>
+        <action application="set" data="effective_caller_id_name=Demo Tenant"/>
+        <action application="set" data="effective_caller_id_number=+390686356924"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="bridge" data="sofia/gateway/messagenet_demo/$1"/>
+      </condition>
+    </extension>
+    
+    <!-- Outbound Calls - International Format (+xxxxx) -->
+    <extension name="demo_outbound_international_plus">
+      <condition field="destination_number" expression="^\+(\d{8,15})$">
+        <action application="set" data="call_direction=outbound"/>
+        <action application="set" data="tenant_id=42b7b735-7994-4c54-a451-6ba67cb68f60"/>
+        <action application="set" data="tenant_slug=demo"/>
+        <action application="set" data="trunk_id=b773a426-c646-47e4-ba13-1320dc8724cb"/>
+        <action application="set" data="effective_caller_id_name=Demo Tenant"/>
+        <action application="set" data="effective_caller_id_number=+390686356924"/>
+        <action application="set" data="hangup_after_bridge=true"/>
+        <action application="bridge" data="sofia/gateway/messagenet_demo/+$1"/>
+      </condition>
+    </extension>
+    
+    <!-- Echo Test -->
+    <extension name="demo_echo_test">
+      <condition field="destination_number" expression="^9196$">
+        <action application="answer"/>
+        <action application="echo"/>
+      </condition>
+    </extension>
+    
+    <!-- Hold Music Test -->
+    <extension name="demo_hold_music">
+      <condition field="destination_number" expression="^9664$">
+        <action application="answer"/>
+        <action application="playback" data="$${hold_music}"/>
+      </condition>
+    </extension>
+    
+  </context>
+</include>
+

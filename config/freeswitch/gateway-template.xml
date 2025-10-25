@@ -1,0 +1,42 @@
+<!-- FreeSWITCH SIP Trunk Gateway Template -->
+<include>
+  <gateway name="{{TRUNK_NAME}}">
+    <!-- Connection -->
+    <param name="username" value="{{USERNAME}}"/>
+    <param name="password" value="{{PASSWORD}}"/>
+    <param name="realm" value="{{HOST}}"/>
+    <param name="proxy" value="{{HOST}}:{{PORT}}"/>
+    <param name="register" value="{{REGISTER}}"/>
+    <param name="register-transport" value="{{TRANSPORT}}"/>
+    
+    <!-- Caller ID -->
+    <param name="caller-id-in-from" value="true"/>
+    <param name="extension" value="{{OUTBOUND_CALLER_ID}}"/>
+    <param name="from-user" value="{{USERNAME}}"/>
+    <param name="from-domain" value="{{HOST}}"/>
+    
+    <!-- Registration -->
+    <param name="retry-seconds" value="60"/>
+    <param name="expire-seconds" value="3600"/>
+    <param name="ping" value="60"/>
+    
+    <!-- CODEC Preferences -->
+    <param name="codec-prefs" value="{{CODEC_PREFS}}"/>
+    
+    <!-- Transport -->
+    <param name="register-proxy" value="{{HOST}}:{{PORT}}"/>
+    
+    <!-- Context -->
+    <param name="context" value="{{CONTEXT_PREFIX}}-external"/>
+    
+    <!-- Variables -->
+    <variables>
+      <variable name="tenant_id" value="{{TENANT_ID}}" direction="outbound"/>
+      <variable name="tenant_slug" value="{{SLUG}}" direction="outbound"/>
+      <variable name="trunk_id" value="{{TRUNK_ID}}" direction="outbound"/>
+      <variable name="outbound_caller_id_number" value="{{OUTBOUND_CALLER_ID}}" direction="outbound"/>
+      <variable name="max_concurrent_calls" value="{{MAX_CONCURRENT_CALLS}}" direction="outbound"/>
+    </variables>
+  </gateway>
+</include>
+

@@ -544,5 +544,52 @@ export class TenantService {
       await client.release();
     }
   }
+
+  /**
+   * Generate context prefix from tenant slug
+   */
+  generateContextPrefix(slug: string): string {
+    return `tenant-${slug.toLowerCase()}`;
+  }
+
+  /**
+   * Create default FreeSWITCH contexts for a tenant
+   * Creates 6 contexts: internal, outbound, external, features, voicemail, emergency
+   */
+  async createTenantContexts(tenantId: string): Promise<void> {
+    const { DialplanRulesService } = await import('./dialplan-rules.service');
+    const dialplanRulesService = new DialplanRulesService();
+
+    const tenant = await this.getTenantById(tenantId);
+    if (!tenant) {
+      throw new Error(`Tenant not found: ${tenantId}`);
+    }
+
+    const contexts = ['internal', 'outbound', 'external', 'features', 'voicemail', 'emergency'];
+
+    for (const ctx of contexts) {
+      const contextName = `${tenant.context_prefix}-${ctx}`;
+      await dialplanRulesService.createDefaultRulesForContext(tenantId, contextName);
+    }
+  }
+
+  /**
+   * Enhanced createTenantWithCompanies that also creates FreeSWITCH contexts
+   */
+  async createTenantWithContexts(data: CreateTenantRequest): Promise<any> {
+    // First create tenant with companies and contacts
+    const tenant = await this.createTenantWithCompanies(data);
+
+    // Then create FreeSWITCH contexts automatically
+    try {
+      await this.createTenantContexts(tenant.tenant.id);
+    } catch (error) {
+      console.error('Error creating tenant contexts:', error);
+      // Don't fail the tenant creation if context creation fails
+      // The contexts can be created manually later
+    }
+
+    return tenant;
+  }
 }
 

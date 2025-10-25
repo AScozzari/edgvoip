@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { 
   Plus, 
   Search, 
@@ -16,62 +19,86 @@ import {
   X,
   RefreshCw,
   Eye,
-  EyeOff
+  EyeOff,
+  Rocket
 } from 'lucide-react';
-import { SipExtensionConfig } from '@voip/shared';
 import { apiClient } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+
+interface Extension {
+  id?: string;
+  extension: string;
+  password: string;
+  display_name: string;
+  status: string;
+  context?: string;
+  caller_id_number?: string;
+  voicemail_pin?: string;
+  pickup_group?: string;
+  limit_max?: number;
+  settings?: any;
+  tenant_id?: string;
+}
 
 export default function Extensions() {
   const { user } = useAuth();
-  const [extensions, setExtensions] = useState<SipExtensionConfig[]>([]);
+  const { toast } = useToast();
+  const [extensions, setExtensions] = useState<Extension[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState<'create' | 'edit' | 'view'>('create');
+  const [modalType, setModalType] = useState<'create' | 'edit'>('create');
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [formData, setFormData] = useState<Partial<SipExtensionConfig>>({});
   const [showPassword, setShowPassword] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingExtension, setEditingExtension] = useState<Extension | null>(null);
 
-  // Load extensions on component mount
+  // Form state with all fields
+  const [formData, setFormData] = useState<Extension>({
+    extension: '',
+    password: '',
+    display_name: '',
+    status: 'active',
+    caller_id_number: '',
+    voicemail_pin: '',
+    pickup_group: '',
+    limit_max: 3,
+    settings: {
+      voicemail_enabled: true,
+      call_forwarding: { enabled: false, destination: '' },
+      dnd_enabled: false,
+      recording_enabled: false,
+      timeout_seconds: 30,
+      email: '',
+      timezone: 'Europe/Rome',
+      notes: '',
+      codec_prefs: ['PCMA', 'OPUS'],
+      force_tls: false,
+      force_srtp: false,
+      ip_whitelist: []
+    }
+  });
+
   useEffect(() => {
     loadExtensions();
   }, []);
 
-
   const loadExtensions = async () => {
     setLoading(true);
     try {
-      // Load extensions from API using apiClient
       const data = await apiClient.getExtensions({ limit: 100 });
       
-      console.log('📡 Extensions API Response:', data);
-      
       if (data?.success && data?.data?.items && Array.isArray(data.data.items)) {
-        // Map backend extensions to frontend format
-        const mappedExtensions = data.data.items.map((ext: any) => ({
-          id: ext.id,
-          extension: ext.extension,
-          display_name: ext.display_name,
-          password: ext.password || '[HIDDEN]',
-          status: ext.status,
-          tenant_id: ext.tenant_id,
-          created_at: ext.created_at,
-          updated_at: ext.updated_at,
-          sip_settings: {
-            type: ext.type || 'user',
-            host: 'dynamic',
-            context: 'default'
-          }
-        }));
-        setExtensions(mappedExtensions);
-        console.log('✅ Extensions loaded from database:', mappedExtensions.length);
+        setExtensions(data.data.items);
       } else {
-        console.warn('⚠️ Invalid API response format, using empty array');
         setExtensions([]);
       }
     } catch (error) {
-      console.error('❌ Error loading extensions:', error);
+      console.error('Error loading extensions:', error);
+      toast({
+        title: "Errore",
+        description: "Impossibile caricare le extensions",
+        variant: "destructive"
+      });
       setExtensions([]);
     } finally {
       setLoading(false);
@@ -83,585 +110,622 @@ export default function Extensions() {
     
     setLoading(true);
     try {
+      // Set caller_id_number to extension if empty
+      if (!formData.caller_id_number) {
+        formData.caller_id_number = formData.extension;
+      }
+
       const response = await apiClient.post('/voip/sip-extensions', {
         ...formData,
         tenant_id: user.tenant_id
       });
       
-      setExtensions(prev => [...prev, response.data]);
+      await loadExtensions();
       setShowModal(false);
-      setFormData({});
-    } catch (error) {
-      console.error('Error creating extension:', error);
+      resetForm();
+
+      toast({
+        title: "Successo!",
+        description: `Extension ${formData.extension} creata con successo`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore durante la creazione",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpdate = async (extensionId: string) => {
+  const handleUpdate = async () => {
+    if (!editingExtension?.id) return;
+    
     setLoading(true);
     try {
-      const response = await apiClient.put(`/voip/sip-extensions/${extensionId}`, formData);
+      await apiClient.put(`/voip/sip-extensions/${editingExtension.id}`, formData);
       
-      setExtensions(prev => prev.map(ext => ext.id === extensionId ? response.data : ext));
+      await loadExtensions();
       setShowModal(false);
-      setFormData({});
-    } catch (error) {
-      console.error('Error updating extension:', error);
+      resetForm();
+
+      toast({
+        title: "Successo!",
+        description: `Extension ${formData.extension} aggiornata`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore durante l'aggiornamento",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveAndDeploy = async () => {
+    // Save first
+    if (modalType === 'create') {
+      await handleCreate();
+    } else {
+      await handleUpdate();
+    }
+
+    // Then deploy
+    if (editingExtension?.id) {
+      try {
+        await apiClient.post(`/freeswitch-deploy/extension/${editingExtension.id}`, {});
+        toast({
+          title: "Deploy Completato!",
+          description: "Configurazione FreeSWITCH aggiornata",
+        });
+      } catch (error) {
+        console.error('Deploy error:', error);
+      }
     }
   };
 
   const handleDelete = async (extensionId: string) => {
-    if (!confirm('Are you sure you want to delete this extension?')) return;
+    if (!confirm('Sei sicuro di voler eliminare questa extension?')) return;
     
     setLoading(true);
     try {
       await apiClient.delete(`/voip/sip-extensions/${extensionId}`);
-      
-      setExtensions(prev => prev.filter(ext => ext.id !== extensionId));
-    } catch (error) {
-      console.error('Error deleting extension:', error);
+      await loadExtensions();
+
+      toast({
+        title: "Eliminata",
+        description: "Extension eliminata con successo",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore durante l'eliminazione",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const openModal = (type: 'create' | 'edit' | 'view', item?: any) => {
-    setModalType(type);
-    if (item) {
-      setEditingItem(item);
-      setFormData(item);
-    } else {
-      setEditingItem(null);
-      setFormData({});
-    }
+  const openCreateModal = () => {
+    resetForm();
+    setModalType('create');
+    setEditingExtension(null);
     setShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingItem(null);
-    setFormData({});
+  const openEditModal = (extension: Extension) => {
+    setFormData({
+      ...extension,
+      settings: extension.settings || formData.settings
+    });
+    setModalType('edit');
+    setEditingExtension(extension);
+    setShowModal(true);
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'default';
-      case 'inactive': return 'secondary';
-      case 'locked': return 'destructive';
-      default: return 'secondary';
-    }
+  const resetForm = () => {
+    setFormData({
+      extension: '',
+      password: '',
+      display_name: '',
+      status: 'active',
+      caller_id_number: '',
+      voicemail_pin: '',
+      pickup_group: '',
+      limit_max: 3,
+      settings: {
+        voicemail_enabled: true,
+        call_forwarding: { enabled: false, destination: '' },
+        dnd_enabled: false,
+        recording_enabled: false,
+        timeout_seconds: 30,
+        email: '',
+        timezone: 'Europe/Rome',
+        notes: '',
+        codec_prefs: ['PCMA', 'OPUS'],
+        force_tls: false,
+        force_srtp: false,
+        ip_whitelist: []
+      }
+    });
+    setEditingExtension(null);
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'active': return 'Active';
-      case 'inactive': return 'Inactive';
-      case 'locked': return 'Locked';
-      default: return 'Unknown';
-    }
+  const updateFormData = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateSettings = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      settings: { ...prev.settings, [field]: value }
+    }));
   };
 
   const filteredExtensions = extensions.filter(ext =>
-    ext.extension.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ext.display_name.toLowerCase().includes(searchTerm.toLowerCase())
+    ext.extension?.includes(searchTerm) ||
+    ext.display_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const columns = [
-    { header: 'Extension', key: 'extension' },
-    { header: 'Display Name', key: 'display_name' },
-    { header: 'Type', key: 'type', render: (item: any) => item.sip_settings?.type || 'user' },
-    { header: 'Host', key: 'host', render: (item: any) => item.sip_settings?.host || 'localhost' },
-    { 
-      header: 'Status', 
-      key: 'status',
-      render: (item: any) => (
-        <Badge variant={getStatusColor(item.status)}>
-          {getStatusLabel(item.status)}
-        </Badge>
-      )
-    },
-    { header: 'Context', key: 'context', render: (item: any) => item.sip_settings?.context || 'default' }
-  ];
+  const generatePassword = () => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+    const password = Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    updateFormData('password', password);
+  };
 
-  const renderDataTable = () => (
-    <div className="w-full">
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b bg-gray-50">
-              {columns.map((col, index) => (
-                <th key={index} className="text-left p-3 font-medium text-gray-700">
-                  {col.header}
-                </th>
-              ))}
-              <th className="text-right p-3 font-medium text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredExtensions.map((extension, index) => (
-              <tr key={extension.id || index} className="border-b hover:bg-gray-50">
-                {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="p-3">
-                    {col.render ? col.render(extension) : extension[col.key]}
-                  </td>
-                ))}
-                <td className="p-3">
-                  <div className="flex items-center justify-end space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openModal('view', extension)}
-                      title="View Details"
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openModal('edit', extension)}
-                      title="Edit"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(extension.id)}
-                      title="Delete"
-                      className="text-red-600 hover:text-red-700"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  const renderModal = () => {
-    if (!showModal) return null;
-
+  if (loading && extensions.length === 0) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">
-              {modalType === 'create' ? 'Create New' : modalType === 'edit' ? 'Edit' : 'View'} Extension
-            </h2>
-            <Button variant="ghost" size="sm" onClick={closeModal}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="basic">Basic</TabsTrigger>
-              <TabsTrigger value="sip">SIP</TabsTrigger>
-              <TabsTrigger value="features">Features</TabsTrigger>
-              <TabsTrigger value="security">Security</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="basic" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Extension Number</label>
-                  <Input 
-                    placeholder="1001" 
-                    value={formData.extension || ''}
-                    onChange={(e) => setFormData({...formData, extension: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Display Name</label>
-                  <Input 
-                    placeholder="John Doe" 
-                    value={formData.display_name || ''}
-                    onChange={(e) => setFormData({...formData, display_name: e.target.value})}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Password</label>
-                  <div className="relative">
-                    <Input 
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password" 
-                      value={formData.password || ''}
-                      onChange={(e) => setFormData({...formData, password: e.target.value})}
-                      disabled={modalType === 'view'}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                      disabled={modalType === 'view'}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Status</label>
-                  <Select 
-                    value={formData.status || 'active'}
-                    onValueChange={(value) => setFormData({...formData, status: value as any})}
-                    disabled={modalType === 'view'}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                      <SelectItem value="locked">Locked</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="sip" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">SIP Type</label>
-                  <Select 
-                    value={formData.sip_settings?.type || 'user'}
-                    onValueChange={(value) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, type: value as any}
-                    })}
-                    disabled={modalType === 'view'}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select SIP type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="user">User</SelectItem>
-                      <SelectItem value="friend">Friend</SelectItem>
-                      <SelectItem value="peer">Peer</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Host</label>
-                  <Input 
-                    placeholder="dynamic" 
-                    value={formData.sip_settings?.host || ''}
-                    onChange={(e) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, host: e.target.value}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Context</label>
-                  <Input 
-                    placeholder="default" 
-                    value={formData.sip_settings?.context || ''}
-                    onChange={(e) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, context: e.target.value}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">NAT Mode</label>
-                  <Select 
-                    value={formData.sip_settings?.nat || 'force_rport'}
-                    onValueChange={(value) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, nat: value as any}
-                    })}
-                    disabled={modalType === 'view'}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select NAT mode" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="force_rport">Force RPort</SelectItem>
-                      <SelectItem value="comedia">Comedia</SelectItem>
-                      <SelectItem value="auto_force_rport">Auto Force RPort</SelectItem>
-                      <SelectItem value="auto_comedia">Auto Comedia</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="qualify" 
-                    checked={formData.sip_settings?.qualify || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, qualify: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="qualify" className="text-sm font-medium">Qualify</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="canreinvite" 
-                    checked={formData.sip_settings?.canreinvite || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      sip_settings: {...formData.sip_settings, canreinvite: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="canreinvite" className="text-sm font-medium">Can Reinvite</label>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="features" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="call-forwarding" 
-                    checked={formData.call_features?.call_forwarding?.enabled || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {
-                        ...formData.call_features,
-                        call_forwarding: {...formData.call_features?.call_forwarding, enabled: checked}
-                      }
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="call-forwarding" className="text-sm font-medium">Call Forwarding</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="call-waiting" 
-                    checked={formData.call_features?.call_waiting || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {...formData.call_features, call_waiting: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="call-waiting" className="text-sm font-medium">Call Waiting</label>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="three-way-calling" 
-                    checked={formData.call_features?.three_way_calling || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {...formData.call_features, three_way_calling: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="three-way-calling" className="text-sm font-medium">Three Way Calling</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="voicemail" 
-                    checked={formData.call_features?.voicemail?.enabled || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {
-                        ...formData.call_features,
-                        voicemail: {...formData.call_features?.voicemail, enabled: checked}
-                      }
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="voicemail" className="text-sm font-medium">Voicemail</label>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="call-recording" 
-                    checked={formData.call_features?.call_recording || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {...formData.call_features, call_recording: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="call-recording" className="text-sm font-medium">Call Recording</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="dnd" 
-                    checked={formData.call_features?.do_not_disturb || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      call_features: {...formData.call_features, do_not_disturb: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="dnd" className="text-sm font-medium">Do Not Disturb</label>
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="security" className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="encryption" 
-                    checked={formData.security?.encryption || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      security: {...formData.security, encryption: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="encryption" className="text-sm font-medium">Encryption</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="anonymous-calls" 
-                    checked={formData.security?.allow_anonymous_calls || false}
-                    onCheckedChange={(checked) => setFormData({
-                      ...formData, 
-                      security: {...formData.security, allow_anonymous_calls: checked}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                  <label htmlFor="anonymous-calls" className="text-sm font-medium">Allow Anonymous Calls</label>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Max Calls</label>
-                  <Input 
-                    type="number"
-                    placeholder="1" 
-                    value={formData.security?.max_calls || ''}
-                    onChange={(e) => setFormData({
-                      ...formData, 
-                      security: {...formData.security, max_calls: parseInt(e.target.value)}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Call Timeout</label>
-                  <Input 
-                    type="number"
-                    placeholder="60" 
-                    value={formData.security?.call_timeout || ''}
-                    onChange={(e) => setFormData({
-                      ...formData, 
-                      security: {...formData.security, call_timeout: parseInt(e.target.value)}
-                    })}
-                    disabled={modalType === 'view'}
-                  />
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-          
-          {modalType !== 'view' && (
-            <div className="flex justify-end space-x-2 mt-6">
-              <Button 
-                variant="outline"
-                onClick={closeModal}
-              >
-                <X className="h-4 w-4 mr-2" />
-                Cancel
-              </Button>
-              <Button 
-                onClick={() => {
-                  if (editingItem) {
-                    handleUpdate(editingItem.id);
-                  } else {
-                    handleCreate();
-                  }
-                }}
-                disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Save className="h-4 w-4 mr-2" />
-                {loading ? 'Saving...' : 'Save Configuration'}
-              </Button>
-            </div>
-          )}
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
-  };
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">SIP Extensions</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Extensions</h1>
           <p className="text-muted-foreground">
-            Manage SIP extensions, configure call features, and monitor registration status
+            Gestisci interni telefonici e configurazioni SIP
           </p>
         </div>
-        <div className="flex items-center space-x-2">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search extensions..."
-              className="pl-8 w-64"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Button onClick={loadExtensions} variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-          <Button 
-            onClick={() => openModal('create')} 
-            size="sm"
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Extension
-          </Button>
-        </div>
+        <Button onClick={openCreateModal}>
+          <Plus className="h-4 w-4 mr-2" />
+          Nuova Extension
+        </Button>
       </div>
 
-      {/* Data Table */}
+      {/* Search */}
+      <div className="flex items-center space-x-2">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Cerca extension..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Button variant="outline" onClick={loadExtensions}>
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Ricarica
+        </Button>
+      </div>
+
+      {/* Extensions Table */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center">
-            <Phone className="h-5 w-5 mr-2" />
-            Extensions ({filteredExtensions.length})
-          </CardTitle>
-          <CardDescription>
-            Manage and configure SIP extensions
-          </CardDescription>
+          <CardTitle>Elenco Extensions ({filteredExtensions.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          {renderDataTable()}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left p-3">Extension</th>
+                  <th className="text-left p-3">Nome</th>
+                  <th className="text-left p-3">Caller ID</th>
+                  <th className="text-left p-3">Context</th>
+                  <th className="text-left p-3">Status</th>
+                  <th className="text-right p-3">Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredExtensions.map((ext) => (
+                  <tr key={ext.id} className="border-b hover:bg-gray-50">
+                    <td className="p-3 font-mono font-semibold">{ext.extension}</td>
+                    <td className="p-3">{ext.display_name}</td>
+                    <td className="p-3 font-mono text-sm">{ext.caller_id_number || ext.extension}</td>
+                    <td className="p-3 text-sm text-gray-600">{ext.context || 'N/A'}</td>
+                    <td className="p-3">
+                      <Badge variant={ext.status === 'active' ? 'default' : 'secondary'}>
+                        {ext.status}
+                      </Badge>
+                    </td>
+                    <td className="p-3 text-right space-x-2">
+                      <Button variant="outline" size="sm" onClick={() => openEditModal(ext)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="destructive" size="sm" onClick={() => ext.id && handleDelete(ext.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </CardContent>
       </Card>
 
-      {/* Modal */}
-      {renderModal()}
+      {/* Modal with Tabs */}
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {modalType === 'create' ? 'Crea Nuova Extension' : `Modifica Extension ${formData.extension}`}
+            </DialogTitle>
+            <DialogDescription>
+              Configura l'estensione SIP e le funzionalità telefoniche
+            </DialogDescription>
+          </DialogHeader>
+
+          <Tabs defaultValue="general" className="w-full">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="general">Generali</TabsTrigger>
+              <TabsTrigger value="calls">Chiamate</TabsTrigger>
+              <TabsTrigger value="security">Sicurezza</TabsTrigger>
+              <TabsTrigger value="voicemail">Voicemail</TabsTrigger>
+              <TabsTrigger value="advanced">Avanzate</TabsTrigger>
+            </TabsList>
+
+            {/* TAB: GENERALI */}
+            <TabsContent value="general" className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="extension">Numero Extension *</Label>
+                  <Input
+                    id="extension"
+                    value={formData.extension}
+                    onChange={(e) => updateFormData('extension', e.target.value)}
+                    placeholder="Es. 1000"
+                    disabled={modalType === 'edit'}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Numero interno (1000-1999)</p>
+                </div>
+                <div>
+                  <Label htmlFor="display_name">Nome Visualizzato *</Label>
+                  <Input
+                    id="display_name"
+                    value={formData.display_name}
+                    onChange={(e) => updateFormData('display_name', e.target.value)}
+                    placeholder="Es. Mario Rossi"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="password">Password SIP *</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={(e) => updateFormData('password', e.target.value)}
+                      placeholder="Password sicura"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={generatePassword}
+                    >
+                      Genera
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="email">Email (per notifiche)</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.settings.email}
+                    onChange={(e) => updateSettings('email', e.target.value)}
+                    placeholder="user@example.com"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.status === 'active'}
+                  onCheckedChange={(checked) => updateFormData('status', checked ? 'active' : 'inactive')}
+                />
+                <Label>Extension Abilitata</Label>
+              </div>
+            </TabsContent>
+
+            {/* TAB: CHIAMATE */}
+            <TabsContent value="calls" className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="caller_id_name">Caller ID Nome</Label>
+                  <Input
+                    id="caller_id_name"
+                    value={formData.display_name}
+                    disabled
+                    className="bg-gray-100"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Usa "Nome Visualizzato" tab Generali</p>
+                </div>
+                <div>
+                  <Label htmlFor="caller_id_number">Caller ID Numero</Label>
+                  <Input
+                    id="caller_id_number"
+                    value={formData.caller_id_number}
+                    onChange={(e) => updateFormData('caller_id_number', e.target.value)}
+                    placeholder={formData.extension}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">Numero mostrato nelle chiamate</p>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="timeout">Timeout Squillo (secondi): {formData.settings.timeout_seconds}s</Label>
+                <input
+                  id="timeout"
+                  type="range"
+                  min="5"
+                  max="60"
+                  value={formData.settings.timeout_seconds}
+                  onChange={(e) => updateSettings('timeout_seconds', parseInt(e.target.value))}
+                  className="w-full"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <Switch
+                    checked={formData.settings.call_forwarding.enabled}
+                    onCheckedChange={(checked) => updateSettings('call_forwarding', { 
+                      ...formData.settings.call_forwarding, 
+                      enabled: checked 
+                    })}
+                  />
+                  <Label>Deviazione Chiamate</Label>
+                </div>
+                {formData.settings.call_forwarding.enabled && (
+                  <Input
+                    placeholder="Numero destinazione"
+                    value={formData.settings.call_forwarding.destination}
+                    onChange={(e) => updateSettings('call_forwarding', {
+                      ...formData.settings.call_forwarding,
+                      destination: e.target.value
+                    })}
+                  />
+                )}
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.settings.dnd_enabled}
+                  onCheckedChange={(checked) => updateSettings('dnd_enabled', checked)}
+                />
+                <Label>Do Not Disturb (DND)</Label>
+              </div>
+
+              <div>
+                <Label htmlFor="pickup_group">Gruppo Pickup</Label>
+                <Input
+                  id="pickup_group"
+                  value={formData.pickup_group}
+                  onChange={(e) => updateFormData('pickup_group', e.target.value)}
+                  placeholder="Es. sales, support"
+                />
+                <p className="text-sm text-gray-500 mt-1">Gruppo per pickup chiamate (*8)</p>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.settings.recording_enabled}
+                  onCheckedChange={(checked) => updateSettings('recording_enabled', checked)}
+                />
+                <Label>Registrazione Automatica Chiamate</Label>
+              </div>
+            </TabsContent>
+
+            {/* TAB: SICUREZZA */}
+            <TabsContent value="security" className="space-y-4">
+              <div>
+                <Label htmlFor="limit_max">Max Chiamate Simultanee</Label>
+                <Input
+                  id="limit_max"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={formData.limit_max}
+                  onChange={(e) => updateFormData('limit_max', parseInt(e.target.value) || 3)}
+                />
+              </div>
+
+              <div>
+                <Label>Codec Preferiti</Label>
+                <div className="space-y-2">
+                  {['PCMA', 'PCMU', 'OPUS', 'G729', 'G722'].map(codec => (
+                    <div key={codec} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={formData.settings.codec_prefs.includes(codec)}
+                        onChange={(e) => {
+                          const newCodecs = e.target.checked
+                            ? [...formData.settings.codec_prefs, codec]
+                            : formData.settings.codec_prefs.filter((c: string) => c !== codec);
+                          updateSettings('codec_prefs', newCodecs);
+                        }}
+                        className="rounded"
+                      />
+                      <Label>{codec}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.settings.force_tls}
+                  onCheckedChange={(checked) => updateSettings('force_tls', checked)}
+                />
+                <Label>Forza TLS (Secure Transport)</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.settings.force_srtp}
+                  onCheckedChange={(checked) => updateSettings('force_srtp', checked)}
+                />
+                <Label>Forza SRTP (Secure RTP)</Label>
+              </div>
+
+              <div>
+                <Label htmlFor="ip_whitelist">IP Whitelist (uno per riga)</Label>
+                <Textarea
+                  id="ip_whitelist"
+                  value={formData.settings.ip_whitelist.join('\n')}
+                  onChange={(e) => updateSettings('ip_whitelist', e.target.value.split('\n').filter(Boolean))}
+                  placeholder="192.168.1.100&#10;10.0.0.50"
+                  rows={4}
+                />
+                <p className="text-sm text-gray-500 mt-1">Lascia vuoto per permettere tutti gli IP</p>
+              </div>
+            </TabsContent>
+
+            {/* TAB: VOICEMAIL */}
+            <TabsContent value="voicemail" className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={formData.settings.voicemail_enabled}
+                  onCheckedChange={(checked) => updateSettings('voicemail_enabled', checked)}
+                />
+                <Label>Abilita Segreteria Telefonica</Label>
+              </div>
+
+              {formData.settings.voicemail_enabled && (
+                <>
+                  <div>
+                    <Label htmlFor="voicemail_pin">PIN Segreteria</Label>
+                    <Input
+                      id="voicemail_pin"
+                      type="password"
+                      value={formData.voicemail_pin}
+                      onChange={(e) => updateFormData('voicemail_pin', e.target.value)}
+                      placeholder="Es. 1234"
+                    />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={formData.settings.email_notification !== false}
+                      onCheckedChange={(checked) => updateSettings('email_notification', checked)}
+                    />
+                    <Label>Notifica via Email</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={formData.settings.delete_after_email || false}
+                      onCheckedChange={(checked) => updateSettings('delete_after_email', checked)}
+                    />
+                    <Label>Elimina Messaggio Dopo Invio Email</Label>
+                  </div>
+                </>
+              )}
+            </TabsContent>
+
+            {/* TAB: AVANZATE */}
+            <TabsContent value="advanced" className="space-y-4">
+              <div>
+                <Label htmlFor="context">Context FreeSWITCH (readonly)</Label>
+                <Input
+                  id="context"
+                  value={formData.context || 'Auto-generato dal tenant'}
+                  disabled
+                  className="bg-gray-100 font-mono text-sm"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="timezone">Timezone</Label>
+                <Select 
+                  value={formData.settings.timezone} 
+                  onValueChange={(val) => updateSettings('timezone', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Europe/Rome">Europe/Rome (IT)</SelectItem>
+                    <SelectItem value="Europe/London">Europe/London (UK)</SelectItem>
+                    <SelectItem value="America/New_York">America/New_York (US)</SelectItem>
+                    <SelectItem value="UTC">UTC</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Note Amministrative</Label>
+                <Textarea
+                  id="notes"
+                  value={formData.settings.notes}
+                  onChange={(e) => updateSettings('notes', e.target.value)}
+                  placeholder="Note interne..."
+                  rows={4}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Footer Actions */}
+          <div className="flex justify-between pt-4 border-t">
+            <Button variant="outline" onClick={() => setShowModal(false)}>
+              <X className="h-4 w-4 mr-2" />
+              Annulla
+            </Button>
+            <div className="space-x-2">
+              <Button 
+                variant="default" 
+                onClick={modalType === 'create' ? handleCreate : handleUpdate}
+                disabled={loading}
+              >
+                <Save className="h-4 w-4 mr-2" />
+                {loading ? 'Salvataggio...' : 'Salva'}
+              </Button>
+              <Button 
+                variant="default"
+                className="bg-green-600 hover:bg-green-700"
+                onClick={handleSaveAndDeploy}
+                disabled={loading}
+              >
+                <Rocket className="h-4 w-4 mr-2" />
+                Salva e Deploy FreeSWITCH
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
