@@ -20,12 +20,17 @@ export async function validateTenantSlug(
   res: Response,
   next: NextFunction
 ) {
-  console.log('=== validateTenantSlug called ===');
-  console.log('validateTenantSlug - req.body:', JSON.stringify(req.body));
-  console.log('validateTenantSlug - req.params:', req.params);
+  console.log('🔵 === validateTenantSlug MIDDLEWARE CALLED ===');
+  console.log('🔵 req.path:', req.path);
+  console.log('🔵 req.method:', req.method);
+  console.log('🔵 req.params:', JSON.stringify(req.params));
+  console.log('🔵 req.query:', JSON.stringify(req.query));
+  
   const tenantSlug = req.params.tenantSlug || req.query.tenantSlug;
+  console.log('🔵 Extracted tenantSlug:', tenantSlug);
   
   if (!tenantSlug) {
+    console.log('❌ NO TENANT SLUG PROVIDED');
     return res.status(400).json({
       success: false,
       error: 'Tenant slug is required'
@@ -33,17 +38,20 @@ export async function validateTenantSlug(
   }
 
   try {
-    console.log('Looking for tenant with slug:', tenantSlug);
+    console.log('🔵 Looking for tenant with slug:', tenantSlug);
+    console.log('🔵 DATABASE_URL:', process.env.DATABASE_URL?.substring(0, 40) + '...');
+    
     const client = await getClient();
     const result = await client.query(
       'SELECT id, slug, name, domain, sip_domain FROM tenants WHERE slug = $1 AND status = $2',
       [tenantSlug, 'active']
     );
 
-    console.log('Query result:', result.rows);
+    console.log('🔵 Query result rows count:', result.rows.length);
+    console.log('🔵 Query result:', JSON.stringify(result.rows));
     
     if (result.rows.length === 0) {
-      console.log('Tenant not found for slug:', tenantSlug);
+      console.log('❌ TENANT NOT FOUND FOR SLUG:', tenantSlug);
       return res.status(404).json({
         success: false,
         error: 'Tenant not found',
@@ -54,10 +62,11 @@ export async function validateTenantSlug(
     const tenant = result.rows[0];
     req.tenant = tenant as any;
     
-    console.log('✅ Tenant validated successfully, calling next() - FORCED RESTART');
+    console.log('✅ TENANT VALIDATED SUCCESSFULLY! Calling next()');
+    console.log('✅ Tenant:', JSON.stringify(tenant));
     next();
   } catch (error) {
-    console.error('Error validating tenant slug:', error);
+    console.error('❌ ERROR VALIDATING TENANT SLUG:', error);
     return res.status(500).json({
       success: false,
       error: 'Failed to validate tenant'
