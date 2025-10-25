@@ -25,13 +25,14 @@ router.get('/test-validate', (req, res) => {
  * Validate tenant exists: GET /:tenantSlug/validate
  * Public endpoint to check if a tenant exists (no authentication required)
  */
-router.get('/:tenantSlug/validate', (req: TenantRequest, res) => {
+router.get('/:tenantSlug/validate', validateTenantSlug, (req: TenantRequest, res) => {
   console.log('✅ VALIDATE ROUTE HIT! tenantSlug:', req.params.tenantSlug);
   return res.status(200).json({
     success: true,
     data: {
-      slug: req.params.tenantSlug,
-      message: 'Route works! (without middleware validation)'
+      slug: req.tenant?.slug,
+      name: req.tenant?.name,
+      domain: req.tenant?.domain
     }
   });
 });

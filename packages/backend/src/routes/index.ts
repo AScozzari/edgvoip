@@ -21,8 +21,7 @@ const router = Router();
 // FreeSWITCH XML Curl endpoint (NO auth - internal FreeSWITCH call)
 router.use('/freeswitch', freeswitchXmlRouter);
 
-// API routes
-router.use('/', authRouter); // Auth routes at root level (/:tenantSlug/login)
+// API routes - SPECIFIC ROUTES FIRST, then catch-all routers
 router.use('/tenants', tenantsRouter);
 router.use('/stores', storesRouter);
 router.use('/users', usersRouter);
@@ -36,7 +35,10 @@ router.use('/sip-trunks', sipTrunksRouter);
 router.use('/freeswitch-deploy', freeswitchDeployRouter);
 router.use('/dialplan', dialplanRulesRouter);
 router.use('/routing', routingRouter);
+
+// Mount routers with root paths LAST to avoid catching other routes
 router.use('/', systemRouter);
+router.use('/', authRouter); // Auth routes at root level (/:tenantSlug/login, /:tenantSlug/validate)
 
 // TEST DIRECT ROUTE
 router.get('/test-direct', (req, res) => {
