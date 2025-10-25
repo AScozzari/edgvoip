@@ -1,6 +1,5 @@
 import { getClient } from '@w3-voip/database';
 import { v4 as uuidv4 } from 'uuid';
-import { logAPIEvent } from '../utils/logger';
 
 export interface DialplanRule {
   id?: string;
@@ -267,11 +266,7 @@ export class DialplanRulesService {
         break;
     }
 
-    logAPIEvent('dialplan_rules_defaults_created', {
-      tenant_id: tenantId,
-      context,
-      context_type: contextType,
-    });
+    console.log(`✅ Dialplan rules defaults created for ${context} (${contextType})`);
   }
 
   /**

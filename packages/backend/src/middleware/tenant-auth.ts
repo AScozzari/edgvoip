@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
-import { AuthRequest, asyncHandler, errorResponse } from '../utils/response';
+import { AuthRequest } from './auth';
+import { asyncHandler, errorResponse } from '../utils/response';
 
 /**
  * Middleware to require that the authenticated user is either:

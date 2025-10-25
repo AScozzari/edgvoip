@@ -1,4 +1,4 @@
-import { TenantService } from './tenant.service';
+import { TenantService, Tenant } from './tenant.service';
 import { FreeSWITCHConfigService } from './freeswitch-config.service';
 import { ESLService } from './esl.service';
 import { logFreeSWITCHEvent } from '../utils/logger';
@@ -140,7 +140,7 @@ export class FreeSWITCHDeployService {
       await fs.writeFile(trunkFilePath, trunkXML);
 
       // Reload Sofia profile
-      await this.eslService.executeCommand('sofia profile external rescan');
+      await this.eslService.api('sofia profile external rescan');
 
       logFreeSWITCHEvent('deploy_trunk_success', {
         trunk_id: trunkId,
@@ -207,14 +207,14 @@ export class FreeSWITCHDeployService {
   async reloadFreeSWITCH(): Promise<void> {
     try {
       // Reload XML
-      await this.eslService.executeCommand('reloadxml');
+      await this.eslService.api('reloadxml');
       
       // Reload ACL
-      await this.eslService.executeCommand('reloadacl');
+      await this.eslService.api('reloadacl');
       
       // Rescan Sofia profiles
-      await this.eslService.executeCommand('sofia profile internal rescan');
-      await this.eslService.executeCommand('sofia profile external rescan');
+      await this.eslService.api('sofia profile internal rescan');
+      await this.eslService.api('sofia profile external rescan');
 
       logFreeSWITCHEvent('freeswitch_reload_success', {});
     } catch (error: any) {
@@ -229,7 +229,7 @@ export class FreeSWITCHDeployService {
   private async verifyDeployment(tenant: any): Promise<any> {
     try {
       // Check if Sofia profile recognizes the domain
-      const statusOutput = await this.eslService.executeCommand(`sofia status profile internal`);
+      const statusOutput = await this.eslService.api(`sofia status profile internal`);
 
       return {
         domain_loaded: statusOutput.includes(tenant.sip_domain),

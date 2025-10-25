@@ -11,12 +11,20 @@ export interface Tenant {
   name: string;
   domain: string;
   sip_domain: string | null;  // NULL for super admin tenants
+  slug: string;
+  context_prefix: string;
+  parent_tenant_id: string | null;
+  is_master: boolean;
+  timezone: string;
+  language: string;
   status: 'active' | 'suspended' | 'pending';
   settings: {
     max_extensions: number;
+    max_trunks: number;
     max_concurrent_calls: number;
     recording_enabled: boolean;
-    voicemail_enabled: boolean;
+    voicemail_enabled?: boolean;
+    voicemail_directory: string;
   };
   created_at: Date;
   updated_at: Date;
