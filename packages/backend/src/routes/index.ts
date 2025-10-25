@@ -38,6 +38,16 @@ router.use('/dialplan', dialplanRulesRouter);
 router.use('/routing', routingRouter);
 router.use('/', systemRouter);
 
+// TEST DIRECT ROUTE
+router.get('/test-direct', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      message: 'Direct route in index.ts works!'
+    }
+  });
+});
+
 // Health check endpoint
 router.get('/health', (req, res) => {
   res.json({
