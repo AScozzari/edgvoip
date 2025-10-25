@@ -22,9 +22,9 @@ async function seedDatabase() {
     if (parseInt(tenantCount.rows[0].count) > 0) {
       console.log('⏭️  Database already seeded, skipping...');
       // Print existing tenant IDs
-      const existingTenants = await client.query('SELECT id, name FROM tenants');
+      const existingTenants = await client.query('SELECT id, name, slug, is_master FROM tenants');
       console.log('📋 Existing tenants:');
-      existingTenants.rows.forEach(t => console.log(`  - ${t.name}: ${t.id}`));
+      existingTenants.rows.forEach(t => console.log(`  - ${t.name} (${t.slug}): ${t.id} ${t.is_master ? '[MASTER]' : ''}`));
       
       // Print existing extensions
       const existingExtensions = await client.query('SELECT extension, display_name, tenant_id FROM extensions');
@@ -33,25 +33,73 @@ async function seedDatabase() {
       return;
     }
     
-    // Create demo tenant
+    console.log('');
+    console.log('👑 Creating MASTER tenant (edgvoip)...');
+    
+    // Create MASTER tenant (edgvoip)
+    const masterTenantId = uuidv4();
+    await client.query(`
+      INSERT INTO tenants (
+        id, name, domain, sip_domain, slug, context_prefix, 
+        parent_tenant_id, is_master, timezone, language, status, settings
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    `, [
+      masterTenantId,
+      'EDG VoIP Master',
+      'edgvoip',
+      null, // Master tenant non ha SIP domain
+      'edgvoip',
+      'tenant-edgvoip',
+      null, // No parent
+      true, // is_master
+      'Europe/Rome',
+      'it',
+      'active',
+      JSON.stringify({
+        max_concurrent_calls: 1000,
+        max_extensions: 10000,
+        max_trunks: 1000,
+        recording_enabled: true,
+        gdpr_compliant: true,
+        voicemail_directory: '/var/lib/freeswitch/storage/edgvoip/voicemail'
+      })
+    ]);
+    
+    console.log(`✅ Master tenant created: ${masterTenantId}`);
+    console.log('');
+    
+    console.log('🏢 Creating DEMO tenant (child of edgvoip)...');
+    
+    // Create DEMO tenant (child of master)
     const tenantId = uuidv4();
     await client.query(`
-      INSERT INTO tenants (id, name, domain, sip_domain, status, settings)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO tenants (
+        id, name, domain, sip_domain, slug, context_prefix,
+        parent_tenant_id, is_master, timezone, language, status, settings
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     `, [
       tenantId,
       'Demo Tenant',
-      'demo-tenant',
-      'demo-tenant.pbx.w3suite.it',
+      'demo',
+      'demo.edgvoip.it',
+      'demo',
+      'tenant-demo',
+      masterTenantId, // Parent is master tenant
+      false, // Not a master
+      'Europe/Rome',
+      'it',
       'active',
       JSON.stringify({
         max_concurrent_calls: 20,
+        max_extensions: 100,
+        max_trunks: 10,
         recording_enabled: true,
         gdpr_compliant: true,
-        timezone: 'Europe/Rome',
-        language: 'it'
+        voicemail_directory: '/var/lib/freeswitch/storage/demo/voicemail'
       })
     ]);
+    
+    console.log(`✅ Demo tenant created: ${tenantId}`);
     
     // Create demo store
     const storeId = uuidv4();
@@ -97,8 +145,10 @@ async function seedDatabase() {
       const password = await bcrypt.hash('password123', 10);
       
       await client.query(`
-        INSERT INTO extensions (id, tenant_id, store_id, extension, password, display_name, type, settings)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        INSERT INTO extensions (
+          id, tenant_id, store_id, extension, password, display_name, type,
+          context, caller_id_number, voicemail_pin, pickup_group, limit_max, settings
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       `, [
         extensionId,
         tenantId,
@@ -107,6 +157,11 @@ async function seedDatabase() {
         password,
         ext.display_name,
         ext.type,
+        'tenant-demo-internal', // context
+        ext.extension, // caller_id_number = extension
+        ext.extension, // voicemail_pin = extension (initial)
+        ext.type === 'user' ? 'sales' : null, // pickup_group
+        3, // limit_max
         JSON.stringify({
           voicemail_enabled: true,
           call_forwarding: { enabled: false, destination: null },
@@ -229,12 +284,131 @@ async function seedDatabase() {
       ]);
     }
     
+    console.log('');
+    console.log('📞 Creating Dialplan Rules for demo tenant...');
+    
+    // Create dialplan rules for demo tenant (6 contexts)
+    const dialplanRules = [
+      {
+        context: 'tenant-demo-internal',
+        name: 'Internal Calls',
+        priority: 100,
+        match_pattern: '^(1\\d{3})$',
+        actions: [
+          { type: 'set', data: 'hangup_after_bridge=true' },
+          { type: 'bridge', target: 'user/$1@demo.edgvoip.it' }
+        ]
+      },
+      {
+        context: 'tenant-demo-features',
+        name: 'Voicemail Check',
+        priority: 20,
+        match_pattern: '^\\*98$',
+        actions: [
+          { type: 'answer' },
+          { type: 'voicemail', data: 'check default demo.edgvoip.it ${caller_id_number}' }
+        ]
+      }
+    ];
+    
+    for (const rule of dialplanRules) {
+      await client.query(`
+        INSERT INTO dialplan_rules (tenant_id, context, name, priority, match_pattern, actions, enabled)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `, [
+        tenantId,
+        rule.context,
+        rule.name,
+        rule.priority,
+        rule.match_pattern,
+        JSON.stringify(rule.actions),
+        true
+      ]);
+    }
+    
+    console.log(`✅ Created ${dialplanRules.length} dialplan rules`);
+    
+    console.log('');
+    console.log('📥 Creating Inbound Route for demo tenant...');
+    
+    // Create inbound route (DID → Extension 1001)
+    await client.query(`
+      INSERT INTO inbound_routes (
+        tenant_id, store_id, name, did_number, destination_type, destination_value, enabled
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `, [
+      tenantId,
+      storeId,
+      'Main Number to Reception',
+      '0591234567',
+      'extension',
+      '1001',
+      true
+    ]);
+    
+    console.log('✅ Created 1 inbound route');
+    
+    console.log('');
+    console.log('📤 Creating Outbound Route for demo tenant...');
+    
+    // Create outbound route (Mobile numbers → Trunk)
+    await client.query(`
+      INSERT INTO outbound_routes (
+        tenant_id, store_id, name, dial_pattern, trunk_id, strip_digits, priority, enabled
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [
+      tenantId,
+      storeId,
+      'Italian Mobile Numbers',
+      '^3[0-9]{9}$',
+      trunkId,
+      0,
+      100,
+      true
+    ]);
+    
+    console.log('✅ Created 1 outbound route');
+    
+    console.log('');
+    console.log('⏰ Creating Time Condition for demo tenant...');
+    
+    // Create time condition
+    await client.query(`
+      INSERT INTO time_conditions (
+        tenant_id, store_id, name, timezone, business_hours, 
+        business_hours_action, after_hours_action, enabled
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [
+      tenantId,
+      storeId,
+      'Office Hours',
+      'Europe/Rome',
+      JSON.stringify({
+        monday: { enabled: true, start_time: '09:00', end_time: '18:00' },
+        tuesday: { enabled: true, start_time: '09:00', end_time: '18:00' },
+        wednesday: { enabled: true, start_time: '09:00', end_time: '18:00' },
+        thursday: { enabled: true, start_time: '09:00', end_time: '18:00' },
+        friday: { enabled: true, start_time: '09:00', end_time: '18:00' }
+      }),
+      'continue',
+      'voicemail',
+      true
+    ]);
+    
+    console.log('✅ Created 1 time condition');
+    
+    console.log('');
     console.log('✅ Database seeded successfully!');
     console.log('📊 Created:');
-    console.log('  - 1 Demo Tenant');
+    console.log('  - 1 Master Tenant (edgvoip)');
+    console.log('  - 1 Demo Tenant (child)');
     console.log('  - 1 Demo Store');
     console.log('  - 5 Demo Extensions');
     console.log('  - 1 Demo SIP Trunk');
+    console.log('  - 2 Dialplan Rules');
+    console.log('  - 1 Inbound Route');
+    console.log('  - 1 Outbound Route');
+    console.log('  - 1 Time Condition');
     console.log('  - 2 Demo CDR Records');
     
   } catch (error) {
