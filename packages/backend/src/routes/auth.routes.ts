@@ -92,11 +92,22 @@ router.post('/superadmin/login', async (req, res) => {
 });
 
 
+// TEST ROUTE - Simple GET without params
+router.get('/test-validate', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    data: {
+      message: 'Test route works!'
+    }
+  });
+});
+
 /**
  * Validate tenant exists: GET /:tenantSlug/validate
  * Public endpoint to check if a tenant exists (no authentication required)
  */
 router.get('/:tenantSlug/validate', validateTenantSlug, (req: TenantRequest, res) => {
+  console.log('🔍 VALIDATE ROUTE HIT! tenantSlug:', req.params.tenantSlug);
   return res.status(200).json({
     success: true,
     data: {
